@@ -16,11 +16,11 @@ public class ExplanationPopup : MonoBehaviour
         {
             Debug.Log("ExplanationPopup - Awake - Image");
         }
-        if(!transform.GetChild(2).TryGetComponent<TextMeshProUGUI>(out explanation))
+        if(!transform.GetChild(2).TryGetComponent<TextMeshProUGUI>(out name))
         {
             Debug.Log("ExplanationPopup - Awake - TextMeshProUGUI");
         }
-        if(!transform.GetChild(3).TryGetComponent<TextMeshProUGUI>(out name))
+        if (!transform.GetChild(3).TryGetComponent<TextMeshProUGUI>(out explanation))
         {
             Debug.Log("ExplanationPopup - Awake - TextMeshProUGUI");
         }

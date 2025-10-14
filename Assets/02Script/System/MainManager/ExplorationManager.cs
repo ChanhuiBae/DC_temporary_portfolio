@@ -497,7 +497,7 @@ public class ExplorationManager : MainManager, UIManager
     {
         float width = Screen.width - Input.mousePosition.x;
         float height = Screen.height - Input.mousePosition.y; 
-        if (width > 240)
+        if (width > 375)
         {
             if(height > 160)
             {
