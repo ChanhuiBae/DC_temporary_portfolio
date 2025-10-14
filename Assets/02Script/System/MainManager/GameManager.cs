@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -690,13 +691,13 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("LoadingScene");
     }
     #endregion
-    public void ExitGame()
-    {
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-        #else
-                Application.Quit(); // 어플리케이션 종료
-        #endif
-    }
 
+    public IEnumerator WaitAndQuitGame(float time)
+    {
+        yield return YieldInstructionCache.WaitForSeconds(time);
+        //if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        // else 
+        // Application.Quit();
+    }
 }

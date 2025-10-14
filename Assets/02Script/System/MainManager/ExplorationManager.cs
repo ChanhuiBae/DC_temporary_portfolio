@@ -906,6 +906,7 @@ public class ExplorationManager : MainManager, UIManager
     {
         mapManager.AppearPortal(color);
         messagePopup.gameObject.SetActive(false);
+        GameManager.Inst.StartCoroutine(GameManager.Inst.WaitAndQuitGame(2));
     }
 
     public void EndEvent()
