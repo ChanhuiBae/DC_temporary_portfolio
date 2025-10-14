@@ -1,0 +1,119 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LICENSE
+
+- You can use this asset in any game project, personal or commercial
+- DO NOT resell or redistribute AS A GAME ASSET, it has to be part of a project
+- Modify to suit your needs
+- You are NOT allowed to turn any of my assets to an NFT.
+- Credit not necessary but appreciated, if you do you can link to my ITCH profile
+ITCH.IO LINK: https://admurin.itch.io/
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+FX DETAILS
+
+Buff
+
+- Animations: 1
+- Frames: 16
+- Loop: No
+- Details
+	- This buff will imbue your armor with water attribute which may render you immune to water skills. Up to you.
+	- The last frame (the water drop over the head) is meant to follow the player around to indicate when the skill is active and when it expires.
+
+
+Water I
+
+- Animations: 1
+- Frames: 15
+- Loop: Yes
+- Details
+	- This is the most basic water attack, it only deals damage to the closet enemy
+	
+
+Water II
+
+- Animations: 2
+- Frames: 22
+- Loop: Yes
+- Details:
+	- This one has a little bit of a load time but when used it can throw enemies into the air.
+	- If not you can make it work like walls that deal damage when touched.
+	- You can make the skill appear where the enemy stands.
+
+
+Water III
+
+- Animations: 1
+- Frames: 21
+- Loop: Yes
+- Details: 
+	- This is one of the attacks that has high damage per second output.
+	- Best used against bosses or enemies that are static.
+	- You can just loop this until you run out of mana.
+
+
+Drown
+
+- Animations: 1
+- Frames: 9
+- Loop: Yes 
+- Details: 
+	- This skill will pierce through the enemies defense like a hot knife in butter.
+	- If you want to be even more cold blooded you can make a trail behind it that has a X% chance to freeze the enemy.
+
+
+Bubble
+
+- Animations: 1
+- Frames: 17
+- Loop: Yes
+- Details: 
+	- This skill grants extra defense. 
+	- Summon a bubble that will protect you from X amount of attacks or maybe will increase your defense by X%.
+	- Make sure you decrease the alpha value of it to your liking. 
+
+
+Pop
+
+- Animations: 6
+- Frames: 38
+- Loop: No
+- Details: 
+	- You can summon bubbles wherever you please and leave the bubbles floating (there is an idle frame).
+	- Maybe add a countdown to it or make the bubbles burst when they touch the player or the enemies.
+
+
+Wave
+
+- Animations: 1
+- Frames: 16
+- Loop: Yes
+- Details:
+	- This wave can travel as far as you want, maybe for x amount of seconds or maybe when it touches x amount of enemies.
+	- The loop is there to help you when maing the skil travel long distances.
+	- This could also be a good skill to push enemies away from you!
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MAKE SURE YOU READ THE DETAILS THERE ARE A FEW IDEAS ON HOW TO USE THE SKILLS.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+If you have any other questions you can check my discord where I will answer and help you use my assets. 
+DISCORD LINK: https://discord.com/invite/jmf4pzv5Fj
+
+If you want to support me you can check out my Patreon. This allows me to focus on making more assets and releasing them for free assets!
+PATREON LINK: https://www.patreon.com/admurin
+
+
+Don't forget to leave a review and check my other assets!
+
+Thank you.
+Admurin

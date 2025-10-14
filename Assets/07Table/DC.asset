@@ -1,0 +1,1783 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2499867be660b149b78fea2e3c53960, type: 3}
+  m_Name: DC
+  m_EditorClassIdentifier: 
+  character:
+  - ID: 1
+    Name: "\uC218\uC218\uAED8\uB07C\uC758 \uC0C1\uC778"
+  Monster:
+  - ID: 101
+    Name: "\uC2AC\uB77C\uC784"
+    Path: GreenJelly
+    MinHP: 130
+    MaxHP: 150
+    MinGage: 10
+    MaxGage: 12
+    Animator: Monster
+    Magnification: 3
+    ATK: 5
+    DEF: 100
+    Fire: -100
+    Water: 100
+    Thunder: -50
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uC2AC\uB77C\uC784"
+    DropItem: 35
+    DropPercent: 30
+  - ID: 102
+    Name: "\uD3EC\uC774\uC98C \uD504\uB85C\uADF8"
+    Path: RedFrog
+    MinHP: 60
+    MaxHP: 70
+    MinGage: 7
+    MaxGage: 9
+    Animator: Monster
+    Magnification: 3
+    ATK: 10
+    DEF: 0
+    Fire: -30
+    Water: 30
+    Thunder: -30
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uD3EC\uC774\uC98C \uD504\uB85C\uADF8"
+    DropItem: 36
+    DropPercent: 10
+  - ID: 103
+    Name: "\uBA38\uC26C\uB8F8"
+    Path: BrownMushroom
+    MinHP: 100
+    MaxHP: 120
+    MinGage: 5
+    MaxGage: 8
+    Animator: Monster
+    Magnification: 3
+    ATK: 5
+    DEF: 0
+    Fire: -50
+    Water: 30
+    Thunder: 10
+    Earth: 50
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uBA38\uC26C\uB8F8"
+    DropItem: 37
+    DropPercent: 30
+  - ID: 104
+    Name: "\uB7AB\uCE20"
+    Path: GreyRat
+    MinHP: 40
+    MaxHP: 60
+    MinGage: 3
+    MaxGage: 4
+    Animator: Monster
+    Magnification: 3
+    ATK: 7
+    DEF: 0
+    Fire: -30
+    Water: -20
+    Thunder: -20
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uB7AB\uCE20"
+    DropItem: 38
+    DropPercent: 50
+  - ID: 105
+    Name: "\uACE0\uBE14\uB9B0 \uBCF4\uBCD1"
+    Path: Goblin
+    MinHP: 100
+    MaxHP: 120
+    MinGage: 6
+    MaxGage: 8
+    Animator: Character
+    Magnification: 3
+    ATK: 10
+    DEF: 10
+    Fire: -20
+    Water: 0
+    Thunder: 0
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uACE0\uBE14\uB9B0 \uBCF4\uBCD1"
+    DropItem: 34
+    DropPercent: 30
+  - ID: 106
+    Name: "\uACE0\uBE14\uB9B0 \uAD81\uC218"
+    Path: GoblinArcher
+    MinHP: 60
+    MaxHP: 80
+    MinGage: 5
+    MaxGage: 7
+    Animator: Character
+    Magnification: 3
+    ATK: 8
+    DEF: 10
+    Fire: -20
+    Water: 0
+    Thunder: 0
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uACE0\uBE14\uB9B0 \uAD81\uC218"
+    DropItem: 34
+    DropPercent: 30
+  - ID: 107
+    Name: "\uAD6C\uC6B8"
+    Path: Ghoul
+    MinHP: 150
+    MaxHP: 200
+    MinGage: 10
+    MaxGage: 12
+    Animator: Character
+    Magnification: 3
+    ATK: 8
+    DEF: 0
+    Fire: -50
+    Water: 0
+    Thunder: 30
+    Earth: 30
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uAD6C\uC6B8"
+    DropItem: 39
+    DropPercent: 100
+  - ID: 701
+    Name: "\uC790\uC774\uC5B8\uD2B8 \uB7AB\uCE20"
+    Path: GiantRat
+    MinHP: 200
+    MaxHP: 250
+    MinGage: 3
+    MaxGage: 4
+    Animator: Monster
+    Magnification: 5
+    ATK: 8
+    DEF: 30
+    Fire: -30
+    Water: -20
+    Thunder: -20
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uC790\uC774\uC5B8\uD2B8 \uB7AB\uCE20"
+    DropItem: 43
+    DropPercent: 100
+  - ID: 702
+    Name: "\uD734\uC9C0 \uC2AC\uB77C\uC784"
+    Path: HugeSlime
+    MinHP: 400
+    MaxHP: 500
+    MinGage: 10
+    MaxGage: 12
+    Animator: Monster
+    Magnification: 4
+    ATK: 10
+    DEF: 100
+    Fire: -100
+    Water: 100
+    Thunder: -50
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uD734\uC9C0 \uC2AC\uB77C\uC784"
+    DropItem: 43
+    DropPercent: 100
+  - ID: 703
+    Name: "\uACE0\uBE14\uB9B0 \uB300\uC7A5"
+    Path: GoblinBoss
+    MinHP: 300
+    MaxHP: 350
+    MinGage: 8
+    MaxGage: 10
+    Animator: Character
+    Magnification: 3
+    ATK: 12
+    DEF: 50
+    Fire: -20
+    Water: 0
+    Thunder: 0
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uACE0\uBE14\uB9B0 \uB300\uC7A5"
+    DropItem: 43
+    DropPercent: 100
+  - ID: 901
+    Name: "\uC624\uC6B0\uAC70 \uCD94\uBC29\uC790"
+    Path: GreenOgre
+    MinHP: 700
+    MaxHP: 700
+    MinGage: 8
+    MaxGage: 10
+    Animator: Monster
+    Magnification: 3
+    ATK: 15
+    DEF: 30
+    Fire: -30
+    Water: -30
+    Thunder: -30
+    Earth: 0
+    EXP: 0
+    Skill_ID: '"3"'
+    Description: "\uC624\uC6B0\uAC70 \uCD94\uBC29\uC790"
+    DropItem: 0
+    DropPercent: 0
+  Squad:
+  - ID: 101
+    Type: 0
+    Floor: 1
+  - ID: 102
+    Type: 0
+    Floor: 1
+  - ID: 103
+    Type: 0
+    Floor: 1
+  - ID: 104
+    Type: 0
+    Floor: 1
+  - ID: 105
+    Type: 0
+    Floor: 1
+  - ID: 106
+    Type: 0
+    Floor: 1
+  - ID: 107
+    Type: 0
+    Floor: 1
+  - ID: 108
+    Type: 0
+    Floor: 1
+  - ID: 109
+    Type: 0
+    Floor: 1
+  - ID: 110
+    Type: 0
+    Floor: 1
+  - ID: 111
+    Type: 0
+    Floor: 1
+  - ID: 112
+    Type: 0
+    Floor: 1
+  - ID: 113
+    Type: 0
+    Floor: 1
+  - ID: 114
+    Type: 0
+    Floor: 1
+  - ID: 115
+    Type: 1
+    Floor: 1
+  - ID: 116
+    Type: 1
+    Floor: 1
+  - ID: 117
+    Type: 1
+    Floor: 1
+  - ID: 118
+    Type: 1
+    Floor: 1
+  - ID: 119
+    Type: 2
+    Floor: 1
+  SquadMember:
+  - SquadID: 101
+    MonsterID: 101
+    Front: 1
+    Position: 1
+  - SquadID: 101
+    MonsterID: 101
+    Front: 1
+    Position: 3
+  - SquadID: 101
+    MonsterID: 101
+    Front: 0
+    Position: 4
+  - SquadID: 101
+    MonsterID: 101
+    Front: 0
+    Position: 6
+  - SquadID: 102
+    MonsterID: 101
+    Front: 1
+    Position: 1
+  - SquadID: 102
+    MonsterID: 101
+    Front: 1
+    Position: 3
+  - SquadID: 103
+    MonsterID: 101
+    Front: 1
+    Position: 2
+  - SquadID: 103
+    MonsterID: 102
+    Front: 0
+    Position: 5
+  - SquadID: 104
+    MonsterID: 104
+    Front: 1
+    Position: 1
+  - SquadID: 104
+    MonsterID: 104
+    Front: 1
+    Position: 3
+  - SquadID: 104
+    MonsterID: 104
+    Front: 0
+    Position: 4
+  - SquadID: 104
+    MonsterID: 104
+    Front: 0
+    Position: 6
+  - SquadID: 105
+    MonsterID: 103
+    Front: 1
+    Position: 1
+  - SquadID: 105
+    MonsterID: 103
+    Front: 1
+    Position: 3
+  - SquadID: 105
+    MonsterID: 104
+    Front: 0
+    Position: 4
+  - SquadID: 105
+    MonsterID: 104
+    Front: 0
+    Position: 6
+  - SquadID: 106
+    MonsterID: 105
+    Front: 1
+    Position: 2
+  - SquadID: 106
+    MonsterID: 102
+    Front: 0
+    Position: 5
+  - SquadID: 107
+    MonsterID: 107
+    Front: 1
+    Position: 1
+  - SquadID: 107
+    MonsterID: 107
+    Front: 1
+    Position: 3
+  - SquadID: 108
+    MonsterID: 107
+    Front: 1
+    Position: 1
+  - SquadID: 108
+    MonsterID: 107
+    Front: 1
+    Position: 3
+  - SquadID: 108
+    MonsterID: 104
+    Front: 0
+    Position: 4
+  - SquadID: 108
+    MonsterID: 104
+    Front: 0
+    Position: 6
+  - SquadID: 109
+    MonsterID: 101
+    Front: 1
+    Position: 2
+  - SquadID: 109
+    MonsterID: 104
+    Front: 0
+    Position: 5
+  - SquadID: 110
+    MonsterID: 105
+    Front: 1
+    Position: 1
+  - SquadID: 110
+    MonsterID: 105
+    Front: 1
+    Position: 3
+  - SquadID: 111
+    MonsterID: 105
+    Front: 1
+    Position: 1
+  - SquadID: 111
+    MonsterID: 105
+    Front: 1
+    Position: 3
+  - SquadID: 111
+    MonsterID: 105
+    Front: 0
+    Position: 4
+  - SquadID: 111
+    MonsterID: 105
+    Front: 0
+    Position: 6
+  - SquadID: 112
+    MonsterID: 105
+    Front: 1
+    Position: 2
+  - SquadID: 112
+    MonsterID: 106
+    Front: 0
+    Position: 5
+  - SquadID: 113
+    MonsterID: 105
+    Front: 1
+    Position: 1
+  - SquadID: 113
+    MonsterID: 105
+    Front: 1
+    Position: 3
+  - SquadID: 113
+    MonsterID: 106
+    Front: 0
+    Position: 4
+  - SquadID: 113
+    MonsterID: 106
+    Front: 0
+    Position: 6
+  - SquadID: 114
+    MonsterID: 105
+    Front: 1
+    Position: 2
+  - SquadID: 114
+    MonsterID: 106
+    Front: 0
+    Position: 4
+  - SquadID: 114
+    MonsterID: 106
+    Front: 0
+    Position: 6
+  - SquadID: 115
+    MonsterID: 701
+    Front: 1
+    Position: 2
+  - SquadID: 115
+    MonsterID: 104
+    Front: 0
+    Position: 4
+  - SquadID: 115
+    MonsterID: 104
+    Front: 0
+    Position: 6
+  - SquadID: 116
+    MonsterID: 702
+    Front: 1
+    Position: 0
+  - SquadID: 117
+    MonsterID: 703
+    Front: 1
+    Position: 2
+  - SquadID: 117
+    MonsterID: 106
+    Front: 0
+    Position: 4
+  - SquadID: 117
+    MonsterID: 106
+    Front: 0
+    Position: 6
+  - SquadID: 118
+    MonsterID: 105
+    Front: 1
+    Position: 1
+  - SquadID: 118
+    MonsterID: 703
+    Front: 1
+    Position: 3
+  - SquadID: 118
+    MonsterID: 106
+    Front: 0
+    Position: 4
+  - SquadID: 118
+    MonsterID: 106
+    Front: 0
+    Position: 6
+  - SquadID: 119
+    MonsterID: 901
+    Front: 1
+    Position: 0
+  Item:
+  - ID: 1
+    Type: Consumable
+    Name: "\uCCB4\uB825 \uD3EC\uC158"
+    Icon: Potion
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 10
+    Purchase: 20
+    Explanation: "\uBA39\uC74C\uC9C1\uC2A4\uB7EC\uC6B4 \uBD89\uC740 \uBE5B\uC774
+      \uB3C4\uB294 \uD3EC\uC158. \uC0AC\uC6A9\uD558\uC5EC \uC804\uCCB4 \uCCB4\uB825\uC758
+      30%\uB97C \uD68C\uBCF5\uD55C\uB2E4."
+  - ID: 2
+    Type: Consumable
+    Name: "\uC2DD\uB7C9"
+    Icon: Food
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 10
+    Purchase: 20
+    Explanation: "\uBAA8\uD5D8\uAC00\uB4E4\uC744 \uC704\uD55C \uBCF4\uC874\uC2DD.
+      \uC0AC\uC6A9\uD558\uC5EC 25\uC758 \uD5C8\uAE30\uB97C \uD68C\uBCF5\uD55C\uB2E4."
+  - ID: 3
+    Type: Consumable
+    Name: "\uAE30\uB984"
+    Icon: Oil
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 15
+    Purchase: 30
+    Explanation: "\uB79C\uD134\uC744 \uBC1D\uD788\uAE30 \uC704\uD55C \uAE30\uB984.
+      \uC0AC\uC6A9\uD558\uC5EC 50\uC758 \uBD88\uBE5B\uC744 \uD68C\uBCF5\uD55C\uB2E4."
+  - ID: 6
+    Type: Consumable
+    Name: "\uD574\uB3C5\uC81C"
+    Icon: Antidote
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 25
+    Purchase: 50
+    Explanation: "\uAC74\uAC15\uD55C \uCD08\uB85D \uBE5B\uC774 \uB3C4\uB294 \uD3EC\uC158.
+      \uC0AC\uC6A9\uD558\uC5EC \uC911\uB3C5 \uC0C1\uD0DC\uB97C \uCE58\uB8CC\uD55C\uB2E4."
+  - ID: 4
+    Type: Consumable
+    Name: "\uBD95\uB300"
+    Icon: Bandage
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 25
+    Purchase: 50
+    Explanation: "\uAE68\uB057\uD558\uC9C4 \uC54A\uC9C0\uB9CC \uC4F8\uB9CC\uD574
+      \uBCF4\uC774\uB294 \uBD95\uB300. \uC0AC\uC6A9\uD558\uC5EC \uCD9C\uD608 \uC0C1\uD0DC\uB97C
+      \uCE58\uB8CC\uD55C\uB2E4."
+  - ID: 5
+    Type: Consumable
+    Name: "\uD3ED\uD0C4"
+    Icon: Bomb
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 25
+    Purchase: 50
+    Explanation: "\uBD88\uC744 \uBD99\uC774\uBA74 \uD3ED\uBC1C\uD558\uB294 \uD3ED\uD0C4.
+      \uAE08\uC774 \uAC04 \uBCBD \uC815\uB3C4\uB294 \uBD80\uC220 \uC218 \uC788\uB2E4."
+  - ID: 7
+    Type: Exchange
+    Name: "\uAE08\uAD34"
+    Icon: GoldBar
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 100
+    Purchase: 0
+    Explanation: "\uC21C\uAE08\uC73C\uB85C \uC774\uB8E8\uC5B4\uC9C4 \uAE08\uAD34.
+      \uBB35\uC9C1\uD55C \uAC78 \uBCF4\uC544\uD558\uB2C8 \uAC00\uACA9\uC774 \uAF64\uB098
+      \uB098\uAC08 \uB4EF\uD558\uB2E4."
+  - ID: 8
+    Type: Reinforcement
+    Name: "\uB79C\uB364 \uAC15\uD654 \uC7AC\uB8CC"
+    Icon: GemWhite3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 0
+    Purchase: 80
+    Explanation: "\uB79C\uB364 \uAC15\uD654 \uC7AC\uB8CC\uAC00 \uB4F1\uC7A5\uD569\uB2C8\uB2E4.
+      \uC7AC\uB8CC\uB97C \uD68D\uB4DD\uD558\uC9C0 \uC54A\uC73C\uBA74 \uC790\uB3D9\uC73C\uB85C
+      \uD310\uB9E4\uB429\uB2C8\uB2E4."
+  - ID: 9
+    Type: Reinforcement
+    Name: "\uAC15\uD654\uC11D"
+    Icon: Rune
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 10
+    Purchase: 20
+    Explanation: "\uC7A5\uBE44 \uAC15\uD654\uC11D"
+  - ID: 10
+    Type: Reinforcement
+    Name: "\uACF5\uACA9\uB825 \uC7BC 3"
+    Icon: GemRed3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 40
+    Purchase: 0
+    Explanation: 
+  - ID: 11
+    Type: Reinforcement
+    Name: "\uACF5\uACA9\uB825 \uC7BC 4"
+    Icon: GemRed4
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: 
+  - ID: 12
+    Type: Reinforcement
+    Name: "\uACF5\uACA9\uB825 \uC7BC 5"
+    Icon: GemRed5
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 60
+    Purchase: 0
+    Explanation: 
+  - ID: 13
+    Type: Reinforcement
+    Name: "\uBC29\uC5B4\uB825 \uC7BC 3"
+    Icon: GemBlue3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 40
+    Purchase: 0
+    Explanation: 
+  - ID: 14
+    Type: Reinforcement
+    Name: "\uBC29\uC5B4\uB825 \uC7BC 4"
+    Icon: GemBlue4
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: 
+  - ID: 15
+    Type: Reinforcement
+    Name: "\uBC29\uC5B4\uB825 \uC7BC 5"
+    Icon: GemBlue5
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 60
+    Purchase: 0
+    Explanation: 
+  - ID: 16
+    Type: Reinforcement
+    Name: "\uCCB4\uB825 \uC7BC 3"
+    Icon: GemGreen3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 40
+    Purchase: 0
+    Explanation: 
+  - ID: 17
+    Type: Reinforcement
+    Name: "\uCCB4\uB825 \uC7BC 4"
+    Icon: GemGreen4
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: 
+  - ID: 18
+    Type: Reinforcement
+    Name: "\uCCB4\uB825 \uC7BC 5"
+    Icon: GemGreen5
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 60
+    Purchase: 0
+    Explanation: 
+  - ID: 19
+    Type: Reinforcement
+    Name: "\uC601\uCC3D\uC18D\uB3C4 \uC7BC 3"
+    Icon: GemPurple3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 40
+    Purchase: 0
+    Explanation: 
+  - ID: 20
+    Type: Reinforcement
+    Name: "\uC601\uCC3D\uC18D\uB3C4 \uC7BC 4"
+    Icon: GemPurple4
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: 
+  - ID: 21
+    Type: Reinforcement
+    Name: "\uC601\uCC3D\uC18D\uB3C4 \uC7BC 5"
+    Icon: GemPurple5
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 60
+    Purchase: 0
+    Explanation: 
+  - ID: 22
+    Type: Reinforcement
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uC7BC 3"
+    Icon: GemYellow3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 40
+    Purchase: 0
+    Explanation: 
+  - ID: 23
+    Type: Reinforcement
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uC7BC 4"
+    Icon: GemYellow4
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: 
+  - ID: 24
+    Type: Reinforcement
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uC7BC 5"
+    Icon: GemYellow5
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 60
+    Purchase: 0
+    Explanation: 
+  - ID: 25
+    Type: Reinforcement
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 \uC7BC 3"
+    Icon: GemOrange3
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 40
+    Purchase: 0
+    Explanation: 
+  - ID: 26
+    Type: Reinforcement
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 \uC7BC 4"
+    Icon: GemOrange4
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: 
+  - ID: 27
+    Type: Reinforcement
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 \uC7BC 5"
+    Icon: GemOrange5
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 60
+    Purchase: 0
+    Explanation: 
+  - ID: 33
+    Type: Exchange
+    Name: "\uC218\uC0C1\uD55C \uC6B0\uC0C1"
+    Icon: MisteryIdol
+    MaxCount: 1
+    MinFloor: 1
+    Sale: 300
+    Purchase: 0
+    Explanation: "\uC218\uC0C1\uD568\uC744 \uD615\uC0C1\uD654\uD55C \uB4EF\uD55C
+      \uC870\uAC01\uC0C1. \uBB34\uC5B8\uAC00 \uC2E0\uC559\uC758 \uB300\uC0C1\uC778
+      \uAC83\uCC98\uB7FC \uBCF4\uC778\uB2E4."
+  - ID: 34
+    Type: Exchange
+    Name: "\uACE0\uBE14\uB9B0\uC758 \uADC0"
+    Icon: GoblinEar
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 5
+    Purchase: 0
+    Explanation: "\uACE0\uBE14\uB9B0\uC744 \uC0AC\uB0E5\uD55C \uC99D\uD45C. \uC660\uC9C0
+      \uBAA8\uB974\uAC8C \uCDE8\uAE09\uD558\uB294 \uC0C1\uC778\uC774 \uB9CE\uC740
+      \uB4EF\uD558\uB2E4."
+  - ID: 35
+    Type: Exchange
+    Name: "\uC2AC\uB77C\uC784\uC758 \uD575"
+    Icon: SlimeCore
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 30
+    Purchase: 0
+    Explanation: "\uC2AC\uB77C\uC784\uC744 \uAD6C\uC131\uD558\uB294 \uD575. \uBCF4\uD1B5
+      \uC2AC\uB77C\uC784 \uCC98\uCE58 \uACFC\uC815\uC5D0\uC11C \uD30C\uAD34\uB418\uC9C0\uB9CC,
+      \uD615\uD0DC\uB97C \uC720\uC9C0\uD558\uB294 \uACBD\uC6B0\uB3C4 \uB4DC\uBB3C\uAC8C
+      \uC788\uB2E4."
+  - ID: 36
+    Type: Exchange
+    Name: "\uAC1C\uAD6C\uB9AC\uC758 \uB3C5"
+    Icon: FrogPoison
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 10
+    Purchase: 0
+    Explanation: "\uD3EC\uC774\uC98C \uD504\uB85C\uADF8\uAC00 \uBD84\uBE44\uD55C
+      \uB3C5. \uC5F0\uAE08\uC220\uC5D0\uC11C \uADC0\uC911\uD558\uAC8C \uC0AC\uC6A9\uB418\uB294
+      \uB4EF\uD558\uB2E4."
+  - ID: 37
+    Type: Exchange
+    Name: "\uC218\uC0C1\uD55C \uBC84\uC12F"
+    Icon: MisteryMushroom
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 5
+    Purchase: 0
+    Explanation: "\uBC84\uC12F\uD615 \uBAAC\uC2A4\uD130\uC758 \uC2E0\uCCB4 \uC77C\uBD80.
+      \uC774\uAC78 \uC694\uB9AC\uD574 \uBA39\uB294 \uD2B9\uC774\uD55C \uBAA8\uD5D8\uAC00\uAC00
+      \uC788\uB2E4\uB294 \uAD34\uC18C\uBB38\uC774 \uB3C8\uB2E4."
+  - ID: 38
+    Type: Exchange
+    Name: "\uC950 \uAF2C\uB9AC"
+    Icon: RatTail
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 3
+    Purchase: 0
+    Explanation: "\uC950\uC758 \uAF2C\uB9AC. \uBCF8\uCCB4\uAC00 \uD070 \uB9CC\uD07C
+      \uAF2C\uB9AC\uB3C4 \uD06C\uB2E4."
+  - ID: 39
+    Type: Exchange
+    Name: "\uC369\uC740 \uACE0\uAE30"
+    Icon: RottenMeat
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 1
+    Purchase: 0
+    Explanation: "\uAD6C\uC6B8\uC758 \uC369\uC740 \uACE0\uAE30. \uB204\uAD6C\uB3C4
+      \uC6D0\uD558\uC9C0 \uC54A\uB294 \uC4F0\uB808\uAE30\uB2E4."
+  - ID: 40
+    Type: Exchange
+    Name: "\uD558\uAE09 \uBAAC\uC2A4\uD130\uC758 \uC815\uC218"
+    Icon: LowEssence
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: "\uC57D\uD55C \uBAAC\uC2A4\uD130\uB4E4\uC5D0\uAC8C\uC11C \uB4DC\uBB38
+      \uD655\uB960\uB85C \uBC1C\uACAC\uB418\uB294 \uC601\uD63C\uC758 \uC815\uC218."
+  - ID: 41
+    Type: Exchange
+    Name: "\uC911\uAE09 \uBAAC\uC2A4\uD130\uC758 \uC815\uC218"
+    Icon: MiddleEssence
+    MaxCount: 5
+    MinFloor: 3
+    Sale: 100
+    Purchase: 0
+    Explanation: "\uD3C9\uBC94\uD55C \uBAAC\uC2A4\uD130\uB4E4\uC5D0\uAC8C\uC11C \uB4DC\uBB38
+      \uD655\uB960\uB85C \uBC1C\uACAC\uB418\uB294 \uC601\uD63C\uC758 \uC815\uC218."
+  - ID: 42
+    Type: Exchange
+    Name: "\uC0C1\uAE09 \uBAAC\uC2A4\uD130\uC758 \uC815\uC218"
+    Icon: HighEssence
+    MaxCount: 5
+    MinFloor: 5
+    Sale: 200
+    Purchase: 0
+    Explanation: "\uAC15\uB825\uD55C \uBAAC\uC2A4\uD130\uB4E4\uC5D0\uAC8C\uC11C \uB4DC\uBB38
+      \uD655\uB960\uB85C \uBC1C\uACAC\uB418\uB294 \uC601\uD63C\uC758 \uC815\uC218."
+  - ID: 43
+    Type: Exchange
+    Name: "\uBE5B\uBC14\uB79C \uAC15\uC790\uC758 \uC815\uC218"
+    Icon: FadedEssence
+    MaxCount: 5
+    MinFloor: 1
+    Sale: 100
+    Purchase: 0
+    Explanation: "\uC721\uC2E0\uC774 \uC2A4\uB7EC\uC84C\uC74C\uC5D0\uB3C4 \uD604\uC138\uC5D0
+      \uB0A8\uC740 \uBD88\uAD74\uC758 \uC601\uD63C. \uBE5B\uBC14\uB79C \uBD88\uAF43\uC774
+      \uD76C\uBBF8\uD558\uAC8C \uB0A8\uC544\uC788\uB2E4."
+  - ID: 44
+    Type: Exchange
+    Name: "\uBBF8\uC57D\uD55C \uAC15\uC790\uC758 \uC815\uC218"
+    Icon: WeakEssence
+    MaxCount: 5
+    MinFloor: 3
+    Sale: 200
+    Purchase: 0
+    Explanation: "\uC721\uC2E0\uC774 \uC2A4\uB7EC\uC84C\uC74C\uC5D0\uB3C4 \uD604\uC138\uC5D0
+      \uB0A8\uC740 \uBD88\uAD74\uC758 \uC601\uD63C. \uBBF8\uC57D\uD55C \uBE5B\uC744
+      \uBC1C\uD558\uACE0 \uC788\uB2E4."
+  - ID: 45
+    Type: Exchange
+    Name: "\uAC15\uB82C\uD55C \uAC15\uC790\uC758 \uC815\uC218"
+    Icon: IntenseEssence
+    MaxCount: 5
+    MinFloor: 5
+    Sale: 400
+    Purchase: 0
+    Explanation: "\uC721\uC2E0\uC774 \uC2A4\uB7EC\uC84C\uC74C\uC5D0\uB3C4 \uD604\uC138\uC5D0
+      \uB0A8\uC740 \uBD88\uAD74\uC758 \uC601\uD63C. \uAC15\uB82C\uD55C \uBE5B\uC744
+      \uBC1C\uD558\uACE0 \uC788\uB2E4."
+  Artifact:
+  - ID: 1
+    Name: "\uCC28\uAC00\uC6B4 \uB3CC"
+    Icon: ColdStone
+    Grade: 1
+    Type: 1
+    Explanation: "\uC77C\uBC18\uC801\uC778 \uB3CC\uBA69\uC774\uCC98\uB7FC \uBCF4\uC774\uC9C0\uB9CC,
+      \uCC28\uAC00\uC6B4 \uAE30\uC6B4\uC774 \uAC10\uB3CC\uACE0 \uC788\uB2E4."
+    Effect: "\uC77C\uBC18 \uC18D\uC131 \uB300\uBBF8\uC9C0 +10%"
+  - ID: 2
+    Name: "\uBD88\uC758 \uB3CC"
+    Icon: FireStone
+    Grade: 1
+    Type: 1
+    Explanation: "\uBD89\uC740 \uC0C9\uC758 \uB9C8\uC11D \uC870\uAC01\uC774\uB2E4.
+      \uBBF8\uC57D\uD55C \uBD88\uC758 \uAE30\uC6B4\uC744 \uB2F4\uACE0 \uC788\uB2E4."
+    Effect: "\uBD88 \uC18D\uC131 \uB300\uBBF8\uC9C0 +10%"
+  - ID: 3
+    Name: "\uBB3C\uC758 \uB3CC"
+    Icon: WaterStone
+    Grade: 1
+    Type: 1
+    Explanation: "\uD478\uB978 \uC0C9\uC758 \uB9C8\uC11D \uC870\uAC01\uC774\uB2E4.
+      \uBBF8\uC57D\uD55C \uBB3C\uC758 \uAE30\uC6B4\uC744 \uB2F4\uACE0 \uC788\uB2E4."
+    Effect: "\uBB3C \uC18D\uC131 \uB300\uBBF8\uC9C0 +10%"
+  - ID: 4
+    Name: "\uC804\uAE30\uC758 \uB3CC"
+    Icon: ElectricStone
+    Grade: 1
+    Type: 1
+    Explanation: "\uB178\uB780 \uC0C9\uC758 \uB9C8\uC11D \uC870\uAC01\uC774\uB2E4.
+      \uBBF8\uC57D\uD55C \uC804\uAE30\uC758 \uAE30\uC6B4\uC744 \uB2F4\uACE0 \uC788\uB2E4."
+    Effect: "\uC804\uAE30 \uC18D\uC131 \uB300\uBBF8\uC9C0 +10%"
+  - ID: 5
+    Name: "\uB545\uC758 \uB3CC"
+    Icon: EarthStone
+    Grade: 1
+    Type: 1
+    Explanation: "\uCD08\uB85D \uC0C9\uC758 \uB9C8\uC11D \uC870\uAC01\uC774\uB2E4.
+      \uBBF8\uC57D\uD55C \uB545\uC758 \uAE30\uC6B4\uC744 \uB2F4\uACE0 \uC788\uB2E4."
+    Effect: "\uB545 \uC18D\uC131 \uB300\uBBF8\uC9C0 +10%"
+  - ID: 6
+    Name: "\uD608\uC11D \uD30C\uD3B8"
+    Icon: BloodStoneFragment
+    Grade: 1
+    Type: 1
+    Explanation: "\uD749\uD749\uD55C \uAE30\uC6B4\uC774 \uAC10\uB3C4\uB294 \uC791\uC740
+      \uB3CC\uB369\uC774\uB2E4."
+    Effect: "\uCCB4\uB825 +20"
+  - ID: 7
+    Name: "\uAE08\uAC15\uC11D \uD30C\uD3B8"
+    Icon: DiamondFragment
+    Grade: 1
+    Type: 1
+    Explanation: 
+    Effect: "\uBC29\uC5B4\uB825 +10"
+  - ID: 8
+    Name: "\uBC30\uD0C0\uC758 \uAC70\uC6B8"
+    Icon: AntiMirror
+    Grade: 1
+    Type: 2
+    Explanation: "\uC544\uB984\uB2E4\uC6B4 \uAC70\uC6B8\uC774\uC9C0\uB9CC \uBB34\uC5C7\uB3C4
+      \uBE44\uCD94\uC9C0 \uBABB \uD55C\uB2E4. \uAC70\uC6B8 \uC2A4\uC2A4\uB85C\uAC00
+      \uBAA8\uB4E0 \uAC83\uC744 \uAC70\uBD80\uD558\uB294 \uB4EF\uD558\uB2E4."
+    Effect: "\uBC30\uD0C0\uC758 \uAC70\uC6B8\uB9CC\uC744 \uC7A5\uCC29\uD558\uACE0
+      \uC788\uC744 \uC2DC, \uACF5\uACA9\uB825 +5, \uBC29\uC5B4\uB825 +5, \uCCB4\uB825
+      +10, \uBC29\uC5B4\uB825 +5, \uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 +5%, \uD06C\uB9AC\uD2F0\uCEEC
+      \uB300\uBBF8\uC9C0 +10%"
+  - ID: 9
+    Name: "\uACE0\uB300 \uBC18\uC9C0"
+    Icon: AncientRing
+    Grade: 1
+    Type: 2
+    Explanation: "\uD754\uD55C \uBC18\uC9C0\uCC98\uB7FC \uBCF4\uC774\uC9C0\uB9CC,
+      \uACE0\uB300\uC758 \uB9C8\uB825\uC744 \uD488\uACE0 \uC788\uB2E4."
+    Effect: "\uACF5\uACA9\uB825 +10"
+  - ID: 10
+    Name: "\uACE0\uB300 \uBAA9\uAC78\uC774"
+    Icon: AncientNecklace
+    Grade: 1
+    Type: 2
+    Explanation: "\uD754\uD55C \uBAA9\uAC78\uC774\uCC98\uB7FC \uBCF4\uC774\uC9C0\uB9CC,
+      \uBBF8\uC57D\uD55C \uB9C8\uB825\uC758 \uC794\uC7AC\uAC00 \uB290\uAEF4\uC9C4\uB2E4."
+    Effect: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 +10%"
+  - ID: 11
+    Name: "\uC758\uC2DD\uC6A9 \uB2E8\uAC80"
+    Icon: RitualDagger
+    Grade: 1
+    Type: 2
+    Explanation: "\uB0A1\uACE0 \uB179\uC2A8 \uB2E8\uAC80. \uC190\uC5D0 \uC950\uBA74
+      \uC774\uC0C1\uD55C \uC18D\uC0AD\uC784\uC774 \uB4E4\uB9AC\uB294 \uB4EF\uD558\uB2E4."
+    Effect: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 +20%"
+  - ID: 12
+    Name: "\uB9C8\uB3C4\uC11C"
+    Icon: SpellBook
+    Grade: 1
+    Type: 2
+    Explanation: "\uACE0\uB300\uC758 \uB9C8\uBC95\uC774 \uB2F4\uACA8 \uC788\uB294
+      \uB9C8\uB3C4\uC11C. \uCC45 \uC2A4\uC2A4\uB85C\uAC00 \uBD88\uAE38\uD55C \uAE30\uC6B4\uC744
+      \uB0B4\uBFDC\uACE0 \uC788\uB2E4."
+    Effect: "\uCE90\uC2A4\uD305 \uC2DC\uAC04 -10%"
+  - ID: 13
+    Name: "\uCCAD\uB3D9 \uAC70\uC6B8"
+    Icon: BronzeMirror
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC0AC\uC6A9\uC911\uC778 \uACF5\uACA9 \uC2A4\uD0AC\uC774 \uC804\uBD80
+      \uC77C\uBC18 \uC18D\uC131\uC77C \uACBD\uC6B0, \uC77C\uBC18 \uC18D\uC131 \uC2A4\uD0AC\uC758
+      \uB300\uBBF8\uC9C0 +30%"
+  - ID: 14
+    Name: "\uC6D0\uCD08\uC758 \uBC18\uC9C0"
+    Icon: OriginalRing
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uB9E4 \uC804\uD22C\uB9C8\uB2E4 \uC2A4\uD0AC\uC744 3\uD68C \uC0AC\uC6A9\uD560
+      \uB54C\uAE4C\uC9C0 \uACF5\uACA9\uB825 \uB450 \uBC30."
+  - ID: 15
+    Name: "\uC8FC\uBC15\uC758 \uC0AC\uC2AC"
+    Icon: CursedChain
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 -10%, \uC804\uD22C \uC2DC\uC791
+      \uD6C4 \uB9E4 \uCD08\uB9C8\uB2E4 \uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960\uC774
+      1%\uC529 \uC99D\uAC00."
+  - ID: 16
+    Name: "\uAC74\uACE4\uC758 \uB2E8\uAC80"
+    Icon: HeavenAndEarthDagger
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uD06C\uB9AC\uD2F0\uCEEC\uC774 \uBC1C\uC0DD\uD558\uC9C0 \uC54A\uC558\uC744
+      \uB54C\uC758 \uB300\uBBF8\uC9C0 -25%, \uD06C\uB9AC\uD2F0\uCEEC\uC774 \uBC1C\uC0DD\uD588\uC744
+      \uB54C\uC758 \uB300\uBBF8\uC9C0 +25%"
+  - ID: 17
+    Name: "\uC11D\uBB38\uC758 \uB9C8\uB3C4\uC11C"
+    Icon: StoneSpellBook
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uCE90\uC2A4\uD305 \uC2DC\uAC04 \uAC10\uC18C \uC2A4\uD0EF\uC5D0 \uBE44\uB840\uD558\uC5EC
+      \uBAA8\uB4E0 \uC18D\uC131 \uB300\uBBF8\uC9C0 \uC99D\uAC00."
+  - ID: 18
+    Name: "\uCC28\uAC00\uC6B4 \uBCF4\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 19
+    Name: "\uD64D\uB828\uC758 \uBCF4\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 20
+    Name: "\uC2EC\uD574\uC758 \uBCF4\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 21
+    Name: "\uB1CC\uC7AC\uC758 \uBCF4\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 22
+    Name: "\uB300\uC790\uC5F0\uC758 \uBCF4\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 23
+    Name: "\uD608\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 24
+    Name: "\uAE08\uAC15\uC11D"
+    Icon: Cross
+    Grade: 2
+    Type: 1
+    Explanation: 
+    Effect: 
+  - ID: 25
+    Name: "\uD654\uC5FC\uC758 \uAC70\uC6B8"
+    Icon: FireMirror
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC0AC\uC6A9\uC911\uC778 \uACF5\uACA9 \uC2A4\uD0AC\uC774 \uC804\uBD80
+      \uBD88 \uC18D\uC131\uC77C \uACBD\uC6B0, \uBD88 \uC18D\uC131 \uC2A4\uD0AC\uC758
+      \uB300\uBBF8\uC9C0 +30%"
+  - ID: 26
+    Name: "\uBC14\uB2E4\uC758 \uAC70\uC6B8"
+    Icon: WaterMirror
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC0AC\uC6A9\uC911\uC778 \uACF5\uACA9 \uC2A4\uD0AC\uC774 \uC804\uBD80
+      \uBB3C \uC18D\uC131\uC77C \uACBD\uC6B0, \uBB3C \uC18D\uC131 \uC2A4\uD0AC\uC758
+      \uB300\uBBF8\uC9C0 +30%"
+  - ID: 27
+    Name: "\uCC9C\uB465\uC758 \uAC70\uC6B8"
+    Icon: ThunderMirror
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC0AC\uC6A9\uC911\uC778 \uACF5\uACA9 \uC2A4\uD0AC\uC774 \uC804\uBD80
+      \uC804\uAE30 \uC18D\uC131\uC77C \uACBD\uC6B0, \uC804\uAE30 \uC18D\uC131 \uC2A4\uD0AC\uC758
+      \uB300\uBBF8\uC9C0 +30%"
+  - ID: 28
+    Name: "\uB300\uC9C0\uC758 \uAC70\uC6B8"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC0AC\uC6A9\uC911\uC778 \uACF5\uACA9 \uC2A4\uD0AC\uC774 \uC804\uBD80
+      \uB545 \uC18D\uC131\uC77C \uACBD\uC6B0, \uB545 \uC18D\uC131 \uC2A4\uD0AC\uC758
+      \uB300\uBBF8\uC9C0 +30%"
+  - ID: 29
+    Name: "\uD604\uC790\uC758 \uBC18\uC9C0"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 30
+    Name: "\uD604\uC790\uC758 \uBAA9\uAC78\uC774"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 31
+    Name: "\uC800\uC8FC\uC758 \uB2E8\uAC80"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 32
+    Name: "\uB124\uD06C\uB85C\uB178\uBBF8\uCF58"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 33
+    Name: "\uD608\uC11D \uBC18\uC9C0"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 34
+    Name: "\uD608\uC11D \uBAA9\uAC78\uC774"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 35
+    Name: "\uD608\uC11D \uB2E8\uAC80"
+    Icon: Cross
+    Grade: 2
+    Type: 2
+    Explanation: 
+    Effect: 
+  - ID: 36
+    Name: "\uBD88\uC0AC\uC870\uC758 \uBC18\uC9C0"
+    Icon: PheonixRing
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uD3EC\uC158 \uC774\uC678\uC758 \uBC29\uBC95\uC73C\uB85C \uCCB4\uB825
+      \uD68C\uBCF5 \uC2DC, \uD68C\uBCF5\uB7C9 +30% \uBC0F \uD0C0\uAC9F\uC73C\uB85C
+      \uC124\uC815\uD55C \uC801\uC5D0\uAC8C \uD68C\uBCF5\uB7C9\uC758 30%\uC5D0 \uD574\uB2F9\uD558\uB294
+      \uBD88 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 37
+    Name: "\uD749\uC870\uC758 \uD39C\uB358\uD2B8"
+    Icon: BadOmenPandent
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uACF5\uACA9\uC744 \uC801\uC911\uC2DC\uD0AC \uB54C\uB9C8\uB2E4 \uD53C\uACA9\uB2F9\uD55C
+      \uC801\uC758 \uBC29\uC5B4\uB825 -5%, \uBC29\uC5B4\uB825\uC774 0\uC778 \uB300\uC0C1
+      \uACF5\uACA9 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 +15%"
+  - ID: 38
+    Name: "\uC601\uC6D0\uC758 \uBD88\uAF43\uAC80"
+    Icon: EternalFlameSword
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC801\uC744 \uACF5\uACA9 \uC2DC \uD53C\uACA9\uB2F9\uD55C \uC801\uC5D0\uAC8C
+      '\uD654\uC0C1' \uC0C1\uD0DC\uB97C \uBD80\uC5EC\uD55C\uB2E4. \uD654\uC0C1 \uC0C1\uD0DC\uC5D0
+      \uBE60\uC9C4 \uB300\uC0C1\uC740 \uB9E4\uCD08 {0.05 * (\uACF5\uACA9\uB825) *
+      (\uC911\uCCA9 \uC218)} \uB9CC\uD07C\uC758 \uD654\uC5FC \uC18D\uC131 \uD53C\uD574\uB97C
+      \uC785\uB294\uB2E4. \uC911\uCCA9\uC740 \uB9E4 \uACF5\uACA9 \uD310\uC815\uB9C8\uB2E4
+      1\uD68C \uBC1C\uC0DD\uD558\uBA70, \uCD5C\uB300 6\uD68C \uC911\uCCA9 \uAC00\uB2A5\uD558\uB2E4.
+      \uD654\uC0C1 \uC0C1\uD0DC\uC758 \uC720\uC9C0\uC2DC\uAC04\uC740 3\uCD08\uC774\uBA70,
+      \uB300\uC0C1\uC774 \uC720\uC800\uC758 \uC2A4\uD0AC\uC5D0 \uD53C\uACA9\uB2F9\uD560
+      \uC2DC 0\uC73C\uB85C \uCD08\uAE30\uD654\uB41C\uB2E4."
+  - ID: 39
+    Name: "\uD3ED\uC1C4\uC758 \uC8FC\uBB38\uC11C"
+    Icon: ChainSpellBook
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC2A4\uD0AC\uC744 \uBC1C\uB3D9\uD560 \uB54C\uB9C8\uB2E4 \uC720\uC800\uC5D0\uAC8C
+      \u2018\uACE0\uC18D\uC601\uCC3D\u2019 \uC0C1\uD0DC\uB97C \uBD80\uC5EC\uD55C\uB2E4.
+      \uC2A4\uD0AC \uC0AC\uC6A9 \uC644\uB8CC \uD6C4 \uB2E4\uC74C \uC2A4\uD0AC\uC758
+      \uCE90\uC2A4\uD305\uC774 \uC989\uC2DC \uC2DC\uC791\uB418\uC9C0 \uC54A\uC744
+      \uACBD\uC6B0, \u2018\uACE0\uC18D\uC601\uCC3D\u2019 \uC911\uCCA9\uC744 0\uC73C\uB85C
+      \uCD08\uAE30\uD654\uD55C\uB2E4.\n\uACE0\uC18D\uC601\uCC3D: \uC911\uCCA9\uB2F9
+      \uC601\uCC3D \uC18D\uB3C4 +5%, \uCD5C\uB300 10\uC911\uCCA9 \uAC00\uB2A5"
+  - ID: 40
+    Name: "\uB9CC\uB958\uC758 \uBC18\uC9C0"
+    Icon: WaveRing
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uACF5\uACA9 \uC2A4\uD0AC, \uBC29\uC5B4 \uC2A4\uD0AC, \uC9C0\uC6D0 \uC2A4\uD0AC\uC744
+      \uC804\uBD80 \uD558\uB098 \uC774\uC0C1 \uCC44\uC6A9\uD588\uC744 \uACBD\uC6B0,
+      \uBAA8\uB4E0 \uC2A4\uD0AC\uC758 \uB300\uBBF8\uC9C0 +20%, \uC601\uCC3D \uC18D\uB3C4
+      +10%"
+  - ID: 41
+    Name: "\uC2EC\uD574\uC758 \uBAA9\uAC78\uC774"
+    Icon: AzureSeaNeckglace
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uD06C\uB9AC\uD2F0\uCEEC \uC801\uC911 \uC2DC, \uD53C\uACA9\uB2F9\uD55C
+      \uC801\uC758 \uD589\uB3D9 \uC18D\uB3C4\uB97C 5\uCD08\uAC04 30% \uAC10\uC18C"
+  - ID: 42
+    Name: "\uD750\uB984\uC758 \uC6B4\uBA85\uAC80"
+    Icon: FlowFateSword
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC774\uC804 \uACF5\uACA9\uC774 \uD06C\uB9AC\uD2F0\uCEEC\uB85C \uC801\uC911\uD588\uC744
+      \uC2DC, \uB2E4\uC74C \uACF5\uACA9\uC758 \uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0
+      +30%"
+  - ID: 43
+    Name: "\uC601\uAC81\uC758 \uC608\uC5B8\uC11C"
+    Icon: EternalSpellBook
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC804\uD22C \uC2DC\uC791 \uD6C4 10\uCD08\uB9C8\uB2E4 1\uD68C, \uB2E4\uC74C\uC5D0
+      \uBC1B\uB294 \uD53C\uD574\uB97C \uD761\uC218\uD558\uB294 \uBCF4\uD638\uB9C9\uC744
+      \uC0DD\uC131\uD55C\uB2E4."
+  - ID: 44
+    Name: "\uC12C\uAD11\uC758 \uC778\uC7A5"
+    Icon: FlashRing
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC774\uC804 \uC2A4\uD0AC\uC5D0\uC11C \uD06C\uB9AC\uD2F0\uCEEC\uC774
+      \uBC1C\uB3D9\uD588\uC744 \uC2DC, \uB2E4\uC74C \uC2A4\uD0AC\uC744 \uC0AC\uC6A9\uD560
+      \uB54C\uAE4C\uC9C0 \uACF5\uACA9\uB825 +15. \uD06C\uB9AC\uD2F0\uCEEC\uC774 \uBC1C\uC0DD\uD558\uC9C0
+      \uC54A\uC558\uC744 \uC2DC, \uB2E4\uC74C \uC2A4\uD0AC\uC744 \uC0AC\uC6A9\uD560
+      \uB54C\uAE4C\uC9C0 \uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 +15%"
+  - ID: 45
+    Name: "\uC794\uC0C1\uC758 \uBAA9\uAC78\uC774"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uBAA8\uB4E0 \uC2A4\uD0AC\uC758 \uB300\uBBF8\uC9C0\uB97C 55%\uB85C \uB9CC\uB4DC\uB294
+      \uB300\uC2E0, \uC2A4\uD0AC\uB85C \uBC1C\uC0DD\uD558\uB294 \uBAA8\uB4E0 \uD0C0\uACA9\uC744
+      \uB450 \uBC88\uC529 \uBC1C\uC0DD\uC2DC\uD0A8\uB2E4."
+  - ID: 46
+    Name: "\uCC30\uB098\uC758 \uACC4\uC2DC\uAC80"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "5\uCD08\uB9C8\uB2E4 \uBB34\uC791\uC704 \uC801 \uD55C \uCCB4\uC5D0\uAC8C
+      3\uCD08\uAC04 \uC720\uC9C0\uB418\uB294 \u2018\uD45C\uC2DD\u2019\uC744 \uB0A8\uAE34\uB2E4.
+      \uD45C\uC2DD\uC774 \uB0A8\uACA8\uC9C4 \uC801\uC5D0\uAC8C \uAC00\uD558\uB294
+      \uB2E4\uC74C\uBC88 \uACF5\uACA9\uC740 2\uBC30\uC758 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 47
+    Name: "\uBE5B\uB098\uB294 \uC2DC\uAC04\uC758 \uC11C"
+    Icon: TwinkleTimeBook
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC2A4\uD0AC\uC744 2\uBC88 \uC0AC\uC6A9\uD560 \uB54C\uB9C8\uB2E4, \uB2E4\uC74C\uBC88
+      \uC2A4\uD0AC\uC758 \uCE90\uC2A4\uD305 \uC2DC\uAC04\uC744 0\uC73C\uB85C \uB9CC\uB4E0\uB2E4."
+  - ID: 48
+    Name: "\uAD73\uAC74\uD568\uC758 \uBC18\uC9C0"
+    Icon: SteadRing
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uB3D9\uC77C\uD55C \uB300\uC0C1\uC5D0\uAC8C \uC5F0\uC18D\uD574\uC11C
+      \uACF5\uACA9 \uC801\uC911 \uC2DC, \u2018\uB300\uC9C0\uC758 \uAD73\uAC74\uD568\u2019
+      \uC911\uCCA9\uC744 \uC5BB\uB294\uB2E4. \uB300\uC9C0\uC758 \uAD73\uAC74\uD568:
+      \uCD5C\uB300 10\uC2A4\uD0DD \uC911\uCCA9\uC774 \uAC00\uB2A5\uD558\uBA70, \uB9E4
+      \uC911\uCCA9\uB9C8\uB2E4 \uACF5\uACA9\uB825\uC744 2%\uC529 \uC0C1\uC2B9\uC2DC\uD0A8\uB2E4.
+      \uB300\uC9C0\uC758 \uAD73\uAC74\uD568 \uC911\uCCA9 10\uC2A4\uD0DD\uC5D0 \uB3C4\uB2EC
+      \uC2DC, \uD0C0\uAC9F\uC5D0\uAC8C \uB099\uC11D\uC744 \uBC1C\uC0DD\uC2DC\uCF1C
+      {2.0 * (\uACF5\uACA9\uB825)}\uC758 \uB300\uBBF8\uC9C0\uB97C \uC785\uD788\uACE0
+      \uB300\uC9C0\uC758 \uAD73\uAC74\uD568 \uC2A4\uD0DD\uC744 0\uC73C\uB85C \uCD08\uAE30\uD654\uD55C\uB2E4.
+      \uB2E4\uB978 \uB300\uC0C1\uC5D0\uAC8C \uD53C\uD574\uB97C \uC785\uD790 \uC2DC,
+      \uB300\uC9C0\uC758 \uAD73\uAC74\uD568 \uC2A4\uD0DD\uC744 0\uC73C\uB85C \uCD08\uAE30\uD654\uD55C\uB2E4."
+  - ID: 49
+    Name: "\uC554\uC11D\uC758 \uC0AC\uC2AC"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC720\uC800\uC758 \uD604\uC7AC \uCCB4\uB825\uC774 \uC801\uC744\uC218\uB85D
+      \uBC29\uC5B4\uB825\uC774 \uC99D\uAC00\uD558\uACE0 \uBC1B\uB294 \uD53C\uD574\uAC00
+      \uAC10\uC18C\uD55C\uB2E4."
+  - ID: 50
+    Name: "\uBD95\uAD34\uC758 \uB300\uAC80"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uACF5\uACA9\uB825\uC774 60% \uC99D\uAC00\uD558\uC9C0\uB9CC, \uBAA8\uB4E0
+      \uACF5\uACA9\uC774 30% \uD655\uB960\uB85C \uBE57\uB098\uAC04\uB2E4."
+  - ID: 51
+    Name: "\uB9E4\uB9C8\uB978 \uB300\uC9C0\uC758 \uC11C"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uB9E4\uCD08 \uCD5C\uB300 \uCCB4\uB825\uC758 2%\uC5D0 \uBE44\uB840\uD558\uB294
+      \uD53C\uD574\uB97C \uC785\uB294 \uB300\uC2E0, \uBAAC\uC2A4\uD130\uB4E4\uC5D0\uAC8C
+      \uBD80\uC5EC\uB41C \uC0C1\uD0DC\uC774\uC0C1\uC758 \uC218\uC5D0 \uBE44\uB840\uD558\uC5EC
+      \uB9E4\uCD08\uB9C8\uB2E4 \uCCB4\uB825\uC744 \uD68C\uBCF5\uD55C\uB2E4."
+  - ID: 52
+    Name: "\uD53C\uC548\uC758 \uBC18\uC9C0"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uACF5\uACA9\uB825\uC774 30% \uC99D\uAC00\uD558\uC9C0\uB9CC, \uBC1B\uB294
+      \uBAA8\uB4E0 \uCCB4\uB825 \uD68C\uBCF5\uB7C9\uC774 \uC808\uBC18\uC73C\uB85C
+      \uAC10\uC18C\uD55C\uB2E4."
+  - ID: 53
+    Name: "\uD53C\uC758 \uB099\uC778"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uBAA8\uB4E0 \uACF5\uACA9\uC774 20% \uD655\uB960\uB85C \uCD9C\uD608
+      \uC0C1\uD0DC\uB97C \uBD80\uC5EC\uD560 \uC218 \uC788\uB2E4."
+  - ID: 54
+    Name: "\uD76C\uC0DD\uC758 \uD608\uAC80"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC774\uBC88 \uC804\uD22C\uC5D0\uC11C \uAC10\uC18C\uD55C \uCCB4\uB825\uC5D0
+      \uBE44\uB840\uD558\uC5EC \uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0\uB97C
+      \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
+  - ID: 55
+    Name: "\uC801\uC6D4\uC758 \uAE08\uC11C"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC801\uC744 \uCC98\uCE58\uD560 \uB54C\uB9C8\uB2E4 \u2018\uBD89\uC740
+      \uB2EC\u2019 \uC2A4\uD0DD\uC774 1 \uC99D\uAC00\uD55C\uB2E4. \uBD89\uC740 \uB2EC
+      \uC2A4\uD0DD\uC774 3\uC5D0 \uB3C4\uB2EC\uD560 \uC2DC, \uB2E4\uC74C \uACF5\uACA9
+      \uD53C\uD574\uB7C9\uC758 50%\uB9CC\uD07C \uCCB4\uB825\uC744 \uD68C\uBCF5\uD558\uACE0
+      \u2018\uBD89\uC740 \uB2EC\u2019 \uC2A4\uD0DD\uC744 0\uC73C\uB85C \uCD08\uAE30\uD654\uD55C\uB2E4."
+  - ID: 56
+    Name: "\uD604\uBB34\uC758 \uADC0\uAC11"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uC2E4\uB4DC\uB97C \uBCF4\uC720\uC911\uC77C \uACBD\uC6B0 \uACF5\uACA9\uB825\uC774
+      20% \uC99D\uAC00\uD55C\uB2E4."
+  - ID: 57
+    Name: "\uBD88\uAD74\uC758 \uBCF4\uB8E8"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uD55C \uBC88\uC758 \uACF5\uACA9\uC73C\uB85C \uBC1B\uC744 \uC218 \uC788\uB294
+      \uB300\uBBF8\uC9C0\uC758 \uCD5C\uB300\uAC12\uC744 \uCD5C\uB300\uCCB4\uB825\uC758
+      20%\uB85C \uACE0\uC815\uC2DC\uD0A8\uB2E4."
+  - ID: 58
+    Name: "\uAE08\uAC15\uC544"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uBC29\uC5B4\uB825 \uC2A4\uD0EF\uC5D0 \uBE44\uB840\uD558\uC5EC \uD06C\uB9AC\uD2F0\uCEEC
+      \uB300\uBBF8\uC9C0\uAC00 \uC99D\uAC00\uD55C\uB2E4."
+  - ID: 59
+    Name: "\uC131\uC655\uC758 \uBC95\uC804"
+    Icon: Cross
+    Grade: 2
+    Type: 3
+    Explanation: 
+    Effect: "\uBC1B\uB294 \uD53C\uD574\uC758 50%\uB97C, \uACF5\uACA9\uD55C \uC801\uC5D0\uAC8C
+      \uBC18\uC0AC\uD55C\uB2E4."
+  - ID: 60
+    Name: Test
+    Icon: Cross
+    Grade: 3
+    Type: 3
+    Explanation: 
+    Effect: 
+  ArtifactCombination:
+  - Result: 13
+    First: 1
+    Second: 8
+  - Result: 14
+    First: 1
+    Second: 9
+  - Result: 15
+    First: 1
+    Second: 10
+  - Result: 16
+    First: 1
+    Second: 11
+  - Result: 17
+    First: 1
+    Second: 12
+  - Result: 18
+    First: 1
+    Second: 1
+  - Result: 19
+    First: 2
+    Second: 2
+  - Result: 20
+    First: 3
+    Second: 3
+  - Result: 21
+    First: 4
+    Second: 4
+  - Result: 22
+    First: 5
+    Second: 5
+  - Result: 23
+    First: 6
+    Second: 6
+  - Result: 24
+    First: 7
+    Second: 7
+  - Result: 25
+    First: 2
+    Second: 8
+  - Result: 26
+    First: 3
+    Second: 8
+  - Result: 27
+    First: 4
+    Second: 8
+  - Result: 28
+    First: 5
+    Second: 8
+  - Result: 29
+    First: 9
+    Second: 9
+  - Result: 30
+    First: 10
+    Second: 10
+  - Result: 31
+    First: 11
+    Second: 11
+  - Result: 32
+    First: 12
+    Second: 12
+  - Result: 33
+    First: 6
+    Second: 9
+  - Result: 34
+    First: 6
+    Second: 10
+  - Result: 35
+    First: 6
+    Second: 11
+  - Result: 36
+    First: 2
+    Second: 9
+  - Result: 37
+    First: 2
+    Second: 10
+  - Result: 38
+    First: 2
+    Second: 11
+  - Result: 39
+    First: 2
+    Second: 12
+  - Result: 40
+    First: 3
+    Second: 9
+  - Result: 41
+    First: 3
+    Second: 10
+  - Result: 42
+    First: 3
+    Second: 11
+  - Result: 43
+    First: 3
+    Second: 12
+  - Result: 44
+    First: 4
+    Second: 9
+  - Result: 45
+    First: 4
+    Second: 10
+  - Result: 46
+    First: 4
+    Second: 11
+  - Result: 47
+    First: 4
+    Second: 12
+  - Result: 48
+    First: 5
+    Second: 9
+  - Result: 49
+    First: 5
+    Second: 10
+  - Result: 50
+    First: 5
+    Second: 11
+  - Result: 51
+    First: 5
+    Second: 12
+  - Result: 52
+    First: 6
+    Second: 9
+  - Result: 53
+    First: 6
+    Second: 10
+  - Result: 54
+    First: 6
+    Second: 11
+  - Result: 55
+    First: 6
+    Second: 12
+  - Result: 56
+    First: 7
+    Second: 9
+  - Result: 57
+    First: 7
+    Second: 10
+  - Result: 58
+    First: 7
+    Second: 11
+  - Result: 59
+    First: 7
+    Second: 12
+  Skill:
+  - ID: 1
+    Name: "\uC5D0\uB108\uC9C0 \uBCFC"
+    Bubble: Violet
+    Icon: 
+    Attribute: 0
+    Type: 1
+    Cast: 0
+    Area: 1
+    Delete: 0
+    D_Amount: 0
+    Add: 0
+    A_Amount: 0
+    AttackArea: Target
+    Exploration: "\uC801 \uD55C\uCCB4\uC5D0\uAC8C \uB9C8\uB825\uC758 \uAD6C\uCCB4\uB97C
+      \uBC1C\uC0AC\uD558\uC5EC \uC77C\uBC18 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 2
+    Name: "\uD30C\uC774\uC5B4 \uBCFC"
+    Bubble: Red
+    Icon: 
+    Attribute: 1
+    Type: 1
+    Cast: 0
+    Area: 1
+    Delete: 0
+    D_Amount: 0
+    Add: 0
+    A_Amount: 0
+    AttackArea: Target
+    Exploration: "\uC801 \uD55C\uCCB4\uC5D0\uAC8C \uB9C8\uB825\uC758 \uAD6C\uCCB4\uB97C
+      \uBC1C\uC0AC\uD558\uC5EC \uBD88 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 3
+    Name: "\uC6CC\uD130 \uBCFC"
+    Bubble: Blue
+    Icon: 
+    Attribute: 2
+    Type: 1
+    Cast: 0
+    Area: 1
+    Delete: 0
+    D_Amount: 0
+    Add: 0
+    A_Amount: 0
+    AttackArea: Target
+    Exploration: "\uC801 \uD55C\uCCB4\uC5D0\uAC8C \uB9C8\uB825\uC758 \uAD6C\uCCB4\uB97C
+      \uBC1C\uC0AC\uD558\uC5EC \uBB3C \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 4
+    Name: "\uC36C\uB354 \uBCFC"
+    Bubble: Lemon
+    Icon: 
+    Attribute: 3
+    Type: 1
+    Cast: 0
+    Area: 1
+    Delete: 0
+    D_Amount: 0
+    Add: 0
+    A_Amount: 0
+    AttackArea: Target
+    Exploration: "\uC801 \uD55C\uCCB4\uC5D0\uAC8C \uB9C8\uB825\uC758 \uAD6C\uCCB4\uB97C
+      \uBC1C\uC0AC\uD558\uC5EC \uC804\uAE30 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 5
+    Name: "\uC5B4\uC2A4 \uBCFC"
+    Bubble: LightGreen
+    Icon: 
+    Attribute: 4
+    Type: 1
+    Cast: 0
+    Area: 1
+    Delete: 0
+    D_Amount: 0
+    Add: 0
+    A_Amount: 0
+    AttackArea: Target
+    Exploration: "\uC801 \uD55C\uCCB4\uC5D0\uAC8C \uB9C8\uB825\uC758 \uAD6C\uCCB4\uB97C
+      \uBC1C\uC0AC\uD558\uC5EC \uB545 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 6
+    Name: "\uC775\uC2A4\uD50C\uB85C\uC804"
+    Bubble: DeepRed
+    Icon: Explosion
+    Attribute: 1
+    Type: 2
+    Cast: 2
+    Area: 4
+    Delete: 2
+    D_Amount: 1
+    Add: 1
+    A_Amount: 1
+    AttackArea: All
+    Exploration: "\uAC15\uB82C\uD55C \uD3ED\uBC1C\uC744 \uC77C\uC73C\uCF1C \uC801
+      \uC804\uCCB4\uC5D0\uAC8C \uBD88 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 7
+    Name: "\uB77C\uC774\uC9D5 \uC36C"
+    Bubble: RedOrange
+    Icon: RisingSun
+    Attribute: 1
+    Type: 2
+    Cast: 3
+    Area: 4
+    Delete: 4
+    D_Amount: 1
+    Add: 1
+    A_Amount: 1
+    AttackArea: All
+    Exploration: "\uACE0\uC628\uC758 \uD654\uC5FC \uAD6C\uCCB4\uB97C \uD558\uB298\uC5D0
+      \uB5A0\uC62C\uB824, \uC801\uB4E4 \uC804\uCCB4\uC5D0 \uC9C0\uC18D \uD53C\uD574\uB97C
+      \uC785\uD78C\uB2E4."
+  - ID: 8
+    Name: "\uC11C\uC9C0 \uC6E8\uC774\uBE0C"
+    Bubble: SeaBlue
+    Icon: SurgeWave
+    Attribute: 2
+    Type: 2
+    Cast: 1
+    Area: 2
+    Delete: 3
+    D_Amount: 1
+    Add: 2
+    A_Amount: 1
+    AttackArea: Row
+    Exploration: "\uAC70\uCE5C \uD30C\uB3C4\uB97C \uB0A0\uB824\uBCF4\uB0B4 \uC77C\uB82C\uC758
+      \uC801\uB4E4\uC744 \uB36E\uCE5C\uB2E4."
+  - ID: 9
+    Name: "\uB77C\uC774\uD2B8\uB2DD \uB808\uC778"
+    Bubble: Orange
+    Icon: LightningRain
+    Attribute: 3
+    Type: 2
+    Cast: 3
+    Area: 4
+    Delete: 1
+    D_Amount: 1
+    Add: 3
+    A_Amount: 1
+    AttackArea: All
+    Exploration: "\uBB34\uC791\uC704 \uC801\uC5D0\uAC8C \uB099\uB8B0\uB97C \uB5A8\uC5B4\uB728\uB9B0\uB2E4.
+      \uC2A4\uD0AC\uBCFC\uC744 \uB9CE\uC774 \uD130\uB728\uB9B4\uC218\uB85D \uB099\uB8B0\uC758
+      \uAC1C\uC218\uAC00 \uC99D\uAC00\uD55C\uB2E4."
+  - ID: 10
+    Name: "\uC5B4\uC2A4 \uC2A4\uD53C\uC5B4"
+    Bubble: LightBrown
+    Icon: EarthSpear
+    Attribute: 4
+    Type: 2
+    Cast: 3
+    Area: 1
+    Delete: 1
+    D_Amount: 1
+    Add: 4
+    A_Amount: 1
+    AttackArea: Target
+    Exploration: "\uAC70\uB300\uD55C \uBC14\uC704\uB97C \uC19F\uC544\uB098\uAC8C
+      \uD558\uC5EC \uC801 \uD55C \uCCB4\uC5D0 \uAC15\uB825\uD55C \uB545 \uC18D\uC131
+      \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 11
+    Name: "\uC5D0\uB108\uC9C0 \uBC30\uC26C"
+    Bubble: White
+    Icon: EnergyBash
+    Attribute: 0
+    Type: 2
+    Cast: 4
+    Area: 1
+    Delete: 0
+    D_Amount: 2
+    Add: 0
+    A_Amount: 0
+    AttackArea: Target
+    Exploration: "\uC21C\uC218\uD55C \uD30C\uAD34\uC758 \uC5D0\uB108\uC9C0\uB85C
+      \uC801\uC744 \uCC0D\uC5B4 \uB20C\uB7EC \uC801 \uD55C \uCCB4\uC5D0 \uAC15\uB825\uD55C
+      \uC77C\uBC18 \uC18D\uC131 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  - ID: 12
+    Name: "\uD504\uB85C\uD14D\uC158"
+    Bubble: SkillBall
+    Icon: Protection
+    Attribute: 0
+    Type: 3
+    Cast: 0
+    Area: 0
+    Delete: 0
+    D_Amount: 0
+    Add: 0
+    A_Amount: 0
+    AttackArea: None
+    Exploration: "\uC801\uC758 \uACF5\uACA9\uC744 \uBC29\uC5B4\uD558\uB294 \uC2E4\uB4DC\uB97C
+      \uB9CC\uB4E4\uC5B4\uB0B8\uB2E4.\uC2E4\uB4DC\uAC00 \uC788\uB294 \uC0C1\uD0DC\uC5D0\uC11C
+      \uACF5\uACA9\uB2F9\uD574\uB3C4 \uC0C1\uD0DC\uC774\uC0C1 \uAC78\uB9AC\uC9C0
+      \uC54A\uB294\uB2E4. \uC2E4\uB4DC \uCCB4\uB825\uC774 1\uC774\uB77C\uB3C4 \uB0A8\uC73C\uBA74
+      \uBB34\uC870\uAC74 \uD55C\uBC88\uC740 \uD53C\uD574 \uC5C6\uC774 \uACF5\uACA9\uC744
+      \uB9C9\uB294\uB2E4."
+  - ID: 13
+    Name: "\uD790\uB9C1"
+    Bubble: YellowGreen
+    Icon: Healing
+    Attribute: 0
+    Type: 3
+    Cast: 0
+    Area: 0
+    Delete: 0
+    D_Amount: 0
+    Add: 2
+    A_Amount: 1
+    AttackArea: None
+    Exploration: "\uCCB4\uB825\uC744 \uC989\uC2DC \uD68C\uBCF5\uC2DC\uD0A8\uB2E4."
+  Script:
+  - ID: 1
+    CharacterID: 1
+    Text: "\"\uACC4\uCE35\uC758 \uC8FC\uC778\uC744 \uD574\uCE58\uC6B0\uB2E4\uB2C8,
+      \uBCF4\uAE30\uBCF4\uB2E4 \uAF64 \uD558\uB294\uB370?\"\"\uB0B4\uAC00 \uB204\uAD6C\uB0D0\uACE0?
+      \uADF8\uB7F0 \uAC74 \uC911\uC694\uD558\uC9C0 \uC54A\uC9C0\uB9CC\n\uC77C\uB2E8\uC740
+      \uC218\uC218\uAED8\uB07C\uC758 \uC0C1\uC778\uC774\uB77C \uCE6D\uD558\uB3C4\uB85D
+      \uD558\uC9C0.\"\"\uBCF4\uC544\uD558\uB2C8 \uB358\uC804\uC5D0\uC11C \uC18C\uC6B8
+      \uD384\uC744 \uC880 \uC5BB\uC740 \uBAA8\uC591\uC778\uB370,\n\uBB50\uB77C\uB3C4
+      \uC880 \uC0AC\uAC00\uB294 \uAC74 \uC5B4\uB54C?\"\"\uD639\uC2DC \uB2E4\uC74C
+      \uCE35\uC5D0 \uB3C4\uC804\uD558\uACE0 \uC2F6\uAC70\uB098, \uB358\uC804\uC5D0\uC11C
+      \uD0C8\uCD9C\uD558\uACE0 \uC2F6\uB2E4\uBA74 \uB9D0\uD574.\n\uADF8 \uC815\uB3C4\uB294
+      \uACF5\uC9DC\uB85C \uB3C4\uC640\uC8FC\uC9C0.\n\uC5B4\uB5BB\uAC8C \uB3C4\uC640\uC904
+      \uAC70\uB0D0\uACE0? \uADF8\uAC74 \uC601\uC5C5\uBE44\uBC00\uC774\uC57C.\""

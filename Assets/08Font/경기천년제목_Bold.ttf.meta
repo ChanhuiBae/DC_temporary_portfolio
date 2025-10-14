@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 9bfca011c5c2bdb4f9ba5a1b8ed6297f
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - GyeonggiTitle
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 551631da7606dd84fac536b07a83ff42, type: 3}
+  - {fileID: 12800000, guid: 15e1d75d5f446754384e057e23e637f8, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

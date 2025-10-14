@@ -1,0 +1,124 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LICENSE
+
+- You can use this asset in any game project, personal or commercial
+- DO NOT resell or redistribute AS A GAME ASSET, it has to be part of a project
+- Modify to suit your needs
+- You are NOT allowed to turn any of my assets to an NFT.
+- Credit not necessary but appreciated, if you do you can link to my ITCH profile
+ITCH.IO LINK: https://admurin.itch.io/
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+FX DETAILS
+
+Buff
+
+- Animations: 1
+- Frames: 16
+- Loop: No 
+- Details
+	- You pray to Mother Earth a lot, you are now a rock. 
+	- This buff will render you immune to Earth or Electric attacks or maybe just increase your defense against Earth or Electric attacks by X%. Your call. 
+	- The last frame is the indicator that lets you know if the skills is active or inactive.
+
+Earth I
+
+- Animations: 1
+- Frames: 15
+- Loop: Yes 
+- Details:
+	- The first attack geomancers learn, it deals damage to the first enemy it touches.
+
+
+Earth II
+
+- Animations: 4
+- Frames: 20
+- Loop: No 
+- Details: 
+	- Instead of throwing a pebble, why not throw a barrage of stones at your enemy? 
+	- These stones will hit a single enemy until they are defeated. 
+	- If you want you can keep casting this spell and you can become a stone machine gun.
+
+
+Earth III
+
+- Animations: 1
+- Frames: 23
+- Loop: Yes 
+- Details: 
+	- Why not combine a bunch of stones to make a sharp projectile. 
+	- Use this skill and pierce all the enemies in its path. The downfall is that it takes a bit of time to get it started. 
+	- Maybe you can even add extra damage and a cooldown.
+
+
+Golem
+
+- Animations: 12
+- Frames: 89
+- Loop: Yes 
+- Details:
+	- This can be an enemy, or it can be a transformation skill. Become a golem for a certain amount of seconds or until your MP is 0 or until you are dealt a bunch of damage. 
+	- One thing to note is that you can use the other skills with the golem as well. 
+	- The only downfall of this skill is that you can not move! Use it at your own discretion. 
+	- The golem comes with a summon, idle, attack 1, attack 2, hit, expire animation.
+	- This skill also has 2 FX animations. The small punch on the floor will cause Earth spikes to hit your foes. 
+	- The attack where he smashes the floor will push your enemies far away or just deal a lot of damage. 
+
+
+Rockfall
+
+- Animations: 6
+- Frames: 36
+- Loop: No 
+- Details: 
+	- Crush all the enemies in the map with them boulders a certain amount of seconds or while you keep casting the spell. 
+	- What if you the character is on top of a mountain and only the sky is above him? Well then, call the skill Lunar Fall. 
+	- What if you are in a cave? Well then make it deal double damage or increase the duration of the skill.
+
+
+Stomp
+
+- Animations: 4
+- Frames: 45
+- Loop: No
+- Details: 
+	- Break your opponent legs and send them flying if you have a game mechanism in place that can do that. 
+	- Because I like Earth, there are variants of this skill. 
+	- If you press the skill button for long periods of time it will consume more MP but will activate the stronger variants.
+
+
+Wall
+
+- Animations: 1
+- Frames: 13
+- Loop: No 
+- Details: 
+	- Place a wall between you and your foes. 
+	- This wall will can stop all incoming attacks. 
+	- You can add a health bar to the wall itself which decreases as it gets hit or just make the wall disappear after certain amount of seconds.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MAKE SURE YOU READ THE DETAILS THERE ARE A FEW IDEAS ON HOW TO USE THE SKILLS.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+If you have any other questions you can check my discord where I will answer and help you use my assets. 
+DISCORD LINK: https://discord.com/invite/jmf4pzv5Fj
+
+If you want to support me you can check out my Patreon. This allows me to focus on making more assets and releasing them for free assets!
+PATREON LINK: https://www.patreon.com/admurin
+
+
+Don't forget to leave a review and check my other assets!
+
+Thank you.
+Admurin

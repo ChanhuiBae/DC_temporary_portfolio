@@ -1,0 +1,115 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LICENSE
+
+- You can use this asset in any game project, personal or commercial
+- DO NOT resell or redistribute AS A GAME ASSET, it has to be part of a project
+- Modify to suit your needs
+- You are NOT allowed to turn any of my assets to an NFT.
+- Credit not necessary but appreciated, if you do you can link to my ITCH profile
+ITCH.IO LINK: https://admurin.itch.io/
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+FX DETAILS
+
+Buff
+
+- Animations: 1
+- Frames: 16
+- Loop: No 
+- Details
+	- This buff will imbue your armor with lightning attributes which may render you immune to lighting skills. Up to you.
+	- The last frame (the lightning bolt over the head) is meant to follow the player around to indicate when the skill is active and when it expires.
+
+
+Chain
+
+- Animations: 1
+- Frames: 37
+- Loop: Yes 
+- Details: 
+	- This skills is best for grinding enemies. 
+	- Activate the skill and hold it as long as you have mana. If there is an enemy within the chain's range then they will get wrecked.
+
+
+Lightning I
+
+- Animations: 1
+- Frames: 14
+- Loop: Yes 
+- Details:
+	- This is a projectile that hurts the first opponent it touches.
+
+
+Lightning II
+
+- Animations: 1
+- Frames: 6
+- Loop: No 
+- Details: 
+	- This is a medium range attack, unlike Lightning I, this skill can damage enemies in its path.
+
+
+Lightning III
+
+- Animations: 1
+- Frames: 8
+- Loop: Yes 
+- Details: 
+	- Inspired by Star Wars and Darth Sidious, this attack can be brutal. This is Lightning II x3. You deal damage to anything in its path. 
+
+
+Shock
+
+- Animations: 1
+- Frames: 5
+- Loop: No 
+- Details: 
+	- Maybe your enemies are spread in different platforms, no worries, once you use this shock skill your attack will seek the enemies. 
+
+
+Thunder I
+
+- Animations: 3
+- Frames: 12
+- Loop: No 
+- Details: 
+	- If you need to get rid of a few enemies quickly this might be the skill. Should not consume much mana and will deal some shocking values. 
+	- Downside is that you need to charge it a for a little bit of time. 
+	- If this skills is being used by an enemy you can let the player know where the lightning will strike by placing the charge animation where the lightning will hit.
+
+
+Thunder II
+
+- Animations: 3
+- Frames: 21
+- Loop: Yes 
+- Details:
+	- This one would be perfect if you are going for bosses or want an skill that deals a ton of damage to a section.
+	- Consumes a bit of mana and takes longer to charge than the previous skill.
+	- If this skill is being used by an enemy, the charge animation can be used to indicate where the strike will be. 
+	- Then, if the player is standing over the small electric current (can be looped) they can be stunned which guarantees getting hit.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MAKE SURE YOU READ THE DETAILS THERE ARE A FEW IDEAS ON HOW TO USE THE SKILLS.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+If you have any other questions you can check my discord where I will answer and help you use my assets. 
+DISCORD LINK: https://discord.com/invite/jmf4pzv5Fj
+
+If you want to support me you can check out my Patreon. This allows me to focus on making more assets and releasing them for free assets!
+PATREON LINK: https://www.patreon.com/admurin
+
+
+Don't forget to leave a review and check my other assets!
+
+Thank you.
+Admurin
