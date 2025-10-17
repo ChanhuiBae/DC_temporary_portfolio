@@ -48,6 +48,16 @@ public class Entity_SquadMember
     public int Position;
 }
 
+public enum ReinforceType
+{
+    ATK,
+    DEF,
+    HP,
+    Speed,
+    Critical,
+    CriticalDamage
+}
+
 [System.Serializable]
 public class Entity_Item
 {

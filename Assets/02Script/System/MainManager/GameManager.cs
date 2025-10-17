@@ -535,16 +535,176 @@ public class GameManager : Singleton<GameManager>
         return 42;
     }
 
-    public bool GetReinforcementItem(out Entity_Item data)
+    public int GetReinforcementJewelID(ReinforceType type, int grade)
     {
-        return itemData.TryGetValue(Random.Range(9, 28), out data);
+        switch (type)
+        {
+            case ReinforceType.ATK:
+                return 10 + grade;
+            case ReinforceType.DEF:
+                return 12 + grade;
+            case ReinforceType.HP:
+                return 15 + grade;
+            case ReinforceType.Speed:
+                return 18 + grade;
+            case ReinforceType.Critical:
+                return 21 + grade;
+            case ReinforceType.CriticalDamage:
+                return 24 + grade;
+        }
+        return 0;
+    }
+
+    public bool GetReinforcementJewelItem(out Entity_Item data)
+    {
+        int percent = Random.Range(0, 100);
+        int type = Random.Range(0, 6);
+        switch (exploration.Floor)
+        {
+            case 1:
+                return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
+            case 2:
+                if(percent < 75)
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
+                else
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 2), out data);
+            case 3:
+                if (percent < 50)
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
+                else
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 2), out data);
+            case 4:
+                if (percent < 30)
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
+                else if (percent < 60)
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 2), out data);
+                else
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 3), out data);
+            case 5:
+                if (percent < 75)
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 2), out data);
+                else
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 3), out data);
+            case 6:
+                if (percent < 50)
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 2), out data);
+                else
+                    return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 3), out data);
+
+        }
+        return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
+    }
+
+    public int GetRuneAmount()
+    {
+        int result = Random.Range(0, 100);
+        if(exploration.Floor == 1)
+        {
+            if (result < 80)
+                return 1;
+            else
+                return 2;
+        }
+        else if(exploration.Floor % 2 == 0)
+        {
+            if (result < 50)
+                return exploration.Floor / 2;
+            else if (result < 90)
+                return exploration.Floor / 2 + 1;
+            else
+                return exploration.Floor / 2 + 2;
+        }
+        else
+        {
+            if (result < 30)
+                return exploration.Floor / 2;
+            else if (result < 70)
+                return exploration.Floor / 2 + 1;
+            else if (result < 95)
+                return exploration.Floor / 2 + 2;
+            else
+                return exploration.Floor / 2 + 3;
+        }
     }
 
     public bool GetConsumableItem(out Entity_Item data)
     {
-        return itemData.TryGetValue(Random.Range(1, 7), out data);
+        int result = Random.Range(0, 100);
+        if (result < 20)
+            result = 1;
+        else if(result < 40)
+            result = 2;
+        else if(result < 60)
+            result = 3;
+        else if(result < 75)
+            result = 4;
+        else
+            result = 5;
+        return itemData.TryGetValue(result, out data);
     }
 
+    public bool GetExchangeItem(out Entity_Item data)
+    {
+        int result = Random.Range(0, 100);
+        switch (exploration.Floor)
+        {
+            case 1:
+                if (result < 70)
+                    return itemData.TryGetValue(48, out data);
+                else if (result < 90)
+                    return itemData.TryGetValue(47, out data);
+                else if (result < 99)
+                    return itemData.TryGetValue(46, out data);
+                else
+                    return itemData.TryGetValue(7, out data);   
+            case 2:
+                if (result < 50)
+                    return itemData.TryGetValue(48, out data);
+                else if (result < 80)
+                    return itemData.TryGetValue(47, out data);
+                else if (result < 97)
+                    return itemData.TryGetValue(46, out data);
+                else
+                    return itemData.TryGetValue(7, out data);
+            case 3:
+                if (result < 30)
+                    return itemData.TryGetValue(48, out data);
+                else if (result < 70)
+                    return itemData.TryGetValue(47, out data);
+                else if (result < 95)
+                    return itemData.TryGetValue(46, out data);
+                else
+                    return itemData.TryGetValue(7, out data);
+            case 4:
+                if (result < 15)
+                    return itemData.TryGetValue(48, out data);
+                else if (result < 75)
+                    return itemData.TryGetValue(47, out data);
+                else if (result < 90)
+                    return itemData.TryGetValue(46, out data);
+                else
+                    return itemData.TryGetValue(7, out data);
+            case 5:
+                if (result < 7)
+                    return itemData.TryGetValue(48, out data);
+                else if (result < 57)
+                    return itemData.TryGetValue(47, out data);
+                else if (result < 87)
+                    return itemData.TryGetValue(46, out data);
+                else
+                    return itemData.TryGetValue(7, out data);
+            case 6:
+                if (result < 3)
+                    return itemData.TryGetValue(48, out data);
+                else if (result < 38)
+                    return itemData.TryGetValue(47, out data);
+                else if (result < 78)
+                    return itemData.TryGetValue(46, out data);
+                else
+                    return itemData.TryGetValue(7, out data);
+        }
+        return itemData.TryGetValue(48, out data);
+    }
 
     public int GetSkillCount()
     {
@@ -598,7 +758,7 @@ public class GameManager : Singleton<GameManager>
         return result;
     }
 
-    public int GetRandomArtifact()
+    public int GetRandomMaterialOrItemArtifact()
     {
         int result = Random.Range(0,100);
         switch (exploration.Floor)
@@ -654,6 +814,45 @@ public class GameManager : Singleton<GameManager>
                     result = GetRandomArtifact(2, 1);
                 else
                     result = GetRandomArtifact(2, 2);
+                break;
+        }
+        return result;
+    }
+
+    public int GetRandomProductArtifact()
+    {
+        int result = Random.Range(0, 100);
+        switch (exploration.Floor)
+        {
+            case 1:
+                result = GetRandomArtifact(2, 3);
+                break;
+            case 2:
+                if (result < 80)
+                    result = GetRandomArtifact(2, 3);
+                else
+                    result = GetRandomArtifact(3, 3);
+                break;
+            case 3:
+                if (result < 60)
+                    result = GetRandomArtifact(2, 3);
+                else
+                    result = GetRandomArtifact(3, 3);
+                break;
+            case 4:
+                if (result < 40)
+                    result = GetRandomArtifact(2, 3);
+                else
+                    result = GetRandomArtifact(3, 3);
+                break;
+            case 5:
+                if (result < 20)
+                    result = GetRandomArtifact(2, 3);
+                else
+                    result = GetRandomArtifact(3, 3);
+                break;
+            case 6:
+                result = GetRandomArtifact(3, 3);
                 break;
         }
         return result;

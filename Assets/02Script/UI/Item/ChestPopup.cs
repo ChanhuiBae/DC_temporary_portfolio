@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,25 +77,79 @@ public class ChestPopup : MonoBehaviour
         popup.SetActive(true);
         if (chest == ChestType.Golden)
         {
-            GameManager.Inst.GetArtifactData(GameManager.Inst.GetRandomArtifact(), out artifact);
-            icon.sprite = Resources.Load<Sprite>("Artifact/" + artifact.Icon);
-            type.sprite = Resources.Load<Sprite>("ItemType/Artifact");
-            isArtifact = true;
-            amount.text = "";
+            int result = UnityEngine.Random.Range(0, 100);
+            if (result < 70)
+            {
+                GameManager.Inst.GetArtifactData(GameManager.Inst.GetRandomMaterialOrItemArtifact(), out artifact);
+                icon.sprite = Resources.Load<Sprite>("Artifact/" + artifact.Icon);
+                type.sprite = Resources.Load<Sprite>("ItemType/Artifact");
+                isArtifact = true;
+                amount.text = "";
+            }
+            else
+            {
+                GameManager.Inst.GetReinforcementJewelItem(out item);
+                icon.sprite = Resources.Load<Sprite>("Item/" + item.Icon);
+                type.sprite = Resources.Load<Sprite>("ItemType/" + item.Type);
+                isArtifact = false;
+                amount.text = "";
+            }
+        }
+        else if(chest == ChestType.Silver)
+        {
+            int result = UnityEngine.Random.Range(0, 100);
+            if (result < 10)
+            {
+                GameManager.Inst.GetArtifactData(GameManager.Inst.GetRandomMaterialOrItemArtifact(), out artifact);
+                icon.sprite = Resources.Load<Sprite>("Artifact/" + artifact.Icon);
+                type.sprite = Resources.Load<Sprite>("ItemType/Artifact");
+                isArtifact = true;
+                amount.text = "";
+            }
+            else 
+            {
+                if (result < 40)
+                {
+                    GameManager.Inst.GetConsumableItem(out item);
+                    amount.text = "";
+                }
+                else if (result < 70)
+                {
+                    GameManager.Inst.GetExchangeItem(out item);
+                    amount.text = "";
+                }
+                else
+                {
+                    result = UnityEngine.Random.Range(0, 100);
+                    if(result < 70)
+                    {
+                        GameManager.Inst.GetItemData(9, out item);
+                        amount.text = GameManager.Inst.GetRuneAmount().ToString();
+                        if (amount.text == "1")
+                            amount.text = "";
+                    }
+                    else
+                    {
+                        GameManager.Inst.GetReinforcementJewelItem(out item);
+                        amount.text = "";
+                    }
+                }
+                icon.sprite = Resources.Load<Sprite>("Item/" + item.Icon);
+                type.sprite = Resources.Load<Sprite>("ItemType/" + item.Type);
+                isArtifact = false;
+            }
         }
         else
         {
-            GameManager.Inst.GetConsumableItem(out item);
+            int result = UnityEngine.Random.Range(0, 100);
+            if(result < 70)
+                GameManager.Inst.GetConsumableItem(out item);
+            else
+                GameManager.Inst.GetExchangeItem(out item);
             icon.sprite = Resources.Load<Sprite>("Item/" + item.Icon);
             type.sprite = Resources.Load<Sprite>("ItemType/" + item.Type);
-            int value = 1;
-            if(item.ID < 8)
-                value = item.MaxCount;
             isArtifact = false;
-            if (value == 1)
-                amount.text = "";
-            else
-                amount.text = value.ToString();
+            amount.text = "";
         }
 
         popup.SetActive(false);

@@ -81,7 +81,10 @@ public class LootUI : MonoBehaviour
 
     private void GetItem()
     {
-        Item newItem = new Item(item.ID, Int32.Parse(value.text));
+        int amount = 1;
+        if(value != null && value.text.Length > 0)
+            amount = Int32.Parse(value.text);
+        Item newItem = new Item(item.ID, amount);
         int remain = 0;
         if (manager.AddItem(newItem,out remain))
         {

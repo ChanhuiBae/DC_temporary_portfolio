@@ -162,8 +162,8 @@ public class ShopPopup : MonoBehaviour
         Entity_Item item;
         GameManager.Inst.GetItemData(id, out item);
         merchandises[6].SetMerchandise(new Item(id, item.MaxCount));
-        merchandises[7].SetMerchandise(new Artifact(GameManager.Inst.GetRandomArtifact()));
-        merchandises[8].SetMerchandise(new Artifact(GameManager.Inst.GetRandomArtifact()));
+        merchandises[7].SetMerchandise(new Artifact(GameManager.Inst.GetRandomMaterialOrItemArtifact()));
+        merchandises[8].SetMerchandise(new Artifact(GameManager.Inst.GetRandomMaterialOrItemArtifact()));
         merchandises[9].SetMerchandise(new Item(8, 3));
 
         SetNone();
@@ -193,6 +193,7 @@ public class ShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>("Item/" + item.Data.Icon);
         name.text = item.Data.Name;
         description.text = item.Data.Explanation;
+        onePayment = item.Data.Purchase;
     }
 
     private void SetBuyArtifact(Artifact artifact)
@@ -201,6 +202,10 @@ public class ShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>("Artifact/" + artifact.Data.Icon);
         name.text = artifact.Data.Name;
         description.text = artifact.Data.Explanation;
+        if (artifact.Data.Grade == 1)
+            onePayment = 200;
+        else
+            onePayment = 300;
     }
 
     private void CloseShop()
@@ -343,9 +348,9 @@ public class ShopPopup : MonoBehaviour
             sale.gameObject.SetActive(true);
             sale.SetSale(item);
         }
-        else
+        else if (manager.SaleItem(item.GetID(true), 1))
         {
-            manager.SaleItem(item.GetID(true), item.Amount);
+            manager.SetPearl(item.Data.Sale);
         }
     }
 
@@ -355,13 +360,13 @@ public class ShopPopup : MonoBehaviour
         switch (artifact.Grade)
         {
             case 3:
-                manager.SetPearl(80);
+                manager.SetPearl(200);
                 break;
             case 2:
-                manager.SetPearl(60);
+                manager.SetPearl(150);
                 break;
             default:
-                manager.SetPearl(40);
+                manager.SetPearl(100);
                 break;
         }
     }
@@ -379,8 +384,20 @@ public class ShopPopup : MonoBehaviour
         randomPopup.transform.LeanScale(Vector3.zero, 0);
         for (int i = 0; i < buyAmount; i++)
         {
-            Entity_Item item;
-            GameManager.Inst.GetReinforcementItem(out item);
+            Entity_Item item; 
+            int result = UnityEngine.Random.Range(0, 100);
+            if (result < 70)
+            {
+                GameManager.Inst.GetItemData(9, out item);
+                amount.text = GameManager.Inst.GetRuneAmount().ToString();
+                if (amount.text == "1")
+                    amount.text = "";
+            }
+            else
+            {
+                GameManager.Inst.GetReinforcementJewelItem(out item);
+                amount.text = "";
+            }
             randomPopup.SetItem(item.ID);
         }
         randomPopup.transform.LeanScale(Vector3.one, 0.2f);

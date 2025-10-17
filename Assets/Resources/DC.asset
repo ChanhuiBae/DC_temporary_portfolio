@@ -588,7 +588,7 @@ MonoBehaviour:
     MaxCount: 1
     MinFloor: 1
     Sale: 0
-    Purchase: 80
+    Purchase: 100
     Explanation: "\uB79C\uB364 \uAC15\uD654 \uC7AC\uB8CC\uAC00 \uB4F1\uC7A5\uD569\uB2C8\uB2E4.
       \uC7AC\uB8CC\uB97C \uD68D\uB4DD\uD558\uC9C0 \uC54A\uC73C\uBA74 \uC790\uB3D9\uC73C\uB85C
       \uD310\uB9E4\uB429\uB2C8\uB2E4."
@@ -598,171 +598,227 @@ MonoBehaviour:
     Icon: Rune
     MaxCount: 5
     MinFloor: 1
-    Sale: 10
-    Purchase: 20
-    Explanation: "\uC7A5\uBE44 \uAC15\uD654\uC11D"
+    Sale: 30
+    Purchase: 50
+    Explanation: "\uC2E0\uBE44\uD55C \uAE30\uC6B4\uC774 \uB290\uAEF4\uC9C0\uB294
+      \uB3CC\uB369\uC774. \uC911\uC559\uC758 \uB8EC\uC5D0\uC11C \uB9C8\uB825\uC758
+      \uAE30\uC6B4\uC774 \uD76C\uBBF8\uD558\uAC8C \uB290\uAEF4\uC9C4\uB2E4."
   - ID: 10
     Type: Reinforcement
-    Name: "\uACF5\uACA9\uB825 \uC7BC 3"
+    Name: "\uACF5\uACA9\uC758 \uBCF4\uC11D \u2160"
     Icon: GemRed3
     MaxCount: 1
     MinFloor: 1
-    Sale: 40
-    Purchase: 0
-    Explanation: 
+    Sale: 100
+    Purchase: 100
+    Explanation: "\uC601\uB871\uD55C \uBD89\uC740 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uACF5\uACA9\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 30\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 11
     Type: Reinforcement
-    Name: "\uACF5\uACA9\uB825 \uC7BC 4"
+    Name: "\uACF5\uACA9\uC758 \uBCF4\uC11D \u2161"
     Icon: GemRed4
     MaxCount: 1
     MinFloor: 1
-    Sale: 50
-    Purchase: 0
-    Explanation: 
+    Sale: 200
+    Purchase: 200
+    Explanation: "\uC601\uB871\uD55C \uBD89\uC740 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uACF5\uACA9\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 40\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 12
     Type: Reinforcement
-    Name: "\uACF5\uACA9\uB825 \uC7BC 5"
+    Name: "\uACF5\uACA9\uC758 \uBCF4\uC11D \u2162"
     Icon: GemRed5
     MaxCount: 1
     MinFloor: 1
-    Sale: 60
-    Purchase: 0
-    Explanation: 
+    Sale: 300
+    Purchase: 300
+    Explanation: "\uC601\uB871\uD55C \uBD89\uC740 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uACF5\uACA9\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 50\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 13
     Type: Reinforcement
-    Name: "\uBC29\uC5B4\uB825 \uC7BC 3"
+    Name: "\uC218\uD638\uC758 \uBCF4\uC11D \u2160"
     Icon: GemBlue3
     MaxCount: 1
     MinFloor: 1
-    Sale: 40
-    Purchase: 0
-    Explanation: 
+    Sale: 100
+    Purchase: 100
+    Explanation: "\uC601\uB871\uD55C \uD478\uB978 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uBC29\uC5B4\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 30\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 14
     Type: Reinforcement
-    Name: "\uBC29\uC5B4\uB825 \uC7BC 4"
+    Name: "\uC218\uD638\uC758 \uBCF4\uC11D \u2161"
     Icon: GemBlue4
     MaxCount: 1
     MinFloor: 1
-    Sale: 50
-    Purchase: 0
-    Explanation: 
+    Sale: 200
+    Purchase: 200
+    Explanation: "\uC601\uB871\uD55C \uD478\uB978 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uBC29\uC5B4\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 40\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 15
     Type: Reinforcement
-    Name: "\uBC29\uC5B4\uB825 \uC7BC 5"
+    Name: "\uC218\uD638\uC758 \uBCF4\uC11D \u2162"
     Icon: GemBlue5
     MaxCount: 1
     MinFloor: 1
-    Sale: 60
-    Purchase: 0
-    Explanation: 
+    Sale: 300
+    Purchase: 300
+    Explanation: "\uC601\uB871\uD55C \uD478\uB978 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uBC29\uC5B4\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 50\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 16
     Type: Reinforcement
-    Name: "\uCCB4\uB825 \uC7BC 3"
+    Name: "\uC778\uB0B4\uC758 \uBCF4\uC11D \u2160"
     Icon: GemGreen3
     MaxCount: 1
     MinFloor: 1
-    Sale: 40
-    Purchase: 0
-    Explanation: 
+    Sale: 100
+    Purchase: 100
+    Explanation: "\uC601\uB871\uD55C \uCD08\uB85D \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uCCB4\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 30\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 17
     Type: Reinforcement
-    Name: "\uCCB4\uB825 \uC7BC 4"
+    Name: "\uC778\uB0B4\uC758 \uBCF4\uC11D \u2161"
     Icon: GemGreen4
     MaxCount: 1
     MinFloor: 1
-    Sale: 50
-    Purchase: 0
-    Explanation: 
+    Sale: 200
+    Purchase: 200
+    Explanation: "\uC601\uB871\uD55C \uCD08\uB85D \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uCCB4\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 40\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 18
     Type: Reinforcement
-    Name: "\uCCB4\uB825 \uC7BC 5"
+    Name: "\uC778\uB0B4\uC758 \uBCF4\uC11D \u2162"
     Icon: GemGreen5
     MaxCount: 1
     MinFloor: 1
-    Sale: 60
-    Purchase: 0
-    Explanation: 
+    Sale: 300
+    Purchase: 300
+    Explanation: "\uC601\uB871\uD55C \uCD08\uB85D \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uCCB4\uB825\uC744
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 50\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 19
     Type: Reinforcement
-    Name: "\uC601\uCC3D\uC18D\uB3C4 \uC7BC 3"
+    Name: "\uC18D\uCC3D\uC758 \uBCF4\uC11D \u2160"
     Icon: GemPurple3
     MaxCount: 1
     MinFloor: 1
-    Sale: 40
-    Purchase: 0
-    Explanation: 
+    Sale: 100
+    Purchase: 100
+    Explanation: "\uC601\uB871\uD55C \uBCF4\uB77C \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uC601\uCC3D \uC18D\uB3C4\uB97C
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 30\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 20
     Type: Reinforcement
-    Name: "\uC601\uCC3D\uC18D\uB3C4 \uC7BC 4"
+    Name: "\uC18D\uCC3D\uC758 \uBCF4\uC11D \u2161"
     Icon: GemPurple4
     MaxCount: 1
     MinFloor: 1
-    Sale: 50
-    Purchase: 0
-    Explanation: 
+    Sale: 200
+    Purchase: 200
+    Explanation: "\uC601\uB871\uD55C \uBCF4\uB77C \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uC601\uCC3D \uC18D\uB3C4\uB97C
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 40\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 21
     Type: Reinforcement
-    Name: "\uC601\uCC3D\uC18D\uB3C4 \uC7BC 5"
+    Name: "\uC18D\uCC3D\uC758 \uBCF4\uC11D \u2162"
     Icon: GemPurple5
     MaxCount: 1
     MinFloor: 1
-    Sale: 60
-    Purchase: 0
-    Explanation: 
+    Sale: 300
+    Purchase: 300
+    Explanation: "\uC601\uB871\uD55C \uBCF4\uB77C \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uC601\uCC3D \uC18D\uB3C4\uB97C
+      \uC99D\uAC00\uC2DC\uD0A4\uBA70, 50\uB808\uBCA8\uAE4C\uC9C0 \uAC15\uD654\uD560
+      \uC218 \uC788\uB2E4."
   - ID: 22
     Type: Reinforcement
-    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uC7BC 3"
+    Name: "\uC815\uBC00\uC758 \uBCF4\uC11D \u2160"
     Icon: GemYellow3
     MaxCount: 1
     MinFloor: 1
-    Sale: 40
-    Purchase: 0
-    Explanation: 
+    Sale: 100
+    Purchase: 100
+    Explanation: "\uC601\uB871\uD55C \uB178\uB780 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC
+      \uD655\uB960\uC744 \uC99D\uAC00\uC2DC\uD0A4\uBA70, 30\uB808\uBCA8\uAE4C\uC9C0
+      \uAC15\uD654\uD560 \uC218 \uC788\uB2E4."
   - ID: 23
     Type: Reinforcement
-    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uC7BC 4"
+    Name: "\uC815\uBC00\uC758 \uBCF4\uC11D \u2161"
     Icon: GemYellow4
     MaxCount: 1
     MinFloor: 1
-    Sale: 50
-    Purchase: 0
-    Explanation: 
+    Sale: 200
+    Purchase: 200
+    Explanation: "\uC601\uB871\uD55C \uB178\uB780 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC
+      \uD655\uB960\uC744 \uC99D\uAC00\uC2DC\uD0A4\uBA70, 40\uB808\uBCA8\uAE4C\uC9C0
+      \uAC15\uD654\uD560 \uC218 \uC788\uB2E4."
   - ID: 24
     Type: Reinforcement
-    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uC7BC 5"
+    Name: "\uC815\uBC00\uC758 \uBCF4\uC11D \u2162"
     Icon: GemYellow5
     MaxCount: 1
     MinFloor: 1
-    Sale: 60
-    Purchase: 0
-    Explanation: 
+    Sale: 300
+    Purchase: 300
+    Explanation: "\uC601\uB871\uD55C \uB178\uB780 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC
+      \uD655\uB960\uC744 \uC99D\uAC00\uC2DC\uD0A4\uBA70, 50\uB808\uBCA8\uAE4C\uC9C0
+      \uAC15\uD654\uD560 \uC218 \uC788\uB2E4."
   - ID: 25
     Type: Reinforcement
-    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 \uC7BC 3"
+    Name: "\uC99D\uD3ED\uC758 \uBCF4\uC11D \u2160"
     Icon: GemOrange3
     MaxCount: 1
     MinFloor: 1
-    Sale: 40
-    Purchase: 0
-    Explanation: 
+    Sale: 100
+    Purchase: 100
+    Explanation: "\uC601\uB871\uD55C \uC8FC\uD669 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC
+      \uB300\uBBF8\uC9C0\uB97C \uC99D\uAC00\uC2DC\uD0A4\uBA70, 30\uB808\uBCA8\uAE4C\uC9C0
+      \uAC15\uD654\uD560 \uC218 \uC788\uB2E4."
   - ID: 26
     Type: Reinforcement
-    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 \uC7BC 4"
+    Name: "\uC99D\uD3ED\uC758 \uBCF4\uC11D \u2161"
     Icon: GemOrange4
     MaxCount: 1
     MinFloor: 1
-    Sale: 50
-    Purchase: 0
-    Explanation: 
+    Sale: 200
+    Purchase: 200
+    Explanation: "\uC601\uB871\uD55C \uC8FC\uD669 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC
+      \uB300\uBBF8\uC9C0\uB97C \uC99D\uAC00\uC2DC\uD0A4\uBA70, 40\uB808\uBCA8\uAE4C\uC9C0
+      \uAC15\uD654\uD560 \uC218 \uC788\uB2E4."
   - ID: 27
     Type: Reinforcement
-    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uB300\uBBF8\uC9C0 \uC7BC 5"
+    Name: "\uC99D\uD3ED\uC758 \uBCF4\uC11D \u2162"
     Icon: GemOrange5
     MaxCount: 1
     MinFloor: 1
-    Sale: 60
-    Purchase: 0
-    Explanation: 
+    Sale: 300
+    Purchase: 300
+    Explanation: "\uC601\uB871\uD55C \uC8FC\uD669 \uBE5B\uC744 \uBC1C\uD558\uB294
+      \uBCF4\uC11D. \uC7A5\uBE44\uC5D0 \uC7A5\uCC29\uD560 \uC2DC \uD06C\uB9AC\uD2F0\uCEEC
+      \uB300\uBBF8\uC9C0\uB97C \uC99D\uAC00\uC2DC\uD0A4\uBA70, 50\uB808\uBCA8\uAE4C\uC9C0
+      \uAC15\uD654\uD560 \uC218 \uC788\uB2E4."
   - ID: 33
     Type: Exchange
     Name: "\uC218\uC0C1\uD55C \uC6B0\uC0C1"
@@ -770,7 +826,7 @@ MonoBehaviour:
     MaxCount: 1
     MinFloor: 1
     Sale: 300
-    Purchase: 0
+    Purchase: 300
     Explanation: "\uC218\uC0C1\uD568\uC744 \uD615\uC0C1\uD654\uD55C \uB4EF\uD55C
       \uC870\uAC01\uC0C1. \uBB34\uC5B8\uAC00 \uC2E0\uC559\uC758 \uB300\uC0C1\uC778
       \uAC83\uCC98\uB7FC \uBCF4\uC778\uB2E4."
@@ -902,6 +958,36 @@ MonoBehaviour:
     Explanation: "\uC721\uC2E0\uC774 \uC2A4\uB7EC\uC84C\uC74C\uC5D0\uB3C4 \uD604\uC138\uC5D0
       \uB0A8\uC740 \uBD88\uAD74\uC758 \uC601\uD63C. \uAC15\uB82C\uD55C \uBE5B\uC744
       \uBC1C\uD558\uACE0 \uC788\uB2E4."
+  - ID: 46
+    Type: Exchange
+    Name: "\uB8E8\uBE44"
+    Icon: Ruby
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 150
+    Purchase: 0
+    Explanation: "\uBD89\uC740 \uBE5B\uC73C\uB85C \uBE5B\uB098\uB294 \uBCF4\uC11D.
+      \uB358\uC804\uC5D0\uC11C \uD754\uD788 \uBC1C\uACAC\uB418\uB294 \uB4EF\uD558\uB2E4."
+  - ID: 47
+    Type: Exchange
+    Name: "\uC0AC\uD30C\uC774\uC5B4"
+    Icon: Sapphire
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 100
+    Purchase: 0
+    Explanation: "\uD478\uB978 \uBE5B\uC73C\uB85C \uBE5B\uB098\uB294 \uBCF4\uC11D.
+      \uB358\uC804\uC5D0\uC11C \uB54C\uB54C\uB85C \uBC1C\uACAC\uB418\uB294 \uB4EF\uD558\uB2E4."
+  - ID: 48
+    Type: Exchange
+    Name: "\uC5D0\uBA54\uB784\uB4DC"
+    Icon: Emerald
+    MaxCount: 3
+    MinFloor: 1
+    Sale: 50
+    Purchase: 0
+    Explanation: "\uCD08\uB85D \uBE5B\uC73C\uB85C \uBE5B\uB098\uB294 \uBCF4\uC11D.
+      \uB358\uC804\uC5D0\uC11C \uB4DC\uBB3C\uAC8C \uBC1C\uACAC\uB418\uB294 \uB4EF\uD558\uB2E4."
   Artifact:
   - ID: 1
     Name: "\uCC28\uAC00\uC6B4 \uB3CC"
@@ -1048,49 +1134,49 @@ MonoBehaviour:
       \uBAA8\uB4E0 \uC18D\uC131 \uB300\uBBF8\uC9C0 \uC99D\uAC00."
   - ID: 18
     Name: "\uCC28\uAC00\uC6B4 \uBCF4\uC11D"
-    Icon: Cross
+    Icon: ColdJewel
     Grade: 2
     Type: 1
     Explanation: 
     Effect: 
   - ID: 19
     Name: "\uD64D\uB828\uC758 \uBCF4\uC11D"
-    Icon: Cross
+    Icon: ScarletLotusJewel
     Grade: 2
     Type: 1
     Explanation: 
     Effect: 
   - ID: 20
     Name: "\uC2EC\uD574\uC758 \uBCF4\uC11D"
-    Icon: Cross
+    Icon: DeepSeaJewel
     Grade: 2
     Type: 1
     Explanation: 
     Effect: 
   - ID: 21
     Name: "\uB1CC\uC7AC\uC758 \uBCF4\uC11D"
-    Icon: Cross
+    Icon: LightningDisasterJewel
     Grade: 2
     Type: 1
     Explanation: 
     Effect: 
   - ID: 22
     Name: "\uB300\uC790\uC5F0\uC758 \uBCF4\uC11D"
-    Icon: Cross
+    Icon: NatureJewel
     Grade: 2
     Type: 1
     Explanation: 
     Effect: 
   - ID: 23
     Name: "\uD608\uC11D"
-    Icon: Cross
+    Icon: BloodStone
     Grade: 2
     Type: 1
     Explanation: 
     Effect: 
   - ID: 24
     Name: "\uAE08\uAC15\uC11D"
-    Icon: Cross
+    Icon: Diamond
     Grade: 2
     Type: 1
     Explanation: 
@@ -1124,7 +1210,7 @@ MonoBehaviour:
       \uB300\uBBF8\uC9C0 +30%"
   - ID: 28
     Name: "\uB300\uC9C0\uC758 \uAC70\uC6B8"
-    Icon: Cross
+    Icon: GroundMirror
     Grade: 2
     Type: 3
     Explanation: 
@@ -1133,49 +1219,49 @@ MonoBehaviour:
       \uB300\uBBF8\uC9C0 +30%"
   - ID: 29
     Name: "\uD604\uC790\uC758 \uBC18\uC9C0"
-    Icon: Cross
+    Icon: WiseRing
     Grade: 2
     Type: 2
     Explanation: 
     Effect: 
   - ID: 30
     Name: "\uD604\uC790\uC758 \uBAA9\uAC78\uC774"
-    Icon: Cross
+    Icon: WiseNecklace
     Grade: 2
     Type: 2
     Explanation: 
     Effect: 
   - ID: 31
     Name: "\uC800\uC8FC\uC758 \uB2E8\uAC80"
-    Icon: Cross
+    Icon: CursedDagger
     Grade: 2
     Type: 2
     Explanation: 
     Effect: 
   - ID: 32
     Name: "\uB124\uD06C\uB85C\uB178\uBBF8\uCF58"
-    Icon: Cross
+    Icon: Necronomicon
     Grade: 2
     Type: 2
     Explanation: 
     Effect: 
   - ID: 33
     Name: "\uD608\uC11D \uBC18\uC9C0"
-    Icon: Cross
+    Icon: BloodRing
     Grade: 2
     Type: 2
     Explanation: 
     Effect: 
   - ID: 34
     Name: "\uD608\uC11D \uBAA9\uAC78\uC774"
-    Icon: Cross
+    Icon: BloodNecklace
     Grade: 2
     Type: 2
     Explanation: 
     Effect: 
   - ID: 35
     Name: "\uD608\uC11D \uB2E8\uAC80"
-    Icon: Cross
+    Icon: BloodDagger
     Grade: 2
     Type: 2
     Explanation: 
@@ -1285,7 +1371,7 @@ MonoBehaviour:
       \uB450 \uBC88\uC529 \uBC1C\uC0DD\uC2DC\uD0A8\uB2E4."
   - ID: 46
     Name: "\uCC30\uB098\uC758 \uACC4\uC2DC\uAC80"
-    Icon: Cross
+    Icon: EphemeralBlade
     Grade: 2
     Type: 3
     Explanation: 
@@ -1320,7 +1406,7 @@ MonoBehaviour:
       \uB300\uC9C0\uC758 \uAD73\uAC74\uD568 \uC2A4\uD0DD\uC744 0\uC73C\uB85C \uCD08\uAE30\uD654\uD55C\uB2E4."
   - ID: 49
     Name: "\uC554\uC11D\uC758 \uC0AC\uC2AC"
-    Icon: Cross
+    Icon: StoneChain
     Grade: 2
     Type: 3
     Explanation: 
@@ -1329,7 +1415,7 @@ MonoBehaviour:
       \uAC10\uC18C\uD55C\uB2E4."
   - ID: 50
     Name: "\uBD95\uAD34\uC758 \uB300\uAC80"
-    Icon: Cross
+    Icon: CollapseGreatsword
     Grade: 2
     Type: 3
     Explanation: 
@@ -1337,7 +1423,7 @@ MonoBehaviour:
       \uACF5\uACA9\uC774 30% \uD655\uB960\uB85C \uBE57\uB098\uAC04\uB2E4."
   - ID: 51
     Name: "\uB9E4\uB9C8\uB978 \uB300\uC9C0\uC758 \uC11C"
-    Icon: Cross
+    Icon: DryLandBook
     Grade: 2
     Type: 3
     Explanation: 
@@ -1347,7 +1433,7 @@ MonoBehaviour:
       \uB9E4\uCD08\uB9C8\uB2E4 \uCCB4\uB825\uC744 \uD68C\uBCF5\uD55C\uB2E4."
   - ID: 52
     Name: "\uD53C\uC548\uC758 \uBC18\uC9C0"
-    Icon: Cross
+    Icon: BloodlilyRing
     Grade: 2
     Type: 3
     Explanation: 
@@ -1356,7 +1442,7 @@ MonoBehaviour:
       \uAC10\uC18C\uD55C\uB2E4."
   - ID: 53
     Name: "\uD53C\uC758 \uB099\uC778"
-    Icon: Cross
+    Icon: BloodBrand
     Grade: 2
     Type: 3
     Explanation: 
@@ -1364,7 +1450,7 @@ MonoBehaviour:
       \uC0C1\uD0DC\uB97C \uBD80\uC5EC\uD560 \uC218 \uC788\uB2E4."
   - ID: 54
     Name: "\uD76C\uC0DD\uC758 \uD608\uAC80"
-    Icon: Cross
+    Icon: SacrificeBloodSword
     Grade: 2
     Type: 3
     Explanation: 
@@ -1373,7 +1459,7 @@ MonoBehaviour:
       \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
   - ID: 55
     Name: "\uC801\uC6D4\uC758 \uAE08\uC11C"
-    Icon: Cross
+    Icon: RedMoonBook
     Grade: 2
     Type: 3
     Explanation: 
@@ -1384,7 +1470,7 @@ MonoBehaviour:
       \u2018\uBD89\uC740 \uB2EC\u2019 \uC2A4\uD0DD\uC744 0\uC73C\uB85C \uCD08\uAE30\uD654\uD55C\uB2E4."
   - ID: 56
     Name: "\uD604\uBB34\uC758 \uADC0\uAC11"
-    Icon: Cross
+    Icon: HyeonmuArmor
     Grade: 2
     Type: 3
     Explanation: 
@@ -1392,7 +1478,7 @@ MonoBehaviour:
       20% \uC99D\uAC00\uD55C\uB2E4."
   - ID: 57
     Name: "\uBD88\uAD74\uC758 \uBCF4\uB8E8"
-    Icon: Cross
+    Icon: IndomitableFortress
     Grade: 2
     Type: 3
     Explanation: 
@@ -1401,7 +1487,7 @@ MonoBehaviour:
       20%\uB85C \uACE0\uC815\uC2DC\uD0A8\uB2E4."
   - ID: 58
     Name: "\uAE08\uAC15\uC544"
-    Icon: Cross
+    Icon: Geumgangah
     Grade: 2
     Type: 3
     Explanation: 
@@ -1409,7 +1495,7 @@ MonoBehaviour:
       \uB300\uBBF8\uC9C0\uAC00 \uC99D\uAC00\uD55C\uB2E4."
   - ID: 59
     Name: "\uC131\uC655\uC758 \uBC95\uC804"
-    Icon: Cross
+    Icon: CodeOfHolyKing
     Grade: 2
     Type: 3
     Explanation: 

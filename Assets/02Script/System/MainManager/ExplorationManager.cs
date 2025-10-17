@@ -1129,7 +1129,7 @@ public class ExplorationManager : MainManager, UIManager
                 bool artifact = UnityEngine.Random.Range(0, 100) < 50 ? true : false;
                 if (artifact)
                 {
-                    data = new ItemArtifactData(GameManager.Inst.GetRandomArtifact(), false, 1);
+                    data = new ItemArtifactData(GameManager.Inst.GetRandomMaterialOrItemArtifact(), false, 1);
                     loots.Add(data);
                     continue;
                 }
@@ -1138,7 +1138,8 @@ public class ExplorationManager : MainManager, UIManager
             }
             else // boss
             {
-
+                data = new ItemArtifactData(GameManager.Inst.GetRandomProductArtifact(), false, 1);
+                loots.Add(data);
             }
         }
         

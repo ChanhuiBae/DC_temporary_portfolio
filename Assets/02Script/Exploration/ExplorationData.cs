@@ -78,7 +78,9 @@ public class ExplorationData
     {
         if (squad != null)
             return squad;
-        return null;
+
+        SetSquadID(TileType.Monster);
+        return squad;
     }
 
     public Entity_Monster GetBoss()
