@@ -155,7 +155,7 @@ public class SkillManager : MonoBehaviour
         }
 
         // todo: get parthner data from game manager
-        partnerBtn.onClick.AddListener(() => { StartPartnerSkill(skills[2]); });
+        //partnerBtn.onClick.AddListener(() => { StartPartnerSkill(skills[2]); });
         partnerBtn.enabled = false;
 
         partnerAnim.SetReady(true);
