@@ -995,11 +995,12 @@ public class Map : MonoBehaviour
         return true;
     }
 
-    private void CheckTileCase() //////////////////////////////////////////////////
+    /////////////////////// Create Tiles ///////////////////////////
+    private void CheckTileCase() 
     {
         if (CreateBossTile() 
             && CheckSecretTile() 
-            && CreateMonsterTile() 
+            // && CreateMonsterTile() 
             && CreateMiddleBossTile()
             && CreateChestTiles() 
             && CreateEventTile())

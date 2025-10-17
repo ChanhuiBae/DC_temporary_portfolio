@@ -262,11 +262,11 @@ public class ExplorationManager : MainManager, UIManager
         }
 
         ////////////// Artifact Test /////////////////
-        if (!GameManager.Inst.Exploration.CheckArtifactID(54))
-        {
-            Artifact artifact = new Artifact(54);
-            GameManager.Inst.Exploration.artifacts.Add(1, artifact);
-        }
+        //if (!GameManager.Inst.Exploration.CheckArtifactID(8))
+        //{
+        //    Artifact artifact = new Artifact(8);
+        //    GameManager.Inst.Exploration.artifacts.Add(1, artifact);
+        //}
     }
 
     private void Start()
@@ -327,10 +327,7 @@ public class ExplorationManager : MainManager, UIManager
         GameManager.Inst.Exploration.InitSkillUseCount();
 
         ///////////////// Skill Test////////////////////
-        GameManager.Inst.Exploration.SetSkill(1, 13);
-        GameManager.Inst.Exploration.SetSkill(2, 11);
-        GameManager.Inst.Exploration.SetSkill(5, 10);
-        GameManager.Inst.Exploration.SetSkill(3, 8);
+        //GameManager.Inst.Exploration.SetSkill(5, 13);
     }
 
     private void OnClick(PointerEventData data)
