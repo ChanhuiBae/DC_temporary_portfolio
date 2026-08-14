@@ -125,6 +125,13 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
+    private Dictionary<int, Entity_Chest> chestData = new Dictionary<int, Entity_Chest>();
+
+    public bool GetChestData(int floor, out Entity_Chest data)
+    {
+        return chestData.TryGetValue(floor, out data);
+    }
+
     private bool fight;
     public bool Fight
     {
@@ -251,6 +258,10 @@ public class GameManager : Singleton<GameManager>
         for(int i = 0; i < table.Script.Count; i++)
         {
             scriptData.Add(table.Script[i].ID, table.Script[i].Text.Split('\"').Where(t => t != "").ToArray());
+        }
+        for(int i=0; i<table.Chest.Count; i++)
+        {
+            chestData.Add(table.Chest[i].Floor, table.Chest[i]);
         }
         #endregion
 

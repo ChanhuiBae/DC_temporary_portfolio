@@ -81,7 +81,7 @@ public class CameraController : MonoBehaviour
 
     private void OnDrag(PointerEventData data)
     {
-        if(player.Control && data.button == PointerEventData.InputButton.Middle)
+        if(player.Control && data.button == PointerEventData.InputButton.Right)
         {
             if (!draging)
             {

@@ -1867,3 +1867,28 @@ MonoBehaviour:
       \uD0C8\uCD9C\uD558\uACE0 \uC2F6\uB2E4\uBA74 \uB9D0\uD574.\n\uADF8 \uC815\uB3C4\uB294
       \uACF5\uC9DC\uB85C \uB3C4\uC640\uC8FC\uC9C0.\n\uC5B4\uB5BB\uAC8C \uB3C4\uC640\uC904
       \uAC70\uB0D0\uACE0? \uADF8\uAC74 \uC601\uC5C5\uBE44\uBC00\uC774\uC57C.\""
+  Chest:
+  - Floor: 1
+    Golden: 15
+    Silver: 35
+    Wooden: 50
+  - Floor: 2
+    Golden: 17
+    Silver: 38
+    Wooden: 45
+  - Floor: 3
+    Golden: 19
+    Silver: 41
+    Wooden: 40
+  - Floor: 4
+    Golden: 21
+    Silver: 44
+    Wooden: 35
+  - Floor: 5
+    Golden: 23
+    Silver: 47
+    Wooden: 30
+  - Floor: 6
+    Golden: 25
+    Silver: 50
+    Wooden: 25

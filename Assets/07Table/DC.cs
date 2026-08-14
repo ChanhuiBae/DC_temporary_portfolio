@@ -16,4 +16,5 @@ public class DC : ScriptableObject
 	public List<Entity_AritifactCombination> ArtifactCombination;
 	public List<Entity_Skill> Skill;
 	public List<Entity_Script> Script;
+	public List<Entity_Chest> Chest;
 }

@@ -1,5 +1,7 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Map : MonoBehaviour
 {
@@ -132,6 +134,122 @@ public class Map : MonoBehaviour
     }
 
     #region CreateMap
+    public void CreateMap(int floor)
+    {
+        if (!map.SetSize(floor))
+            return;
+        access = false;
+        map.map = new int[map.size, map.size];
+        map.findMap = new bool[map.size, map.size];
+        map.turn = new int[map.size, map.size];
+        map.knownMap = new bool[map.size, map.size];
+        map.goneMap = new int[map.size, map.size];
+        map.blownupMap = new bool[map.size, map.size];
+        map.searchMap = new bool[map.size, map.size];
+
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                map.map[i, j] = -1;
+                map.findMap[i, j] = false;
+                map.turn[i, j] = 0;
+                map.goneMap[i, j] = 0;
+            }
+        }
+
+        tileCount = 0;
+        turn = 0;
+        map.direction = Direction.None;
+        maxTile = Random.Range(map.min, map.max);
+
+        // starting area
+        int half = map.size / 2;
+        if (map.size % 2 == 0)
+            map.startPosition = new Vector2Int(Random.Range(half, half + 2), Random.Range(half, half + 2));
+        else
+            map.startPosition = new Vector2Int(half, half);
+        map.position = map.startPosition;
+        map.map[map.startPosition.x, map.startPosition.y] = 0;
+        map.turn[map.position.x, map.position.y] = 0;
+        ++map.goneMap[map.position.x, map.position.y];
+        tileCount++;
+        PickPath(map.position);
+        StartCoroutine(SetNext());
+    }
+
+    private IEnumerator SetNext()
+    {
+        while (tileCount < maxTile)
+        {
+            yield return null;
+            if (turn > 600)
+            {
+                break;
+            }
+
+            GetNextPosition();
+        }
+
+        if (tileCount < map.min || map.GetNeedEndTileAmount() > 0)
+        {
+            CreateMap(map.floor);
+        }
+        else
+        {
+            CheckTileCase();
+        }
+    }
+
+    private void GetNextPosition()
+    {
+        int turn = 600;
+        Vector2Int next = map.position;
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                if (map.turn[i, j] > 0 && map.turn[i, j] <= turn && map.goneMap[i, j] == 0)
+                {
+                    if (map.turn[i, j] <= turn)
+                    {
+                        turn = map.turn[i, j];
+                        next = new Vector2Int(i, j);
+                    }
+                }
+            }
+        }
+
+        if (next == map.position)
+        {
+            for (int i = 0; i < map.size; i++)
+            {
+                for (int j = 0; j < map.size; j++)
+                {
+                    if (map.turn[i, j] > 0 && map.goneMap[i, j] == 0)
+                    {
+                        turn = map.turn[i, j];
+                        next = new Vector2Int(i, j);
+                    }
+                }
+            }
+        }
+
+        map.position = next;
+        PickPath(map.position);
+        Move();
+    }
+
+    private void Move()
+    {
+        if (tileCount >= maxTile)
+            return;
+
+        UpdateMap(map.position);
+        CheckArea(new Vector2Int(map.position.x, map.position.y));
+        map.goneMap[map.position.x, map.position.y]++;
+    }
+
     private bool UpdateMap(Vector2Int point)
     {
         if (map.map[point.x, point.y] == -1 && tileCount < maxTile)
@@ -227,13 +345,15 @@ public class Map : MonoBehaviour
             && !map.findMap[point.x, point.y]
             && tileCount < maxTile
             && map.CheckConnect1(point)
-            && map.CheckConnect2(point))
+            && map.CheckConnect2(point)
+            && map.CheckAB(point))
             return true;
         return false;
     }
 
     private void PickPath(Vector2Int point)
     {
+        turn++;
         map.direction = Direction.None;
         if (!map.findMap[point.x, point.y] && UpdateMap(point))
         {
@@ -279,6 +399,12 @@ public class Map : MonoBehaviour
             }
             else
             {
+                if (pathCase + tileCount >= maxTile)
+                {
+                    pathCase = pathCase + tileCount - maxTile;
+                }
+
+
                 bool isUsed = false;
                 int pickCount = 0;
                 int first = -1;
@@ -286,224 +412,64 @@ public class Map : MonoBehaviour
                 int third = -1;
                 int pathCount;
 
-                if (turn == 0)
+                if (turn < 2)
                     pathCount = Random.Range(2, pathCase + 1);
-                else if(turn < 2)
-                    pathCount = Random.Range(1, pathCase);
                 else
-                    pathCount = Random.Range(0, pathCase + 1);
-               
+                    pathCount = Random.Range(1, pathCase + 1);
+
                 while (pickCount < pathCount)
+                {
+                    int pick = Random.Range(0, 4);
+                    if (pick != first && pick != second && pick != third)
                     {
-                        int pick = Random.Range(0, 4);
-                        if (pick != first && pick != second && pick != third)
+                        if (pick == 0 && left)
                         {
-                            if (pick == 0 && left)
-                            {
-                                isUsed = true;
-                                UpdateMap(new Vector2Int(point.x - 1, point.y));
-                            }
-                            else if (pick == 1 && right)
-                            {
-                                isUsed = true;
+                            isUsed = true;
+                            UpdateMap(new Vector2Int(point.x - 1, point.y));
+                            map.turn[point.x - 1, point.y] = turn;
+                        }
+                        else if (pick == 1 && right)
+                        {
+                            isUsed = true;
 
-                                UpdateMap(new Vector2Int(point.x + 1, point.y));
-                            }
-                            else if (pick == 2 && up)
-                            {
-                                isUsed = true;
-                                UpdateMap(new Vector2Int(point.x, point.y + 1));
-                            }
-                            else if (pick == 3 && down)
-                            {
-                                isUsed = true;
-                                UpdateMap(new Vector2Int(point.x, point.y - 1));
-                            }
+                            UpdateMap(new Vector2Int(point.x + 1, point.y));
+                            map.turn[point.x + 1, point.y] = turn;
+                        }
+                        else if (pick == 2 && up)
+                        {
+                            isUsed = true;
+                            UpdateMap(new Vector2Int(point.x, point.y + 1));
+                            map.turn[point.x, point.y + 1] = turn;
+                        }
+                        else if (pick == 3 && down)
+                        {
+                            isUsed = true;
+                            UpdateMap(new Vector2Int(point.x, point.y - 1));
+                            map.turn[point.x, point.y - 1] = turn;
+                        }
 
-                            if (isUsed)
+                        if (isUsed)
+                        {
+                            isUsed = false;
+                            pickCount++;
+                            if (first == -1)
                             {
-                                isUsed = false;
-                                pickCount++;
-                                if (first == -1)
-                                {
-                                    first = pick;
-                                }
-                                else if (second == -1)
-                                {
-                                    second = pick;
-                                }
-                                else if (third == -1)
-                                {
-                                    third = pick;
-                                }
+                                first = pick;
+                            }
+                            else if (second == -1)
+                            {
+                                second = pick;
+                            }
+                            else if (third == -1)
+                            {
+                                third = pick;
                             }
                         }
                     }
+                }
             }
         }
     }
-
-
-    private void MoveDirection()
-    {
-        if (tileCount >= maxTile)
-            return;
-
-        switch (map.direction)
-        {
-            case Direction.Left:
-                if (map.position.x - 1 > -1 && map.map[map.position.x - 1, map.position.y] > -1)
-                {
-                    turn++;
-                    map.position.x -= 1;
-                    if (UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x, map.position.y)))
-                        PickPath(new Vector2Int(map.position.x, map.position.y));
-                }
-                else
-                {
-                    map.direction = Direction.None;
-                }
-                break;
-            case Direction.Right:
-                if (map.position.x + 1 < map.size && map.map[map.position.x + 1, map.position.y] > -1)
-                {
-                    turn++;
-                    map.position.x += 1;
-                    if (UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x, map.position.y)))
-                        PickPath(new Vector2Int(map.position.x, map.position.y));
-                }
-                else
-                {
-                    map.direction = Direction.None;
-                }
-                break;
-            case Direction.Up:
-                if (map.position.y + 1 < map.size && map.map[map.position.x, map.position.y + 1] > -1)
-                {
-                    turn++;
-                    map.position.y += 1;
-                    if (UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x, map.position.y)))
-                        PickPath(new Vector2Int(map.position.x, map.position.y));
-                }
-                else
-                {
-                    map.direction = Direction.None;
-                }
-                break;
-            case Direction.Down:
-                if (map.position.y - 1 > -1 && map.map[map.position.x, map.position.y - 1] > -1)
-                {
-                    turn++;
-                    map.position.y -= 1;
-                    if (UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x, map.position.y)))
-                        PickPath(new Vector2Int(map.position.x, map.position.y));
-                }
-                else
-                {
-                    map.direction = Direction.None;
-                }
-                break;
-        }
-
-        if (map.direction != Direction.None)
-        {
-            if (map.position.x - 1 > -1 && UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x - 1, map.position.y)))
-                PickPath(new Vector2Int(map.position.x - 1, map.position.y));
-            if (map.position.x + 1 < map.size && UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x + 1, map.position.y)))
-                PickPath(new Vector2Int(map.position.x + 1, map.position.y));
-            if (map.position.y + 1 < map.size && UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x, map.position.y + 1)))
-                PickPath(new Vector2Int(map.position.x, map.position.y + 1));
-            if (map.position.y - 1 > -1 && UpdateMap(map.position) && CheckArea(new Vector2Int(map.position.x, map.position.y - 1)))
-                PickPath(new Vector2Int(map.position.x, map.position.y - 1));
-        }
-
-        map.UpdateFindMap(map.position);
-    }
-
-
-    public void CreateMap(int floor)
-    {
-        if (!map.SetSize(floor))
-            return;
-        access = false;
-        map.map = new int[map.size, map.size];
-        map.findMap = new bool[map.size, map.size];
-        map.knownMap = new bool[map.size, map.size];
-        map.goneMap = new int[map.size, map.size];
-        map.blownupMap = new bool[map.size, map.size];
-        map.searchMap = new bool[map.size, map.size];
-
-        for (int i = 0; i < map.size; i++)
-        {
-            for (int j = 0; j < map.size; j++)
-            {
-                map.map[i, j] = -1;
-                map.findMap[i, j] = false;
-            }
-        }
-
-        tileCount = 0;
-        turn = 0;
-        map.direction = Direction.None;
-        maxTile = Random.Range(map.min, map.max);
-
-        // starting area
-        if(map.size > 10)
-        {
-            map.startPosition = new Vector2Int(Random.Range(map.size / 2 - 2, map.size / 2 + 2), Random.Range(map.size / 2 - 2, map.size / 2 + 2));
-        }
-        else
-        {
-            map.startPosition = new Vector2Int(Random.Range(map.size / 2 - 1, map.size / 2 + 1), Random.Range(map.size / 2 - 1, map.size / 2 + 1));
-        }
-        map.position = map.startPosition;
-        map.map[map.startPosition.x, map.startPosition.y] = 0;
-        tileCount++;
-        PickPath(map.position);
-        StartCoroutine(SetDirection());
-    }
-
-    private IEnumerator SetDirection()
-    {
-        while (tileCount < maxTile)
-        {
-            yield return null;
-            if (turn > 600)
-            {
-                break;
-            }
-
-            switch (Random.Range(0, 4))
-            {
-                case 0:
-                    map.direction = Direction.Left;
-                    MoveDirection();
-                    break;
-                case 1:
-                    map.direction = Direction.Right;
-                    MoveDirection();
-                    break;
-                case 2:
-                    map.direction = Direction.Up;
-                    MoveDirection();
-                    break;
-                case 3:
-                    map.direction = Direction.Down;
-                    MoveDirection();
-                    break;
-            }
-        }
-
-        if (tileCount < map.min)
-        {
-            CreateMap(map.floor);
-        }
-        else
-        {
-            CheckTileCase();
-        }
-    }
-
 
     private bool CreateSecretTile()
     {
@@ -514,8 +480,8 @@ public class Map : MonoBehaviour
                 for (int j = 0; j < map.size; j++)
                 {
                     if ((map.map[i, j] < 0 || map.map[i, j] > (int)TileType.Boss)
-                        && Check4AdjacentTile(new Vector2Int(i, j)) == k
-                        && CheckTwoSecretTile(new Vector2Int(i, j)))
+                        && map.CountAdjacent4Tile(new Vector2Int(i, j)) == k
+                        && map.CheckTwoSecretTile(new Vector2Int(i, j)))
                     {
                         map.map[i, j] = 0;
                         return true;
@@ -526,111 +492,26 @@ public class Map : MonoBehaviour
         return false;
     }
 
-    private bool CheckTwoSecretTile(Vector2Int point)
-    {
-        if (point.x - 2 > -1 && map.map[point.x - 2, point.y] == 0)
-            return false;
-        if (point.x + 2 < map.size && map.map[point.x + 2, point.y] == 0)
-            return false;
-        if (point.y + 2 < map.size && map.map[point.x, point.y + 2] == 0)
-            return false;
-        if (point.y - 2 > -1 && map.map[point.x, point.y - 2] == 0)
-            return false;
-
-        bool left = point.x - 1 > -1;
-        bool right = point.x + 1 < map.size;
-        bool up = point.y + 1 < map.size;
-        bool down = point.y - 1 > -1;
-
-        if (left && up && map.map[point.x - 1, point.y + 1] == 0)
-            return false;
-        if (right && down && map.map[point.x + 1, point.y - 1] == 0)
-            return false;
-        if (up && right && map.map[point.x + 1, point.y + 1] == 0)
-            return false;
-        if (down && left && map.map[point.x - 1, point.y + -1] == 0)
-            return false;
-
-        return true;
-    }
-
-
-    private int CountAdjacentTile(Vector2Int point)
-    {
-        int count = 0;
-        bool left = point.x - 1 > -1;
-        bool right = point.x + 1 < map.size;
-        bool up = point.y + 1 < map.size;
-        bool down = point.y - 1 > -1;
-
-        if (left && up && map.map[point.x - 1, point.y + 1] > 0)
-        {
-            count++;
-        }
-        if (right && down && map.map[point.x + 1, point.y - 1] > 0)
-        {
-            count++;
-        }
-        if (up && right && map.map[point.x + 1, point.y + 1] > 0)
-        {
-            count++;
-        }
-        if (down && left && map.map[point.x - 1, point.y + -1] > 0)
-        {
-            count++;
-        }
-        return count;
-    }
-
-    private int Check4AdjacentTile(Vector2Int point)
-    {
-        if (point.x - 1 > -1 && point.x + 1 < map.size && point.y + 1 < map.size && point.y - 1 > -1)
-        {
-            int count = 0;
-
-            if (map.map[point.x - 1, point.y] > 0 && map.map[point.x - 1, point.y] < (int)TileType.Monster)
-                count++;
-            if (map.map[point.x + 1, point.y] > 0 && map.map[point.x + 1, point.y] < (int)TileType.Monster)
-                count++;
-            if (map.map[point.x, point.y + 1] > 0 && map.map[point.x, point.y + 1] < (int)TileType.Monster)
-                count++;
-            if (map.map[point.x, point.y - 1] > 0 && map.map[point.x, point.y - 1] < (int)TileType.Monster)
-                count++;
-
-            return count;
-        }
-        return 0;
-    }
-
     private bool CheckSecretTile()
     {
         int secretCount = 0;
+        int secret = TileData.GetTileMin(map.floor, tileCount, TileType.Secret);
 
         for (int i = 0; i < map.size; i++)
         {
             for (int j = 0; j < map.size; j++)
             {
                 if ((map.map[i, j] < 1 || map.map[i, j] > (int)TileType.Monster)
-                    && Check4AdjacentTile(new Vector2Int(i, j)) == 4
-                    && CheckTwoSecretTile(new Vector2Int(i, j))
-                    && CountAdjacentTile(new Vector2Int(i, j)) == 4)
+                    && map.CountAdjacent4Tile(new Vector2Int(i, j)) == 4
+                    && map.CountDiagonalTile(new Vector2Int(i, j)) == 4
+                    && map.CheckTwoSecretTile(new Vector2Int(i, j)))
                 {
                     map.map[i, j] = 0;
                     secretCount++;
                 }
             }
         }
-
-        int amount;
-        if(map.floor < 2)
-            amount = 1;
-        else if(map.floor < 4)
-            amount = 2;
-        else if(map.floor < 6)
-            amount = 3;
-        else
-            amount = 4;
-        while (secretCount < amount)
+        while (secretCount < secret)
         {
             if (CreateSecretTile())
                 secretCount++;
@@ -648,7 +529,7 @@ public class Map : MonoBehaviour
             {
                 if (map.map[i, j] == 1)
                 {
-                    int distance = map.minDistance(new Vector2Int(i, j), map.startPosition);
+                    int distance = map.GetMinDistance(new Vector2Int(i, j), map.startPosition);
                     if (distance > map.size / 2)
                     {
                         bossCount++;
@@ -661,348 +542,264 @@ public class Map : MonoBehaviour
 
         if (bossCount == 0)
         {
-            CreateMap(map.floor);
             return false;
         }
         return false;
     }
 
-    private bool CheckContinue4(Vector2Int point, int type)
-    {
-        bool leftIn = point.x - 1 > -1;
-        bool rightIn = point.x + 1 < map.size;
-        bool upIn = point.y + 1 < map.size;
-        bool downIn = point.y - 1 > -1;
-
-        if (leftIn && map.map[point.x - 1, point.y] == type)
-        {
-            if (!CheckContinue3(new Vector2Int(point.x - 1, point.y), type))
-                return false;
-        }
-        if (rightIn && map.map[point.x + 1, point.y] == type)
-        {
-            if (!CheckContinue3(new Vector2Int(point.x + 1, point.y), type))
-                return false;
-        }
-        if (upIn && map.map[point.x, point.y + 1] == type)
-        {
-            if (!CheckContinue3(new Vector2Int(point.x, point.y + 1), type))
-                return false;
-        }
-        if (downIn && map.map[point.x, point.y - 1] == type)
-        {
-            if (!CheckContinue3(new Vector2Int(point.x, point.y - 1), type))
-                return false;
-        }
-
-        return true;
-    }
-
-    private bool CheckContinue3(Vector2Int point, int type)
-    {
-        bool leftIn = point.x - 1 > -1;
-        bool rightIn = point.x + 1 < map.size;
-        bool upIn = point.y + 1 < map.size;
-        bool downIn = point.y - 1 > -1;
-
-        if (leftIn && map.map[point.x - 1, point.y] == type)
-        {
-            if (upIn && map.map[point.x - 1, point.y + 1] == type)
-                return false;
-            if (downIn && map.map[point.x - 1, point.y - 1] == type)
-                return false;
-        }
-        if (rightIn && map.map[point.x + 1, point.y] == type)
-        {
-            if (upIn && map.map[point.x + 1, point.y + 1] == type)
-                return false;
-            if (downIn && map.map[point.x + 1, point.y - 1] == type)
-                return false;
-        }
-        if (upIn && map.map[point.x, point.y + 1] == type)
-        {
-            if (leftIn && map.map[point.x - 1, point.y + 1] == type)
-                return false;
-            if (rightIn && map.map[point.x + 1, point.y + 1] == type)
-                return false;
-        }
-        if (downIn && map.map[point.x, point.y - 1] == type)
-        {
-            if (leftIn && map.map[point.x - 1, point.y - 1] == type)
-                return false;
-            if (rightIn && map.map[point.x + 1, point.y - 1] == type)
-                return false;
-        }
-
-        return true;
-    }
-
-
-    private bool CheckContinueStright(Vector2Int point, int length, int type)
-    {
-        int count = 0;
-        for (int i = 1; i < length; i++)
-        {
-            if (point.x - i > -1 && map.map[point.x - i, point.y] == type)
-                count++;
-        }
-        if (count >= length - 1)
-            return false;
-
-        count = 0;
-        for (int i = 1; i < length; i++)
-        {
-            if (point.x + i < map.size && map.map[point.x + i, point.y] == type)
-                count++;
-        }
-        if (count >= length - 1)
-            return false;
-
-        count = 0;
-        for (int i = 1; i < length; i++)
-        {
-            if (point.y + i < map.size && map.map[point.x, point.y + i] == type)
-                count++;
-        }
-        if (count >= length - 1)
-            return false;
-
-        count = 0;
-        for (int i = 1; i < length; i++)
-        {
-            if (point.y - i > -1 && map.map[point.x, point.y - i] == type)
-                count++;
-        }
-        if (count >= length - 1)
-            return false;
-
-        count = 0;
-        int end = length / 2;
-        if (length % 2 == 1)
-            end++;
-
-        for (int i = -length / 2; i < end; i++)
-        {
-            if (point.x + i > -1 && point.x + i < map.size && map.map[point.x + i, point.y] == type)
-                count++;
-        }
-        if (count >= length - 1)
-            return false;
-
-        count = 0;
-        for (int i = -length / 2; i < end; i++)
-        {
-            if (point.y + i > -1 && point.y + i < map.size && map.map[point.x, point.y + i] == type)
-                count++;
-        }
-        if (count >= length - 1)
-            return false;
-
-        return true;
-    }
-
-    private bool CreateEventTile()
-    {
-        int count = 0;
-        int eventTile;
-        if (map.floor < 2)
-            eventTile = Random.Range(3,5);
-        else if (map.floor < 4)
-            eventTile = Random.Range(5, 7);
-        else if (map.floor < 6)
-            eventTile = Random.Range(7, 9);
-        else
-            eventTile = Random.Range(9, 11);
-
-        for (int k = 0; k < 5; k++)
-        {
-            if (count >= eventTile)
-                break;
-            for (int i = 0; i < map.size; i++)
-            {
-                if (count >= eventTile)
-                    break;
-                for (int j = 0; j < map.size; j++)
-                {
-                    if (count >= eventTile)
-                        break;
-
-                    if ((i != map.startPosition.x || j != map.startPosition.y)
-                        && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
-                        && Random.Range(0, 100) < 50
-                        && CheckContinueStright(new Vector2Int(i, j), 2, (int)TileType.NegativeEvent)
-                        && CheckContinue4(new Vector2Int(i, j), (int)TileType.NegativeEvent))
-                    {
-                        map.map[i, j] = (int)TileType.NegativeEvent;
-                        count++;
-                    }
-                }
-            }
-        }
-
-        int positive = count / 2;
-
-        count = 0;
-        for (int k = 0; k < 5; k++)
-        {
-            if (count >= positive)
-                break;
-            for (int i = 0; i < map.size; i++)
-            {
-                for (int j = 0; j < map.size; j++)
-                {
-                    if (count >= positive)
-                    {
-                        return true;
-                    }
-
-                    if (map.map[i, j] == (int)TileType.NegativeEvent
-                        && Random.Range(0, 100) < 50)
-                    {
-                        map.map[i, j] = (int)TileType.PositiveEvent;
-                        count++;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    private bool CreateChestTiles()
-    {
-        int count = 0;
-        int chest;
-        if (map.floor < 2)
-            chest = Random.Range(2, 4);
-        else if (map.floor < 4)
-            chest = Random.Range(3, 5);
-        else if (map.floor < 6)
-            chest = Random.Range(5, 7);
-        else
-            chest = Random.Range(6, 8);
-
-
-        for (int k = 0; k < 5; k++)
-        {
-            if (count >= chest)
-                break;
-            for (int i = 0; i < map.size; i++)
-            {
-                for (int j = 0; j < map.size; j++)
-                {
-                    if (count >= chest)
-                        return true;
-
-                    if ((i != map.startPosition.x || j != map.startPosition.y)
-                        && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
-                        && Random.Range(0, 100) < 50
-                        && CheckContinueStright(new Vector2Int(i, j), 2, (int)TileType.Chest)
-                        && CheckContinue3(new Vector2Int(i, j), (int)TileType.Chest))
-                    {
-                        map.map[i, j] = (int)TileType.Chest;
-                        count++;
-                    }
-                }
-            }
-        }
-
-        if (count < chest)
-            Debug.Log("Chest: " + count);
-
-        return true;
-    }
-
     private bool CreateMonsterTile()
     {
         int count = 0;
-        int monster;
-        if (map.floor < 2)
-            monster = Random.Range(6, 10);
-        else if (map.floor < 4)
-            monster = Random.Range(7, 11);
-        else if (map.floor < 6)
-            monster = Random.Range(9, 12);
-        else
-            monster = Random.Range(10, 13);
-
-        for (int k = 0; k < 5; k++)
+        int[,] arr = new int[tileCount, 2];
+        for (int i = 0; i < map.size; i++)
         {
-            if (count >= monster)
-                break;
-            for (int i = 0; i < map.size; i++)
+            for (int j = 0; j < map.size; j++)
             {
-                for (int j = 0; j < map.size; j++)
+                if ((i != map.startPosition.x || j != map.startPosition.y)
+                    && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
+                    && map.CheckContinueStright(new Vector2Int(i, j), 4, (int)TileType.Monster)
+                    && map.CheckContinue4(new Vector2Int(i, j), (int)TileType.Monster, 4))
                 {
-                    if (count >= monster)
-                        return true;
-
-                    if ((i != map.startPosition.x || j != map.startPosition.y)
-                        && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
-                        && Random.Range(0, 100) < 50
-                        && CheckContinueStright(new Vector2Int(i, j), 2, (int)TileType.Monster)
-                        && CheckContinue4(new Vector2Int(i, j), (int)TileType.Monster))
-                    {
-                        map.map[i, j] = (int)TileType.Monster;
-                        count++;
-                    }
+                    arr[count, 0] = i;
+                    arr[count, 1] = j;
+                    count++;
+                    map.map[i, j] = (int)TileType.Monster;
                 }
             }
         }
 
-        if (count < monster)
-            Debug.Log("Monster: " + count);
+        int min = TileData.GetTileMin(map.floor, tileCount, TileType.Monster);
+        int max = TileData.GetTileMax(map.floor, tileCount, TileType.Monster);
 
+        if (count < min)
+            return false;
+        else if (count > max)
+        {
+            int delta = count - Random.Range(min, max + 1);
+
+            for (int i = 0; i < delta; i++)
+            {
+                int random = Random.Range(0, count);
+
+                int value = map.CountAdjacent4Tile(new Vector2Int(arr[random, 0], arr[random, 1]));
+                if (value > 0)
+                    map.map[arr[random, 0], arr[random, 1]] = value;
+                else
+                    map.map[arr[random, 0], arr[random, 1]] = -1;
+
+                // change random values to last data.
+                arr[random, 0] = arr[count - 1, 0];
+                arr[random, 1] = arr[count - 1, 1];
+
+                count--;
+            }
+        }
         return true;
     }
 
     private bool CreateMiddleBossTile()
     {
         int count = 0;
-        int monster;
-        if (map.floor < 2)
-            monster = 2;
-        else if (map.floor < 4)
-            monster = 3;
-        else
-            monster = 4;
-
-        for (int k = 0; k < 4; k++)
+        int[,] arr = new int[tileCount, 2];
+        for (int i = 0; i < map.size; i++)
         {
-            if (count >= monster)
-                break;
-            for (int i = 0; i < map.size; i++)
+            for (int j = 0; j < map.size; j++)
             {
-                for (int j = 0; j < map.size; j++)
+                if ((i != map.startPosition.x || j != map.startPosition.y)
+                    && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
+                    && map.GetMinDistance(new Vector2Int(i, j), map.startPosition) > 2)
                 {
-                    if (count >= monster)
-                        return true;
-
-                    if (map.map[i, j] == (int)TileType.Monster
-                        && map.minDistance(new Vector2Int(i, j), map.startPosition) > 3
-                        && CheckContinueStright(new Vector2Int(i, j), 4, (int)TileType.MiddleBoss)
-                        && CheckContinue4(new Vector2Int(i, j), (int)TileType.MiddleBoss))
+                    bool check = true;
+                    for (int k = 0; k < count; k++)
                     {
-                        map.map[i, j] = (int)TileType.MiddleBoss;
+                        if (map.GetMinDistance(new Vector2Int(i, j), new Vector2Int(arr[k, 0], arr[k, 1])) < 4)
+                        {
+                            check = false;
+                            break;
+                        }
+                    }
+                    if (check)
+                    {
+                        arr[count, 0] = i;
+                        arr[count, 1] = j;
                         count++;
+                        map.map[i, j] = (int)TileType.MiddleBoss;
                     }
                 }
             }
         }
 
-        if (count < monster)
-            Debug.Log("Middle: " + count);
+        int min = TileData.GetTileMin(map.floor, tileCount, TileType.MiddleBoss);
+        int max = TileData.GetTileMax(map.floor, tileCount, TileType.MiddleBoss);
 
+        if (count < min)
+            return false;
+        else if (count > max)
+        {
+            int delta = count - Random.Range(min, max + 1);
+
+            for (int i = 0; i < delta; i++)
+            {
+                int random = Random.Range(0, count);
+
+                int value = map.CountAdjacent4Tile(new Vector2Int(arr[random, 0], arr[random, 1]));
+                if (value > 0)
+                    map.map[arr[random, 0], arr[random, 1]] = value;
+                else
+                    map.map[arr[random, 0], arr[random, 1]] = -1;
+
+                // change random values to last data.
+                arr[random, 0] = arr[count - 1, 0];
+                arr[random, 1] = arr[count - 1, 1];
+                count--;
+            }
+        }
         return true;
     }
 
-    /////////////////////// Create Tiles ///////////////////////////
-    private void CheckTileCase() 
+
+    private bool CreateChestTiles()
     {
-        if (CreateBossTile() 
-            && CheckSecretTile() 
-            // && CreateMonsterTile() 
+        int count = 0;
+        int[,] arr = new int[tileCount, 2];
+
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                if ((i != map.startPosition.x || j != map.startPosition.y)
+                    && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
+                    && map.CheckContinueStright(new Vector2Int(i, j), 3, (int)TileType.Chest)
+                    && map.CheckContinue3(new Vector2Int(i, j), (int)TileType.Chest, 0, 3))
+                {
+                    arr[count, 0] = i;
+                    arr[count, 1] = j;
+                    count++;
+                    map.map[i, j] = (int)TileType.Chest;
+                }
+            }
+        }
+        int min = TileData.GetTileMin(map.floor, tileCount, TileType.Chest);
+        int max = TileData.GetTileMax(map.floor, tileCount, TileType.Chest);
+
+        if (count < min)
+            return false;
+        else if (count > max)
+        {
+            int delta = count - Random.Range(min, max + 1);
+
+            for (int i = 0; i < delta; i++)
+            {
+                int random = Random.Range(0, count);
+
+                int value = map.CountAdjacent4Tile(new Vector2Int(arr[random, 0], arr[random, 1]));
+                if (value > 0)
+                    map.map[arr[random, 0], arr[random, 1]] = value;
+                else
+                    map.map[arr[random, 0], arr[random, 1]] = -1;
+
+                // change random values to last data.
+                arr[random, 0] = arr[count - 1, 0];
+                arr[random, 1] = arr[count - 1, 1];
+
+                count--;
+            }
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            map.map[arr[count, 0], arr[count, 1]] = 9;
+        }
+        return true;
+    }
+    private bool CreateEventTile()
+    {
+        int count = 0;
+        int[,] arr = new int[tileCount, 2];
+
+
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                if ((i != map.startPosition.x || j != map.startPosition.y)
+                    && map.map[i, j] > 0 && map.map[i, j] < (int)TileType.Boss
+                    && map.CheckContinueStrightType2(new Vector2Int(i, j), 3, (int)TileType.PositiveEvent, (int)TileType.Chest)
+                    && map.CheckContinue3Type2(new Vector2Int(i, j), (int)TileType.PositiveEvent, (int)TileType.Chest))
+                {
+                    arr[count, 0] = i;
+                    arr[count, 1] = j;
+                    count++;
+                    map.map[i, j] = (int)TileType.PositiveEvent;
+                }
+            }
+        }
+
+        int min = TileData.GetTileMin(map.floor, tileCount, TileType.PositiveEvent);
+        int max = TileData.GetTileMax(map.floor, tileCount, TileType.PositiveEvent);
+
+        if (count < min)
+            return false;
+        else if (count > max)
+        {
+            int delta = count - Random.Range(min, max + 1);
+
+            for (int i = 0; i < delta; i++)
+            {
+                int random = Random.Range(0, count);
+
+                int value = map.CountAdjacent4Tile(new Vector2Int(arr[random, 0], arr[random, 1]));
+                if (value > 0)
+                    map.map[arr[random, 0], arr[random, 1]] = value;
+                else
+                    map.map[arr[random, 0], arr[random, 1]] = -1;
+
+                // change random values to last data.
+                arr[random, 0] = arr[count - 1, 0];
+                arr[random, 1] = arr[count - 1, 1];
+
+                count--;
+            }
+        }
+
+        if (count == 1)
+        {
+            map.map[arr[0, 0], arr[0, 1]] = 10;
+        }
+        else
+        {
+            map.map[arr[0, 0], arr[0, 1]] = 10;
+            map.map[arr[1, 0], arr[1, 1]] = 11;
+            int positive = 0;
+            int negative = 0;
+            for (int i = 2; i < count; i++)
+            {
+                int random = Random.Range(10, 12);
+                if (random == 10)
+                    positive++;
+                else
+                    negative++;
+
+                float p = positive / count;
+                float n = negative / count;
+                if (p > n * 3)
+                    map.map[arr[count, 0], arr[count, 1]] = 11;
+                else if (n > p * 3)
+                    map.map[arr[count, 0], arr[count, 1]] = 10;
+                else
+                    map.map[arr[count, 0], arr[count, 1]] = random;
+            }
+        }
+        return true;
+    }
+
+    private void CheckTileCase() //////////////////////////////////////////////////
+    {
+        if (CreateBossTile()
+            && CheckSecretTile()
             && CreateMiddleBossTile()
-            && CreateChestTiles() 
+            && CreateMonsterTile()
+            && CreateChestTiles()
             && CreateEventTile())
         {
             for (int i = 0; i < map.size; i++)
@@ -1024,6 +821,10 @@ public class Map : MonoBehaviour
             map.direction = Direction.None;
 
             access = true;
+        }
+        else
+        {
+            CreateMap(map.floor);
         }
     }
 

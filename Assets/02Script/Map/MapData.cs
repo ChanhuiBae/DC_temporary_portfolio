@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 public enum Direction
@@ -13,37 +11,16 @@ public enum Direction
     Up,
     Down,
 }
-public enum TileType
-{
-    None = -1,
-    Secret = 0,
-    End = 1,
-    Two = 2,
-    Tree = 3,
-    Four = 4,
-    Exit = 5,
-    Boss = 6,
-    MiddleBoss = 7,
-    Monster = 8,
-    Chest = 9,
-    PositiveEvent = 10,
-    NegativeEvent = 11,
-    Merchant = 12,
-}
 
 public class MapData
 {
-    public static int[] sizes = { 7, 7, 9, 9, 9, 11, 11, 11 };
-    public static int[] maxs = { 16, 16, 23, 27, 35, 45, 55, 70 };
-    public static int[] mins = { 10, 10, 15, 19, 25, 35, 45, 60 };
-
     public int floor;
     public int size;
     public int max;
     public int min;
-
     public int[,] map;
     public bool[,] findMap;
+    public int[,] turn;
     public bool[,] knownMap;
     public int[,] goneMap;
     public bool[,] blownupMap;
@@ -57,20 +34,22 @@ public class MapData
 
     public bool SetSize(int floor)
     {
-        if(floor > -1 && floor < 8)
+        if(floor > 0 && floor < 7)
         {
             this.floor = floor;
-            this.size = sizes[floor];
-            this.max = maxs[floor];
-            this.min = mins[floor];
+            size = TileData.size[floor];
+            max = TileData.max[floor];
+            min = TileData.min[floor];
             return true;
         }
         return false;
     }
+
     public bool Copy(string[] m, string[] find, string[] know, string[] gone, string[] blown, string[] search)
     {
         map = new int[size, size];
         findMap = new bool[size, size];
+        turn = new int[size, size];
         knownMap = new bool[size, size];
         goneMap = new int[size, size];
         blownupMap = new bool[size, size];
@@ -117,7 +96,7 @@ public class MapData
         }
     }
 
-    public int minDistance(Vector2Int start, Vector2Int target)
+    public int GetMinDistance(Vector2Int start, Vector2Int target)
     { // Astar
         int result = -1; // distance
         int failResult = -1;
@@ -243,6 +222,44 @@ public class MapData
         return Direction.None;
     }
 
+
+    public int CountAdjacent4Tile(Vector2Int point)
+    {
+        int count = 0;
+        bool left = point.x - 1 > -1;
+        bool right = point.x + 1 < size;
+        bool up = point.y + 1 < size;
+        bool down = point.y - 1 > -1;
+
+        if (up && map[point.x, point.y + 1] > 0)
+            count++;
+        if (down && map[point.x, point.y - 1] > 0)
+            count++; 
+        if (left && map[point.x - 1, point.y] > 0)
+            count++;
+        if (right && map[point.x + 1, point.y] > 0)
+            count++;
+        return count;
+    }
+    public int CountDiagonalTile(Vector2Int point)
+    {
+        int count = 0;
+        bool left = point.x - 1 > -1;
+        bool right = point.x + 1 < size;
+        bool up = point.y + 1 < size;
+        bool down = point.y - 1 > -1;
+
+        if (left && up && map[point.x - 1, point.y + 1] > 0)
+            count++;
+        if (right && down && map[point.x + 1, point.y - 1] > 0)
+            count++;
+        if (up && right && map[point.x + 1, point.y + 1] > 0)
+            count++;
+        if (down && left && map[point.x - 1, point.y - 1] > 0)
+            count++;
+        return count;
+    }
+
     public void UpdateFindMap(Vector2Int point)
     {
         findMap[point.x, point.y] = true;
@@ -265,7 +282,6 @@ public class MapData
         }
     }
 
-    
     public bool Check3Connect2(Vector2Int point)
     {
         int connect = 0;
@@ -506,4 +522,468 @@ public class MapData
         }
         return checkPoint && checkLeft && checkRight && checkUp && checkDown;
     }
+
+    public bool CheckContinue3(Vector2Int point, int type, int count, int cut)
+    {
+        bool leftIn = point.x - 1 > -1;
+        bool rightIn = point.x + 1 < size;
+        bool upIn = point.y + 1 < size;
+        bool downIn = point.y - 1 > -1;
+        int reset = count;
+        if (leftIn)
+        {
+            if(map[point.x - 1, point.y] != type)
+            {
+                if (upIn && map[point.x - 1, point.y + 1] == type)
+                    count++;
+                if (downIn && map[point.x - 1, point.y - 1] == type)
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (upIn && map[point.x - 1, point.y + 1] == type)
+                    count++;
+                if (downIn && map[point.x - 1, point.y - 1] == type)
+                    count++;
+            }
+            if (count > cut)
+                return false;
+        }
+
+        if (rightIn)
+        {
+            count = reset;
+            if(map[point.x + 1, point.y] != type)
+            {
+                if (upIn && map[point.x + 1, point.y + 1] == type)
+                    count++;
+                if (downIn && map[point.x + 1, point.y - 1] == type)
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (upIn && map[point.x + 1, point.y + 1] == type)
+                    count++;
+                if (downIn && map[point.x + 1, point.y - 1] == type)
+                    count++;
+            }
+            if (count > cut)
+                return false;
+        }
+        if (upIn)
+        {
+            count = reset;
+            if(map[point.x, point.y + 1] != type)
+            {
+                if (leftIn && map[point.x - 1, point.y + 1] == type)
+                    count++;
+                if (rightIn && map[point.x + 1, point.y + 1] == type)
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (leftIn && map[point.x - 1, point.y + 1] == type)
+                    count++;
+                if (rightIn && map[point.x + 1, point.y + 1] == type)
+                    count++;
+            }
+            if (count > cut)
+                return false;
+        }
+        if (downIn)
+        {
+            count = reset;
+            if(map[point.x, point.y - 1] != type)
+            {
+                if (leftIn && map[point.x - 1, point.y - 1] == type)
+                    count++;
+                if (rightIn && map[point.x + 1, point.y - 1] == type)
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (leftIn && map[point.x - 1, point.y - 1] == type)
+                    count++;
+                if (rightIn && map[point.x + 1, point.y - 1] == type)
+                    count++;
+            }
+            if (count > cut)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckContinue4(Vector2Int point, int type, int cut)
+    {
+        bool leftIn = point.x - 1 > -1;
+        bool rightIn = point.x + 1 < size;
+        bool upIn = point.y + 1 < size;
+        bool downIn = point.y - 1 > -1;
+
+        if (leftIn)
+        {
+            if(map[point.x - 1, point.y] != type) 
+                return CheckContinue3(new Vector2Int(point.x - 1, point.y), type, 0, cut);
+            else
+                return CheckContinue3(new Vector2Int(point.x - 1, point.y), type, 1, cut);
+        }
+            
+        if (rightIn)
+        {
+            if(map[point.x + 1, point.y] != type) 
+                return CheckContinue3(new Vector2Int(point.x + 1, point.y), type, 0, cut);
+            else
+                return CheckContinue3(new Vector2Int(point.x + 1, point.y), type, 1, cut);
+        }
+            
+        if (upIn)
+        {
+            if (map[point.x, point.y + 1] != type)
+                return CheckContinue3(new Vector2Int(point.x, point.y + 1), type, 0, cut);
+            else
+                return CheckContinue3(new Vector2Int(point.x, point.y + 1), type, 1, cut);
+        }
+
+        if (downIn)
+        {
+            if(map[point.x, point.y - 1] != type)
+                return CheckContinue3(new Vector2Int(point.x, point.y - 1), type, 0, cut);
+            else
+                return CheckContinue3(new Vector2Int(point.x, point.y - 1), type, 1, cut);
+        }
+
+        return true;
+    }
+
+    public bool CheckContinue3Type2(Vector2Int point, int type1, int type2)
+    {
+        bool leftIn = point.x - 1 > -1;
+        bool rightIn = point.x + 1 < size;
+        bool upIn = point.y + 1 < size;
+        bool downIn = point.y - 1 > -1;
+        int count;
+        if (leftIn)
+        {
+            count = 0;
+            if (map[point.x - 1, point.y] != type1 && map[point.x - 1, point.y] != type1)
+            {
+                if (upIn && (map[point.x - 1, point.y + 1] == type1 || map[point.x - 1, point.y + 1] == type2))
+                    count++;
+                if (downIn && (map[point.x - 1, point.y - 1] == type1 || map[point.x - 1, point.y - 1] == type2))
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (upIn && (map[point.x - 1, point.y + 1] == type1 || map[point.x - 1, point.y + 1] == type2))
+                    count++;
+                if (downIn && (map[point.x - 1, point.y - 1] == type1 || map[point.x - 1, point.y - 1] == type2))
+                    count++;
+            }
+            if (count > 3)
+                return false;
+        }
+
+        if (rightIn)
+        {
+            count = 0;
+            if (map[point.x + 1, point.y] != type1)
+            {
+                if (upIn && (map[point.x + 1, point.y + 1] == type1 || map[point.x + 1, point.y + 1] == type2))
+                    count++;
+                if (downIn && (map[point.x + 1, point.y - 1] == type1 || map[point.x + 1, point.y - 1] == type2))
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (upIn && (map[point.x + 1, point.y + 1] == type1 || map[point.x + 1, point.y + 1] == type2))
+                    count++;
+                if (downIn && (map[point.x + 1, point.y - 1] == type1 || map[point.x + 1, point.y - 1] == type2))
+                    count++;
+            }
+            if (count > 3)
+                return false;
+        }
+        if (upIn)
+        {
+            count = 0;
+            if (map[point.x, point.y + 1] != type1)
+            {
+                if (leftIn && (map[point.x - 1, point.y + 1] == type1 || map[point.x - 1, point.y + 1] == type2))
+                    count++;
+                if (rightIn && (map[point.x + 1, point.y + 1] == type1 || map[point.x + 1, point.y + 1] == type2))
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (leftIn && (map[point.x - 1, point.y + 1] == type1 || map[point.x - 1, point.y + 1] == type2))
+                    count++;
+                if (rightIn && (map[point.x + 1, point.y + 1] == type1 || map[point.x + 1, point.y + 1] == type2))
+                    count++;
+            }
+            if (count > 3)
+                return false;
+        }
+        if (downIn)
+        {
+            count = 0;
+            if (map[point.x, point.y - 1] != type1)
+            {
+                if (leftIn && (map[point.x - 1, point.y - 1] == type1 || map[point.x - 1, point.y - 1] == type2))
+                    count++;
+                if (rightIn && (map[point.x + 1, point.y - 1] == type1 || map[point.x + 1, point.y - 1] == type2))
+                    count++;
+            }
+            else
+            {
+                count++;
+                if (leftIn && (map[point.x - 1, point.y - 1] == type1 || map[point.x - 1, point.y - 1] == type2))
+                    count++;
+                if (rightIn && (map[point.x + 1, point.y - 1] == type1 || map[point.x + 1, point.y - 1] == type2))
+                    count++;
+            }
+            if (count > 3)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckContinueStright(Vector2Int point, int length, int type)
+    {
+        int count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.x - i > -1 && map[point.x - i, point.y] == type)
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.x + i < size && map[point.x + i, point.y] == type)
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.y + i < size && map[point.x, point.y + i] == type)
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.y - i > -1 && map[point.x, point.y - i] == type)
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        int end = length / 2;
+        if (length % 2 == 1)
+            end++;
+
+        for (int i = -length / 2; i < end; i++)
+        {
+            if (point.x + i > -1 && point.x + i < size && map[point.x + i, point.y] == type)
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = -length / 2; i < end; i++)
+        {
+            if (point.y + i > -1 && point.y + i < size && map[point.x, point.y + i] == type)
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        return true;
+    }
+
+    public bool CheckContinueStrightType2(Vector2Int point, int length, int type1, int type2)
+    {
+        int count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.x - i > -1 && (map[point.x - i, point.y] == type1 || map[point.x - i, point.y] == type2))
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.x + i < size && (map[point.x + i, point.y] == type1 || map[point.x + i, point.y] == type2))
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.y + i < size && (map[point.x, point.y + i] == type1 || map[point.x, point.y + i] == type2))
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = 1; i < length; i++)
+        {
+            if (point.y - i > -1 && (map[point.x, point.y - i] == type1 || map[point.x, point.y - i] == type2))
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        int end = length / 2;
+        if (length % 2 == 1)
+            end++;
+
+        for (int i = -length / 2; i < end; i++)
+        {
+            if (point.x + i > -1 && point.x + i < size && (map[point.x + i, point.y] == type1 || map[point.x + i, point.y] == type2))
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        count = 0;
+        for (int i = -length / 2; i < end; i++)
+        {
+            if (point.y + i > -1 && point.y + i < size && (map[point.x, point.y + i] == type1 || map[point.x, point.y + i] == type2))
+                count++;
+        }
+        if (count > length - 2)
+            return false;
+
+        return true;
+    }
+
+    public bool CheckAB(Vector2Int point)
+    {
+        if(CountAdjacent4Tile(point) == 4)
+        {
+            bool left = point.x - 1 > -1;
+            bool right = point.x + 1 < size;
+            bool up = point.y + 1 < size;
+            bool down = point.y - 1 > -1;
+
+            if (CountAdjacent4Tile(new Vector2Int(point.x, point.y + 1)) == 4)
+                return false;
+            if (CountAdjacent4Tile(new Vector2Int(point.x, point.y - 1)) == 4)
+                return false;
+            if (CountAdjacent4Tile(new Vector2Int(point.x - 1, point.y)) == 4)
+                return false;
+            if (CountAdjacent4Tile(new Vector2Int(point.x + 1, point.y)) == 4)
+                return false;
+
+            if (CountAdjacent4Tile(new Vector2Int(point.x - 1, point.y + 1)) == 4)
+                return false;
+            if (CountAdjacent4Tile(new Vector2Int(point.x - 1, point.y - 1)) == 4)
+                return false;
+            if (CountAdjacent4Tile(new Vector2Int(point.x + 1, point.y + 1)) == 4)
+                return false;
+            if (CountAdjacent4Tile(new Vector2Int(point.x + 1, point.y - 1)) == 4)
+                return false;
+        }
+        return true;
+    }
+
+
+    public bool CheckTwoSecretTile(Vector2Int point)
+    {
+        if (point.x - 2 > -1 && map[point.x - 2, point.y] == 0)
+            return false;
+        if (point.x + 2 < size && map[point.x + 2, point.y] == 0)
+            return false;
+        if (point.y + 2 < size && map[point.x, point.y + 2] == 0)
+            return false;
+        if (point.y - 2 > -1 && map[point.x, point.y - 2] == 0)
+            return false;
+
+        bool left = point.x - 1 > -1;
+        bool right = point.x + 1 < size;
+        bool up = point.y + 1 < size;
+        bool down = point.y - 1 > -1;
+
+        if (left && up && map[point.x - 1, point.y + 1] == 0)
+            return false;
+        if (right && down && map[point.x + 1, point.y - 1] == 0)
+            return false;
+        if (up && right && map[point.x + 1, point.y + 1] == 0)
+            return false;
+        if (down && left && map[point.x - 1, point.y + -1] == 0)
+            return false;
+
+        return true;
+    }
+
+    public int GetNeedEndTileAmount()
+    {
+        int count = 0;
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if(map[i, j] == 1)
+                {
+                    count++;
+                }
+            }
+        }
+
+        switch (floor)
+        {
+            case 1:
+                if(count < 2)
+                    return 2 - count;
+                break;
+            case 2:
+                if (count < 3)
+                    return 3 - count;
+                break;
+            case 3:
+                if (count < 4)
+                    return 4 - count;
+                break;
+            case 4:
+                if (count < 6)
+                    return 6 - count;
+                break;
+            case 5:
+                if (count < 8)
+                    return 8 - count;
+                break;
+            case 6:
+                if (count < 10)
+                    return 10 - count;
+                break;
+        }
+
+        return 0;
+    }
+
 }

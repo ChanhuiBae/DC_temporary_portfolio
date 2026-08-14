@@ -2,18 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class ExplorationManager : MainManager, UIManager
 {
-    private PiMenu pimenu;
     private CameraController camController;
     private MapManager mapManager;
-    private Image mapFade;
+    private Image fade1;
+    private Image fade2;    
     private Fade fade;
     private Canvas canvas;
 
@@ -81,11 +79,6 @@ public class ExplorationManager : MainManager, UIManager
         {
             Debug.Log("ExplorationManger - Awake - LootPopup");
         }
-        obj = GameObject.Find("PiMenu");
-        if (obj == null || !obj.TryGetComponent<PiMenu>(out pimenu))
-        {
-            Debug.Log("ExplorationManager - Awake - PiMenu");
-        }
         obj = GameObject.Find("CameraController");
         if (obj == null || !obj.transform.TryGetComponent<CameraController>(out camController))
         {
@@ -96,8 +89,13 @@ public class ExplorationManager : MainManager, UIManager
         {
             Debug.Log("ExplorationManager - Awake - MapManager");
         }
-        obj = GameObject.Find("MapFade");
-        if (obj == null || !obj.TryGetComponent<Image>(out mapFade))
+        obj = GameObject.Find("Fade1");
+        if (obj == null || !obj.TryGetComponent<Image>(out fade1))
+        {
+            Debug.Log("ExplorationManager - Awake - Image");
+        }
+        obj = GameObject.Find("RightUp");
+        if (obj == null || !obj.TryGetComponent<Image>(out fade2))
         {
             Debug.Log("ExplorationManager - Awake - Image");
         }
@@ -262,11 +260,14 @@ public class ExplorationManager : MainManager, UIManager
         }
 
         ////////////// Artifact Test /////////////////
-        //if (!GameManager.Inst.Exploration.CheckArtifactID(8))
-        //{
-        //    Artifact artifact = new Artifact(8);
-        //    GameManager.Inst.Exploration.artifacts.Add(1, artifact);
-        //}
+        
+        /*
+        if (!GameManager.Inst.Exploration.CheckArtifactID(54))
+        {
+            Artifact artifact = new Artifact(54);
+            GameManager.Inst.Exploration.artifacts.Add(1, artifact);
+        }
+        */
     }
 
     private void Start()
@@ -293,7 +294,6 @@ public class ExplorationManager : MainManager, UIManager
             }
         }
         camController.enabled = true;
-        pimenu.gameObject.SetActive(false);
         messagePopup.gameObject.SetActive(false);
 
         // Victory Check
@@ -327,74 +327,70 @@ public class ExplorationManager : MainManager, UIManager
         GameManager.Inst.Exploration.InitSkillUseCount();
 
         ///////////////// Skill Test////////////////////
-        //GameManager.Inst.Exploration.SetSkill(5, 13);
+        GameManager.Inst.Exploration.SetSkill(1, 13);
+        GameManager.Inst.Exploration.SetSkill(2, 11);
+        GameManager.Inst.Exploration.SetSkill(5, 10);
+        GameManager.Inst.Exploration.SetSkill(3, 8);
     }
 
     private void OnClick(PointerEventData data)
     {
         if (GameManager.Inst.player.Control && data.button == PointerEventData.InputButton.Left)
             GameManager.Inst.player.Move(GameManager.Inst.Exploration.map.Mapdata.GetDirection(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 20.0f))));
-        else if (data.button == PointerEventData.InputButton.Right)
-        {
-            if(GameManager.Inst.Exploration.map.Access && GameManager.Inst.player.State == CharacterStateDC.Idle)
-            {
-                if (GameManager.Inst.player.Control)
-                {
-                    GameManager.Inst.player.Control = false;
-                    pimenu.gameObject.SetActive(true);
-                    pimenu.Enable();
-                }
-                else if(pimenu.gameObject.activeSelf)
-                {
-                    GameManager.Inst.player.Control = true;
-                    pimenu.gameObject.SetActive(false);
-                }
-            }
-        }
     }
 
     public void FadeIn(float time)
     {
-        mapFade.enabled = true;
+        fade1.enabled = true;
+        fade2.enabled = true;
         Color fromColor = new Color(0, 0, 0, 0);
         Color toColor = new Color(0, 0, 0, 1);
-        LeanTween.value(mapFade.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade1.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade2.gameObject, setFadeCallback, fromColor, toColor, time);
         StartCoroutine(DisableMapFade(time));
     }
 
     public void FadeOut(float time)
     {
-        mapFade.enabled = true;
+        fade1.enabled = true;
+        fade2.enabled = true;
         Color fromColor = new Color(0, 0, 0, 1);
         Color toColor = new Color(0, 0, 0, 0);
-        LeanTween.value(mapFade.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade1.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade2.gameObject, setFadeCallback, fromColor, toColor, time);
         StartCoroutine(DisableMapFade(time));
     }
 
     private void setFadeCallback(Color c)
     {
-        mapFade.color = c;
+        fade1.color = c;
+        fade2.color = c;
     }
 
     private IEnumerator DisableMapFade(float time)
     {
         yield return YieldInstructionCache.WaitForSeconds(time);
-        mapFade.enabled = false;
+        fade1.enabled = false;
+        fade2.enabled = false;
     }
 
     private IEnumerator MapFadeOutIn(float time)
     {
         time /= 2;
-        mapFade.enabled = true;
+        fade1.enabled = true;
+        fade2.enabled = true;
         Color fromColor = new Color(0, 0, 0, 0);
         Color toColor = new Color(0, 0, 0, 1);
-        LeanTween.value(mapFade.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade1.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade2.gameObject, setFadeCallback, fromColor, toColor, time);
         yield return YieldInstructionCache.WaitForSeconds(time);
         fromColor = new Color(0, 0, 0, 1);
         toColor = new Color(0, 0, 0, 0);
-        LeanTween.value(mapFade.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade1.gameObject, setFadeCallback, fromColor, toColor, time);
+        LeanTween.value(fade2.gameObject, setFadeCallback, fromColor, toColor, time);
         yield return YieldInstructionCache.WaitForSeconds(time);
-        mapFade.enabled = false;
+        fade1.enabled = false;
+        fade2.enabled = false;
     }
 
     public void AddTurn()
@@ -469,7 +465,6 @@ public class ExplorationManager : MainManager, UIManager
 
     public void ShowCharactersInfo()
     {
-        pimenu.gameObject.SetActive(false);
         camController.enabled = true;
         GameManager.Inst.player.Control = true;
     }
@@ -619,31 +614,6 @@ public class ExplorationManager : MainManager, UIManager
         }
     }
 
-    public void CheckSearch()
-    {
-        RemoveAddListener();
-        pimenu.gameObject.SetActive(false);
-
-        if (mapManager.CheckSearched())
-        {
-            messagePopup.gameObject.SetActive(true);
-            messagePopup.enabled = true;
-            messagePopup.onClick.AddListener(CloseMessagePopup);
-            message.text = "이 이상의 탐색은 무의미하다.";
-            SetButtonsFalse();
-        }
-        else
-        {
-            messagePopup.gameObject.SetActive(true);
-            messagePopup.enabled = false;
-            message.text = "이곳을 탐색해볼까? (허기과 피로도가 5씩 소모됩니다.)";
-            SetButtonTrue(2);
-            textButton0.onClick.AddListener(Search);
-            textButton1.onClick.AddListener(CloseMessagePopup);
-            SetTextYesNo();
-        }
-    }
-
     public void Search()
     {
         RemoveAddListener();
@@ -712,7 +682,6 @@ public class ExplorationManager : MainManager, UIManager
 
     public void Campfire()
     {
-        pimenu.gameObject.SetActive(false);
         RemoveAddListener();
         messagePopup.gameObject.SetActive(true);
         messagePopup.enabled = false;
@@ -803,7 +772,6 @@ public class ExplorationManager : MainManager, UIManager
     public void Fight()
     {
         messagePopup.gameObject.SetActive(false);
-        canvas.sortingOrder = 1;
         fade.FadeIn(1f);
         StartCoroutine(WaitLoadScene(SceneName.FightScene, 1f));
     }

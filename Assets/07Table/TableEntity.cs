@@ -116,3 +116,12 @@ public class Entity_Script
     public int CharacterID;
     public string Text;
 }
+
+[System.Serializable]
+public class Entity_Chest
+{
+    public int Floor;
+    public int Golden;
+    public int Silver;
+    public int Wooden;
+}

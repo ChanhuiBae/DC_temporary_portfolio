@@ -35,10 +35,13 @@ public class MapManager : MonoBehaviour
 
     public void SetChest()
     {
+        Entity_Chest chestData;
+        GameManager.Inst.GetChestData(GameManager.Inst.Exploration.Floor, out chestData);
+
         int range = Random.Range(0, 100);
-        if(range < 10)
+        if (range < chestData.Golden)
             chest = ChestType.Golden;
-        else if(range < 50)
+        else if(range < chestData.Golden + chestData.Silver)
             chest = ChestType.Silver;
         else
             chest = ChestType.Wooden;

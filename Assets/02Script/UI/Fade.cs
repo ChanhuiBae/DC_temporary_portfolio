@@ -27,6 +27,10 @@ public class Fade : MonoBehaviour, UIManager
 
     public void FadeIn(float time)
     {
+        rightUp.enabled = true;
+        rightUp.color = Color.black;
+        rightUp.transform.LeanScaleY(0, 0);
+
         left.transform.LeanScaleX(1, time);
         right.transform.LeanScaleX(1, time);
         rightUp.transform.LeanScaleY(1, time);
@@ -34,6 +38,13 @@ public class Fade : MonoBehaviour, UIManager
 
     public void FadeOut(float time)
     {
+        rightUp.enabled = true;
+        rightUp.color = Color.black;
+
+        left.transform.LeanScaleX(1, 0);
+        right.transform.LeanScaleX(1, 0);
+        rightUp.transform.LeanScaleY(1, 0);
+
         left.transform.LeanScaleX(0, time);
         right.transform.LeanScaleX(0, time);
         rightUp.transform.LeanScaleY(0, time);
