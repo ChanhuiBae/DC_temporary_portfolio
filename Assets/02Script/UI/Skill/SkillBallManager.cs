@@ -23,6 +23,7 @@ public class SkillBallManager : MonoBehaviour
     {
         get => deleting;
     }
+    private int typeCount = 5;
     private int ballCount = 54;
     private float maxDistance = 4f;
     public float MaxDis
@@ -34,14 +35,9 @@ public class SkillBallManager : MonoBehaviour
     private TextMeshProUGUI toast;
 
     private List<SkillBall> skillBalls = new List<SkillBall>();
+    private Dictionary<int, List<SkillBall>> typeDic = new Dictionary<int, List<SkillBall>>();
     private List<SkillBall> connectedBalls = new List<SkillBall>();
     private List<SkillBall> hintBalls = new List<SkillBall>();
-
-    private List<SkillBall> type1 = new List<SkillBall>();
-    private List<SkillBall> type2 = new List<SkillBall>();
-    private List<SkillBall> type3 = new List<SkillBall>();
-    private List<SkillBall> type4 = new List<SkillBall>();
-    private List<SkillBall> type5 = new List<SkillBall>();
 
     private int startType; // id
     public int StartType
@@ -134,9 +130,9 @@ public class SkillBallManager : MonoBehaviour
         }
         GameObject ft = GameObject.Find("FeverText");
 
-
         deleting = false;
         preType = 0;
+        ResetAllSkillBalls();
         skillBalls.Clear();
         connectedBalls.Clear();
     }
@@ -188,165 +184,57 @@ public class SkillBallManager : MonoBehaviour
 
     public bool AddSkillType(int type, SkillBall skill)
     {
-        switch (type)
+        List<SkillBall> list = new List<SkillBall>();
+        typeDic.TryGetValue(type, out list);
+        if(list.Count < 14)
         {
-            case 1:
-                if (type1.Count < 14)
-                {
-                    type1.Add(skill);
-                    return true;
-                }
-                else
-                    return false;
-            case 2:
-                if (type2.Count < 14)
-                {
-                    type2.Add(skill);
-                    return true;
-                }
-                else
-                    return false;
-            case 3:
-                if (type3.Count < 14)
-                {
-                    type3.Add(skill);
-                    return true;
-                }
-                else
-                    return false;
-            case 4:
-                if (type4.Count < 14)
-                {
-                    type4.Add(skill);
-                    return true;
-                }
-                else
-                    return false;
-            case 5:
-                if (type5.Count < 14)
-                {
-                    type5.Add(skill);
-                    return true;
-                }
-                else
-                    return false;
-            default:
-                return false;
+            list.Add(skill);
+            return true;
         }
+        return false;
     }
 
     private void RemoveSkillType(int type, SkillBall skill)
     {
-        switch (type)
-        {
-            case 1:
-                type1.Remove(skill);
-                break;
-            case 2:
-                type2.Remove(skill);
-                break;
-            case 3:
-                type3.Remove(skill);
-                break;
-            case 4:
-                type4.Remove(skill);
-                break;
-            case 5:
-                type5.Remove(skill);
-                break;
-        }
+        List<SkillBall> list = new List<SkillBall>();
+        typeDic.TryGetValue(type, out list);
+        list.Remove(skill);
     }
 
-    private void CheckConnectable(SkillBall skill)
+    private void CheckConnectable(SkillBall startSkill)
     {
-        skill.SetColorWhite();
-        switch ((int)startType)
+        if (!typeDic.TryGetValue(startType, out List<SkillBall> currentTypeList))
+            return;
+
+        Queue<SkillBall> queue = new Queue<SkillBall>();
+        HashSet<SkillBall> visited = new HashSet<SkillBall>();
+
+        queue.Enqueue(startSkill);
+        visited.Add(startSkill);
+        startSkill.SetColorWhite();
+
+        while (queue.Count > 0)
         {
-            case 1:
-                foreach (SkillBall s in type1)
-                {
-                    if (!connectedBalls.Contains(s) && s.CheckDimmed())
-                    {
-                        float distance = Vector3.Distance(skill.transform.position, s.transform.position);
-                        if (distance < maxDistance)
-                        {
-                            CheckConnectable(s);
-                        }
-                        else
-                        {
-                            s.Dimmed();
-                        }
-                    }
-                }
-                break;
-            case 2:
-                foreach (SkillBall s in type2)
-                {
-                    if (!connectedBalls.Contains(s) && s.CheckDimmed())
-                    {
-                        float distance = Vector3.Distance(skill.transform.position, s.transform.position);
-                        if (distance < maxDistance)
-                        {
-                            CheckConnectable(s);
-                        }
-                        else
-                        {
-                            s.Dimmed();
-                        }
-                    }
-                }
-                break;
-            case 3:
-                foreach (SkillBall s in type3)
-                {
-                    if (!connectedBalls.Contains(s) && s.CheckDimmed())
-                    {
-                        float distance = Vector3.Distance(skill.transform.position, s.transform.position);
-                        if (distance < maxDistance)
-                        {
-                            CheckConnectable(s);
-                        }
-                        else
-                        {
-                            s.Dimmed();
-                        }
-                    }
-                }
-                break;
-            case 4:
-                foreach (SkillBall s in type4)
-                {
-                    if (!connectedBalls.Contains(s) && s.CheckDimmed())
-                    {
-                        float distance = Vector3.Distance(skill.transform.position, s.transform.position);
-                        if (distance < maxDistance)
-                        {
-                            CheckConnectable(s);
-                        }
-                        else
-                        {
-                            s.Dimmed();
-                        }
-                    }
-                }
-                break;
-            case 5:
-                foreach (SkillBall s in type5)
-                {
-                    if (!connectedBalls.Contains(s) && s.CheckDimmed())
-                    {
-                        float distance = Vector3.Distance(skill.transform.position, s.transform.position);
-                        if (distance < maxDistance)
-                        {
-                            CheckConnectable(s);
-                        }
-                        else
-                        {
-                            s.Dimmed();
-                        }
-                    }
-                }
-                break;
+            SkillBall current = queue.Dequeue();
+
+            foreach (SkillBall candidate in current.Neighbors) // 캐싱한 이웃 선회
+            {
+                // 같은 타입이 아니거나, 이미 연결된 목록에 있거나, 이미 방문했다면 스킵
+                if (candidate.Type != startType || connectedBalls.Contains(candidate) || visited.Contains(candidate))
+                    continue;
+
+                candidate.SetColorWhite();
+                visited.Add(candidate);
+                queue.Enqueue(candidate);
+            }
+        }
+
+        foreach (SkillBall s in currentTypeList)
+        {
+            if (!connectedBalls.Contains(s) && !visited.Contains(s))
+            {
+                s.Dimmed();
+            }
         }
     }
 
@@ -394,53 +282,14 @@ public class SkillBallManager : MonoBehaviour
 
     private void SetTypeDimmed()
     {
-        switch ((int)startType)
+        List<SkillBall> list = new List<SkillBall>();
+        typeDic.TryGetValue(startType, out list);
+        foreach (SkillBall s in list)
         {
-            case 1:
-                foreach (SkillBall s in type1)
-                {
-                    if (!connectedBalls.Contains(s))
-                    {
-                        s.Dimmed();
-                    }
-                }
-                break;
-            case 2:
-                foreach (SkillBall s in type2)
-                {
-                    if (!connectedBalls.Contains(s))
-                    {
-                        s.Dimmed();
-                    }
-                }
-                break;
-            case 3:
-                foreach (SkillBall s in type3)
-                {
-                    if (!connectedBalls.Contains(s))
-                    {
-                        s.Dimmed();
-                    }
-                }
-                break;
-            case 4:
-                foreach (SkillBall s in type4)
-                {
-                    if (!connectedBalls.Contains(s))
-                    {
-                        s.Dimmed();
-                    }
-                }
-                break;
-            case 5:
-                foreach (SkillBall s in type5)
-                {
-                    if (!connectedBalls.Contains(s))
-                    {
-                        s.Dimmed();
-                    }
-                }
-                break;
+            if (!connectedBalls.Contains(s))
+            {
+                s.Dimmed();
+            }
         }
     }
 
@@ -588,11 +437,11 @@ public class SkillBallManager : MonoBehaviour
 
     private void ResetAllSkillBalls()
     {
-        type1.Clear();
-        type2.Clear();
-        type3.Clear();
-        type4.Clear();
-        type5.Clear();
+        typeDic.Clear();
+        for (int i = 0; i < typeCount; i++)
+        {
+            typeDic.Add(i + 1, new List<SkillBall>());
+        }
         StartCoroutine(RespownSkillBalls());
     }
 
@@ -603,6 +452,36 @@ public class SkillBallManager : MonoBehaviour
             s.StartCoroutine(s.RespawnAllEffect());
             yield return null;
             yield return null;
+        }
+
+        yield return YieldInstructionCache.WaitForSeconds(0.5f);
+        CacheAllNeighbors();
+    }
+
+    public void CacheAllNeighbors() // 모든 스킬볼을 대상으로 거리(maxDistance) 이내에 있는 이웃 스킬볼 리스트를 미리 계산하여 캐싱
+    {
+        float maxDistanceSqr = maxDistance * maxDistance;
+
+        for (int i = 0; i < skillBalls.Count; i++)
+        {
+            SkillBall ballA = skillBalls[i];
+            List<SkillBall> currentNeighbors = new List<SkillBall>();
+
+            for (int j = 0; j < skillBalls.Count; j++)
+            {
+                if (i == j) continue; // 자신 제외
+
+                SkillBall ballB = skillBalls[j];
+
+                // 거리 제곱(sqrMagnitude)으로 인접 여부 판별
+                float sqrDist = (ballA.transform.position - ballB.transform.position).sqrMagnitude;
+                if (sqrDist < maxDistanceSqr)
+                {
+                    currentNeighbors.Add(ballB);
+                }
+            }
+
+            ballA.SetNeighbors(currentNeighbors);
         }
     }
 
@@ -682,7 +561,6 @@ public class SkillBallManager : MonoBehaviour
                 GiveHint();
             }
         }
-           
     }
 
     private void GiveHint()

@@ -19,6 +19,13 @@ public class SkillBall : MonoBehaviour
         get => type;
     }
 
+    private List<SkillBall> neighbors = new List<SkillBall>(); // 이웃 스킬볼들을 저장
+    public List<SkillBall> Neighbors => neighbors;
+    public void SetNeighbors(List<SkillBall> newNeighbors)
+    {
+        neighbors = newNeighbors;
+    }
+
     private Image bubble;
     private Image icon;
     private Image light;

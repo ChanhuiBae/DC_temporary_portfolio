@@ -193,12 +193,16 @@ public class Map : MonoBehaviour
 
         if (tileCount < map.min || map.GetNeedEndTileAmount() > 0)
         {
-            CreateMap(map.floor);
+            bool isSuccess = AppendExtraTiles();
+
+            if (!isSuccess || tileCount < map.min || map.GetNeedEndTileAmount() > 0)
+            {
+                CreateMap(map.floor);
+                yield break;
+            }
         }
-        else
-        {
-            CheckTileCase();
-        }
+
+        CheckTileCase();
     }
 
     private void GetNextPosition()
@@ -469,6 +473,158 @@ public class Map : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    private bool AppendExtraTiles()
+    {
+        int safetyLoop = 0;
+
+        while ((tileCount < map.min || map.GetNeedEndTileAmount() > 0) && safetyLoop < 300)
+        {
+            safetyLoop++;
+            bool tileAdded = false;
+
+            // 엔드 타일이 부족한 경우
+            // 연결이 2개 이상인 타일에 새 타일을 붙여 => 엔드 타일 생성
+            if (map.GetNeedEndTileAmount() > 0)
+            {
+                tileAdded = TryAddBranchEndTile();
+            }
+
+            // 엔드 타일 충분, 전체 타일 부족한 경우:
+            // 기존 엔드 타일에 타일을 붙여 *엔드 타일 수 유지하며* 길게 늘림.
+            if (!tileAdded && tileCount < map.min)
+            {
+                tileAdded = TryExtendFromEndTile();
+            }
+
+            // 실패했을 때: 랜덤 유효 공간에 타일 추가
+            if (!tileAdded)
+            {
+                Vector2Int randomCandidate = GetRandomArea();
+                if (randomCandidate.x != -1 && CheckArea(randomCandidate))
+                {
+                    UpdateMap(randomCandidate);
+                    map.goneMap[randomCandidate.x, randomCandidate.y]++;
+                    tileAdded = true;
+                }
+            }
+
+            // 규칙을 어기지 않고 타일을 추가 불가
+            if (!tileAdded)
+            {
+                break;
+            }
+        }
+
+        return (tileCount >= map.min && map.GetNeedEndTileAmount() <= 0);
+    }
+
+
+    private bool TryAddBranchEndTile() // 연결 2개 이상 타일에서 1칸짜리 Branch를 쳐서 => 엔드 타일 생성
+    {
+        System.Collections.Generic.List<Vector2Int> candidates = new System.Collections.Generic.List<Vector2Int>();
+
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                Vector2Int point = new Vector2Int(i, j);
+
+                if (map.map[i, j] == -1 && map.CountAdjacent4Tile(point) == 1 && CheckArea(point))
+                {
+                    Vector2Int adj = GetAdjacentTile(point);
+                    if (adj.x != -1 && map.CountAdjacent4Tile(adj) >= 2)
+                    {
+                        candidates.Add(point);
+                    }
+                }
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            Vector2Int pick = candidates[Random.Range(0, candidates.Count)];
+            UpdateMap(pick);
+            map.goneMap[pick.x, pick.y]++;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryExtendFromEndTile()  // 엔드 타일에 타일을 덧붙여 엔드 타일 수를 유지하면서 tileCount를 늘림
+    {
+        System.Collections.Generic.List<Vector2Int> candidates = new System.Collections.Generic.List<Vector2Int>();
+
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                Vector2Int point = new Vector2Int(i, j);
+
+                if (map.map[i, j] == -1 && map.CountAdjacent4Tile(point) == 1 && CheckArea(point))
+                {
+                    Vector2Int adj = GetAdjacentTile(point);
+                    if (adj.x != -1 && map.CountAdjacent4Tile(adj) == 1)
+                    {
+                        candidates.Add(point);
+                    }
+                }
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            Vector2Int pick = candidates[Random.Range(0, candidates.Count)];
+            UpdateMap(pick);
+            map.goneMap[pick.x, pick.y]++;
+            return true;
+        }
+
+        return false;
+    }
+
+    private Vector2Int GetAdjacentTile(Vector2Int p)  // p에서 상하좌우 중 타일이 존재하는 첫 위치 반환
+    {
+        Vector2Int[] dirs = { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down };
+        foreach (var d in dirs)
+        {
+            Vector2Int np = p + d;
+            if (np.x >= 0 && np.x < map.size && np.y >= 0 && np.y < map.size)
+            {
+                if (map.map[np.x, np.y] >= 0)
+                    return np;
+            }
+        }
+        return new Vector2Int(-1, -1);
+    }
+
+    private Vector2Int GetRandomArea()
+    {
+        System.Collections.Generic.List<Vector2Int> candidates = new System.Collections.Generic.List<Vector2Int>();
+
+        for (int i = 0; i < map.size; i++)
+        {
+            for (int j = 0; j < map.size; j++)
+            {
+                Vector2Int point = new Vector2Int(i, j);
+
+                // 빈 타일이면서 기존 맵 타일과 1개 이상 연결되어 있고, 생성 제약 조건(CheckArea)을 만족하는지 검사
+                if (map.map[i, j] == -1 && map.CountAdjacent4Tile(point) > 0 && CheckArea(point))
+                {
+                    candidates.Add(point);
+                }
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            return candidates[Random.Range(0, candidates.Count)];
+        }
+
+        return new Vector2Int(-1, -1);
     }
 
     private bool CreateSecretTile()
