@@ -163,19 +163,30 @@ public class SkillManager : MonoBehaviour
 
     public bool UseSkill(int id, int skillBallCount, bool reenforce)
     {
-        Entity_Skill e_skill;
-        GameManager.Inst.GetSkillData(id, out e_skill);
-        float cast = e_skill.Cast;
-        cast *= GameManager.Inst.Exploration.cast_length * GameManager.Inst.Exploration.cast_speed;
+        if (!GameManager.Inst.GetSkillData(id, out Entity_Skill e_skill)
+            || e_skill == null)
+        {
+            return false;
+        }
+
+        var exploration = GameManager.Inst.Exploration;
+
+        // 0 또는 음수로 나누는 것을 방지
+        float castSpeed = Mathf.Max(0.01f, exploration.cast_speed);
+
+        float cast = e_skill.Cast * exploration.cast_length / castSpeed;
+
         if (reenforce)
             cast *= 0.75f;
-        if(cast < 0)
-            cast = 0;
+
+        cast = Mathf.Max(0f, cast);
+
         if (SetUseType(id, cast))
         {
             StartCoroutine(WaitPlay(id, skillBallCount, reenforce, cast));
             return true;
         }
+
         return false;
     }
 
@@ -194,7 +205,7 @@ public class SkillManager : MonoBehaviour
                 player.PlayAnimation(CharacterStateDC.Push);
                 break;
         }
-        yield return YieldInstructionCache.WaitForSeconds(0.7f);
+        yield return null;
         GameManager.Inst.Exploration.SetSkillUseCount(id);
         skills[id].gameObject.SetActive(true);
         skills[id].ATK = GameManager.Inst.Exploration.player.ATK;

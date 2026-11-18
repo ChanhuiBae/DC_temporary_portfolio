@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Burn : AbnormalState
@@ -11,15 +10,23 @@ public class Burn : AbnormalState
         timedelay = 1;
     }
 
-    protected virtual IEnumerator PlayAbnormalState(CharacterController character, float atk)
+    protected override IEnumerator PlayAbnormalState(CharacterController character, float atk)
     {
-        stack[character]++;
+        // 중첩을 1 증가시키되 최대 6중첩으로 제한
+        stack[character] = Mathf.Min(stack[character] + 1, maxStack);
+
         float time = Time.time;
+
         while (Time.time < time + fullTime)
         {
-            character.TakeDamage(0.05f * atk * stack[character], AttributeType.Fire, false);
+            character.TakeDamage(
+                0.05f * atk * stack[character],
+                AttributeType.Fire,
+                false);
+
             yield return YieldInstructionCache.WaitForSeconds(timedelay);
         }
+
         stack[character] = 0;
     }
 }

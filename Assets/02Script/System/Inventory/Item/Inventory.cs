@@ -1,7 +1,5 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
-using UnityEngine;
 
 public class Inventory
 {
@@ -141,6 +139,7 @@ public class Inventory
             if (IsFull)
             {
                 remain = newItem.Amount - delta;
+                newItem.Amount = remain;
                 return false;
             }
 
@@ -184,28 +183,30 @@ public class Inventory
 
     public bool DeleteItemAmount(int itemID, int amount)
     {
-        if(GetItemAmount(itemID) >= amount)
+        // 잘못된 요청이거나 보유 수량이 부족하면 변경하지 않음
+        if (amount <= 0 || GetItemAmount(itemID) < amount)
+            return false;
+
+        List<int> indexes = FindIndexByItemID(itemID);
+        int remaining = amount;
+
+        // 뒤에서부터 처리해야 슬롯 삭제 시 앞쪽 인덱스가 바뀌지 않음
+        for (int i = indexes.Count - 1; i >= 0 && remaining > 0; i--)
         {
-            List<int> indexs = FindIndexByItemID(itemID);
-            if (indexs.Count > 0)
-            {
-                int i = indexs.Count - 1;
-                while(i > -1)
-                {
-                    items[indexs[i]].Amount -= amount;
-                    if (items[indexs[i]].Amount < 1)
-                    {
-                        amount = Mathf.Abs(items[indexs[i]].Amount);
-                        items.RemoveAt(indexs[i]);
-                        i -= 1;
-                    }
-                    else
-                        break;
-                }
-                return true;
-            }
+            int index = indexes[i];
+            Item item = items[index];
+
+            // 이 슬롯에서 실제로 차감할 수량
+            int consumed = UnityEngine.Mathf.Min(item.Amount, remaining);
+
+            item.Amount -= consumed;
+            remaining -= consumed;
+
+            if (item.Amount == 0)
+                items.RemoveAt(index);
         }
-        return false;
+
+        return remaining == 0;
     }
 
     public bool DeleteItem(Item deleteItem)

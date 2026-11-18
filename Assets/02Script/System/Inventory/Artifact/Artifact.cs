@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor.Experimental;
-using UnityEngine;
 public class Artifact
 {
 

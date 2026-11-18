@@ -132,6 +132,8 @@ public class GameManager : Singleton<GameManager>
         return chestData.TryGetValue(floor, out data);
     }
 
+    public bool HasInitializedExploration { get; set; } = false;
+
     private bool fight;
     public bool Fight
     {
@@ -163,7 +165,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         if(!TryGetComponent<ItemManager>(out itemManager))
@@ -321,7 +323,7 @@ public class GameManager : Singleton<GameManager>
             {
                 mapArr += exploration.map.Mapdata.map[i, j] + ",";
                 if (exploration.map.Mapdata.findMap[i, j]) findArr += "1,"; else findArr += "0,";
-                if (exploration.map.Mapdata.knownMap[i, j]) knownArr += knownArr + "1,"; else knownArr += "0,";
+                if (exploration.map.Mapdata.knownMap[i, j]) knownArr += "1,"; else knownArr += "0,";
                 goneArr += exploration.map.Mapdata.goneMap[i, j] + ",";
                 if (exploration.map.Mapdata.blownupMap[i, j]) blownArr += "1,"; else blownArr += "0,";
                 if (exploration.map.Mapdata.searchMap[i, j]) searchArr += "1,"; else searchArr += "0,";
@@ -905,9 +907,10 @@ public class GameManager : Singleton<GameManager>
     public IEnumerator WaitAndQuitGame(float time)
     {
         yield return YieldInstructionCache.WaitForSeconds(time);
-        //if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        // else 
-        // Application.Quit();
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }

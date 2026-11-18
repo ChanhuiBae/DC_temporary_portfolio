@@ -11,10 +11,11 @@ public class Bubble : MonoBehaviour
     {
         get => mergre;
     }
-    private int id;
+    // 현재 UI가 표시하는 데이터. 보유 목록에도 동일한 객체가 들어 있습니다.
+    private ArtifactData data;
     public int InventoryID
     {
-        get => id;
+        get => data != null ? data.InventoryID : -1;
     }
     public int ArtifactID
     {
@@ -55,11 +56,11 @@ public class Bubble : MonoBehaviour
         {
             Debug.Log("Bubble - Awake - Rigidbody2D");
         }
-        if(!transform.TryGetComponent<Image>(out bubble))
+        if (!transform.TryGetComponent<Image>(out bubble))
         {
             Debug.Log("Bubble - Awake - Image");
         }
-        if(!transform.GetChild(0).TryGetComponent<Image>(out icon))
+        if (!transform.GetChild(0).TryGetComponent<Image>(out icon))
         {
             Debug.Log("Bubble - Awake - Image");
         }
@@ -113,17 +114,68 @@ public class Bubble : MonoBehaviour
         manager = (ExplorationManager)GameManager.Inst.manager;
     }
 
+    // 씬 복귀 또는 풀 재사용 시 기존 데이터에 새 UI를 연결합니다.
+    // 여기서는 보유 목록에 추가하지 않습니다.
+    public void Bind(ArtifactData data)
+    {
+        StopAllCoroutines();
+        LeanTween.cancel(gameObject);
+        this.data = data;
+        manager = (ExplorationManager)GameManager.Inst.manager;
+
+        // 이전에 표시하던 버블의 드래그/판매/물리 상태를 초기화합니다.
+        inBubble = null;
+        index = 0;
+        sale = false;
+        force = Vector2.zero;
+        rig.velocity = Vector2.zero;
+        rig.angularVelocity = 0f;
+        rig.isKinematic = true;
+
+        SetBubble(data.UniqueID, data.level);
+        prePosition = transform.position;
+    }
+
+    // 합성 시 UI뿐 아니라 보유 데이터도 함께 변경합니다.
     public void SetBubble(int id, int mergre)
     {
-        this.mergre = mergre;
-        bubble.sprite = Resources.Load<Sprite>("Bubble/Bubble" + mergre);
-        GameManager.Inst.GetArtifactData(id, out artifact);
+        if (data == null)
+        {
+            Debug.LogError("Bubble: Bind로 데이터를 연결한 뒤 호출해야 합니다.");
+            return;
+        }
 
+        Entity_Artifact nextArtifact;
+        if (!GameManager.Inst.GetArtifactData(id, out nextArtifact)
+            || nextArtifact == null)
+        {
+            Debug.LogError("Bubble: 존재하지 않는 아티팩트 ID: " + id);
+            return;
+        }
+
+        ArtifactData newArtifact = new ArtifactData(data.InventoryID, id, mergre);
+        data = newArtifact;
+        this.mergre = mergre;
+        artifact = nextArtifact;
+        bubble.sprite = Resources.Load<Sprite>("Bubble/Bubble" + mergre);
         icon.sprite = Resources.Load<Sprite>("Artifact/" + artifact.Icon);
-        transform.position = transform.parent.transform.position;
+
+        StopAllCoroutines();
+        LeanTween.cancel(gameObject);
+        rig.velocity = Vector2.zero;
+        rig.isKinematic = true;
+        transform.position = transform.parent.position;
         transform.LeanScale(Vector2.zero, 0);
         transform.LeanScale(Vector2.one, 0.5f);
         StartCoroutine(Moving());
+    }
+
+    // 씬 전환이나 단순 비활성화는 아이템 소비가 아닙니다.
+    // 이곳에서는 연출만 중단하고 보유 데이터는 삭제하지 않습니다.
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        LeanTween.cancel(gameObject);
     }
 
     private IEnumerator Moving()
@@ -146,7 +198,7 @@ public class Bubble : MonoBehaviour
 
     void OnUp(PointerEventData data)
     {
-        if(data.button == PointerEventData.InputButton.Right)
+        if (data.button == PointerEventData.InputButton.Right)
         {
             manager.SetArtifactPopup(false, this);
         }
@@ -159,7 +211,7 @@ public class Bubble : MonoBehaviour
 
     private IEnumerator CheckExit()
     {
-        while((Input.mousePosition.x < transform.position.x + 10
+        while ((Input.mousePosition.x < transform.position.x + 10
             && Input.mousePosition.x > transform.position.x - 10)
             || (Input.mousePosition.y < transform.position.y + 10
             && Input.mousePosition.y > transform.position.y - 10))
@@ -195,20 +247,30 @@ public class Bubble : MonoBehaviour
 
     void OnEndDrag(PointerEventData data)
     {
-        if (inBubble != null)
+        if (inBubble != null && inBubble != this)
         {
-            if(mergre == inBubble.mergre)
+            if (mergre == inBubble.mergre)
             {
-                int result = GameManager.Inst.GetArtifactCombinationResult(artifact.ID, inBubble.ArtifactID);
-                if (result > 0)
+                int result = GameManager.Inst.GetArtifactCombinationResult(
+                    artifact.ID, inBubble.ArtifactID);
+                Entity_Artifact resultArtifact;
+                if (result > 0
+                    && GameManager.Inst.GetArtifactData(result, out resultArtifact)
+                    && resultArtifact != null)
                 {
-                    mergre++;
-                    bubble.sprite = Resources.Load<Sprite>("Bubble/Bubble" + mergre);
-                    inBubble.Despown();
+                    Bubble consumedBubble = inBubble;
+                    int nextMergeLevel = mergre + 1;
+
+                    // 내 데이터는 합성 결과로 변경하고 상대 데이터 한 개만 소비합니다.
+                    SetBubble(result, nextMergeLevel);
                     inBubble = null;
-                    SetBubble(result, mergre);
+                    consumedBubble.Despown();
+                    return;
                 }
             }
+
+            // 합성할 수 없는 조합은 이동을 재개합니다.
+            StartCoroutine(GoPreposition());
         }
         else if (index > 0)
         {
@@ -253,14 +315,23 @@ public class Bubble : MonoBehaviour
 
     public void Despown()
     {
-        GameManager.Inst.Exploration.bubbles.Remove(this);
+        // 합성 재료 소비, 장착, 판매, 파괴 시에만 보유 목록에서 제거합니다.
+        // 같은 artifactID를 가진 다른 데이터는 영향을 받지 않습니다.
+        if (data != null)
+        {
+            GameManager.Inst.Exploration.bubbles.Remove(data);
+            data = null;
+        }
+        inBubble = null;
+        index = 0;
+        sale = false;
         gameObject.SetActive(false);
     }
 
 
     public void Equip()
     {
-        if(GameManager.Inst.Exploration.SetArtifact(index, artifact.ID))
+        if (GameManager.Inst.Exploration.SetArtifact(index, artifact.ID))
         {
             index = 0;
             Despown();
@@ -282,7 +353,7 @@ public class Bubble : MonoBehaviour
         {
             sale = true;
         }
-        else if(collision.tag == "Artifact")
+        else if (collision.tag == "Artifact")
         {
             index = System.Int32.Parse(collision.name);
         }

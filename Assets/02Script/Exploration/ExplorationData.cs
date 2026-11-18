@@ -118,7 +118,7 @@ public class ExplorationData
                 damage_fire += value;
                 break;
             case AttributeType.Water:
-                damage_water += value; 
+                damage_water += value;
                 break;
             case AttributeType.Thunder:
                 damage_thunder += value;
@@ -147,23 +147,28 @@ public class ExplorationData
                 return damage_normal;
         }
     }
-    private SatietyType satietyType;
+
+    // 초기에는 보정 효과가 없는 상태로 시작합니다.
+    // 생성자에서 Satiety와 Fatigue를 설정할 때 실제 효과를 적용합니다.
+    private SatietyType satietyType = SatietyType.Normal;
+    private FatigueType fatigueType = FatigueType.Average;
+
     private SatietyType SetSatietyType
     {
-        set 
+        set
         {
-            if(satietyType == value) 
+            if (satietyType == value)
                 return;
 
             switch (satietyType)
             {
                 case SatietyType.Overeating:
-                    cast_speed -= 0.25f;
+                    cast_speed += 0.25f;
                     break;
                 case SatietyType.Full:
                     player.atk_weight -= 0.1f;
                     player.def_weight -= 0.1f;
-                    cast_speed += 0.1f;
+                    cast_speed -= 0.1f;
                     break;
 
             }
@@ -171,17 +176,17 @@ public class ExplorationData
             switch (satietyType)
             {
                 case SatietyType.Overeating:
-                    cast_speed += 0.25f;
+                    cast_speed -= 0.25f;
                     break;
                 case SatietyType.Full:
                     player.atk_weight += 0.1f;
                     player.def_weight += 0.1f;
-                    cast_speed -= 0.1f;
+                    cast_speed += 0.1f;
                     break;
             }
         }
     }
-   
+
     private int satiety;
     public int Satiety
     {
@@ -208,8 +213,6 @@ public class ExplorationData
         }
     }
 
-
-    private FatigueType fatigueType;
     private FatigueType SetFatigueType
     {
         set
@@ -222,22 +225,22 @@ public class ExplorationData
                 case FatigueType.Healthy:
                     player.atk_weight -= 0.15f;
                     player.def_weight -= 0.15f;
-                    cast_speed += 0.15f;
+                    cast_speed -= 0.15f;
                     break;
                 case FatigueType.Tired:
                     player.atk_weight += 0.15f;
                     player.def_weight += 0.15f;
-                    cast_speed -= 0.15f;
+                    cast_speed += 0.15f;
                     break;
                 case FatigueType.Dizziness:
                     player.atk_weight += 0.3f;
                     player.def_weight += 0.3f;
-                    cast_speed -= 0.3f;
+                    cast_speed += 0.3f;
                     break;
                 case FatigueType.Almostfainting:
                     player.atk_weight += 0.5f;
                     player.def_weight += 0.5f;
-                    cast_speed -= 0.5f;
+                    cast_speed += 0.5f;
                     break;
             }
             fatigueType = value;
@@ -246,22 +249,22 @@ public class ExplorationData
                 case FatigueType.Healthy:
                     player.atk_weight += 0.15f;
                     player.def_weight += 0.15f;
-                    cast_speed -= 0.15f;
+                    cast_speed += 0.15f;
                     break;
                 case FatigueType.Tired:
                     player.atk_weight -= 0.15f;
                     player.def_weight -= 0.15f;
-                    cast_speed += 0.15f;
+                    cast_speed -= 0.15f;
                     break;
                 case FatigueType.Dizziness:
                     player.atk_weight -= 0.3f;
                     player.def_weight -= 0.3f;
-                    cast_speed += 0.3f;
+                    cast_speed -= 0.3f;
                     break;
                 case FatigueType.Almostfainting:
                     player.atk_weight -= 0.5f;
                     player.def_weight -= 0.5f;
-                    cast_speed += 0.5f;
+                    cast_speed -= 0.5f;
                     break;
             }
         }
@@ -291,6 +294,7 @@ public class ExplorationData
 
         }
     }
+
     private float monster_weight = 1;
     public float MonsterWeight
     {
@@ -302,7 +306,7 @@ public class ExplorationData
     {
         set
         {
-            if(light == value)
+            if (light == value)
                 return;
 
             switch (light)
@@ -343,7 +347,7 @@ public class ExplorationData
             lantern = value;
             if (lantern > 150)
                 lantern = 150;
-            else if(lantern < 0)
+            else if (lantern < 0)
                 lantern = 0;
 
             if (lantern == 0)
@@ -375,7 +379,8 @@ public class ExplorationData
     }
 
     public Dictionary<int, int> skills; // key = index
-    public List<Bubble> bubbles; // having artifact
+    // 씬의 Bubble 컴포넌트 대신 보유 아티팩트의 순수 데이터를 보관합니다.
+    public List<ArtifactData> bubbles; // 미장착 아티팩트
     public Dictionary<int, Artifact> artifacts; // equiped artifact
 
     public bool CheckAddArtifact()
@@ -387,7 +392,7 @@ public class ExplorationData
 
     private void AddBase()
     {
-        for(int i = 1; i < 6; i++)
+        for (int i = 1; i < 6; i++)
         {
             skills.Add(i, i);
             skillUseCount.Add(i, 0);
@@ -396,7 +401,7 @@ public class ExplorationData
 
     public bool CheckArtifactID(int id)
     {
-        for(int i = 1; i < 6; i++)
+        for (int i = 1; i < 6; i++)
         {
             if (artifacts.ContainsKey(i) && artifacts[i].GetID(true) == id)
             {
@@ -427,7 +432,7 @@ public class ExplorationData
                     artifacts.Add(index, new Artifact(id));
                 }
                 artifacts[index].EquipArtifact();
-                return true;    
+                return true;
             }
         }
         return false;
@@ -436,7 +441,7 @@ public class ExplorationData
 
     public void SetSkill(int index, int id) //index : 1~5
     {
-        if(index > 0 && index < 6)
+        if (index > 0 && index < 6)
         {
             int preID = skills[index];
             skillUseCount.Remove(preID);
@@ -449,7 +454,7 @@ public class ExplorationData
 
     public bool CheckSkillAttribute(int attribute)
     {
-        for (int i = 1; i < skills.Count+1; i++)
+        for (int i = 1; i < skills.Count + 1; i++)
         {
             Entity_Skill skill;
             GameManager.Inst.GetSkillData(skills[i], out skill);
@@ -461,11 +466,11 @@ public class ExplorationData
 
     public bool CheckSkillType(SkillType type)
     {
-        for(int i = 1; i < skills.Count+1; i++)
+        for (int i = 1; i < skills.Count + 1; i++)
         {
             Entity_Skill skill;
             GameManager.Inst.GetSkillData(skills[i], out skill);
-            if(skill.Type == (int)type)
+            if (skill.Type == (int)type)
                 return true;
         }
         return false;
@@ -489,7 +494,7 @@ public class ExplorationData
     public void InitSkillUseCount()
     {
         totalSkillUseCount = 0;
-        for(int i =0; i < skillUseCount.Count; i++)
+        for (int i = 0; i < skillUseCount.Count; i++)
         {
             skillUseCount[skillUseCount.ElementAt(i).Key] = 0;
         }
@@ -527,7 +532,7 @@ public class ExplorationData
     #region exploration data
     public ExplorationData(PlayerData data)
     {
-        floor = 1; 
+        floor = 1;
         player = new PlayerData(GameManager.Inst.IDMaker);
         player.Copy(data);
         allPearl = 0;
@@ -536,9 +541,10 @@ public class ExplorationData
         lantern = 150;
         partner = new CharacterData();
         partnerMax = 100;
-        bubbles = new List<Bubble>();
+        bubbles = new List<ArtifactData>();
         skills = new Dictionary<int, int>();
         artifacts = new Dictionary<int, Artifact>();
+
         AddBase();
     }
     #endregion

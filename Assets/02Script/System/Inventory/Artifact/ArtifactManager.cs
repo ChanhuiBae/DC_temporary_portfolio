@@ -24,224 +24,167 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     }
 
-    #region Coroutine
-    private Dictionary<int, Coroutine> coroutines = new Dictionary<int, Coroutine>();
-    private Dictionary<int, bool> useValues = new Dictionary<int, bool>();
-    public void SetUseValues(int key, bool value)
+    #region Artifact condition monitors
+    // 아티팩트마다 실제 실행 핸들과 실제로 적용한 값을 함께 보관합니다.
+    private class ArtifactMonitor
     {
-        useValues[key] = value;
-    }
-    private void StartCoroutine(int id)
-    {
-        if (!useValues.ContainsKey(id))
-        {
-            useValues.Add(id, false);
-            coroutines.Add(id, StartCoroutine(UseArtifact(id)));
-        }
+        public Coroutine coroutine;
+        public bool applied;
+        public float value;
+        public int initialDEF;
     }
 
-    private void StopCoroutine(int id)
+    private readonly Dictionary<int, ArtifactMonitor> monitors
+        = new Dictionary<int, ArtifactMonitor>();
+
+    private void StartArtifactMonitor(int id)
     {
-        if (coroutines.ContainsKey(id))
-            StopCoroutine(coroutines[id]);
-        if (useValues.ContainsKey(id) && useValues[id])
-        {
-            MethodInfo method = this.GetType().GetMethod("Artifact" + id);
-            if (method != null)
-            {
-                method.Invoke(this, new object[] { false });
-            }
-        }
-        coroutines.Remove(id);
-        useValues.Remove(id);
+        // 중복 장착 알림으로 감시 코루틴이 여러 개 실행되지 않도록 합니다.
+        if (monitors.ContainsKey(id))
+            return;
+
+        ArtifactMonitor monitor = new ArtifactMonitor();
+        monitor.initialDEF = GameManager.Inst.Exploration.player.DEF;
+        monitors.Add(id, monitor);
+
+        // 자식 코루틴을 따로 시작하지 않고 실제 감시 루프의 핸들을 저장합니다.
+        monitor.coroutine = StartCoroutine(MonitorArtifact(id, monitor));
     }
 
-    #region Check Until End Condition
-
-    public IEnumerator UseArtifact(int id)
+    private void StopArtifactMonitor(int id)
     {
+        ArtifactMonitor monitor;
+        if (!monitors.TryGetValue(id, out monitor))
+            return;
+
+        if (monitor.coroutine != null)
+            StopCoroutine(monitor.coroutine);
+
+        // StopCoroutine만으로는 스탯이 원상 복구되지 않으므로 명시적으로 해제합니다.
+        RemoveMonitoredEffect(id, monitor);
+        monitors.Remove(id);
+    }
+
+    private IEnumerator MonitorArtifact(int id, ArtifactMonitor monitor)
+    {
+        // 장착 목록 갱신 및 코루틴 핸들 저장을 마친 뒤 조건을 확인합니다.
         yield return null;
+
+        while (GameManager.Inst.Exploration.CheckArtifactID(id))
+        {
+            float value;
+            bool shouldApply = GetMonitorCondition(id, monitor, out value);
+
+            // 조건이 해제되거나 적용 기준값이 변했으면 이전 효과부터 제거합니다.
+            if (monitor.applied && (!shouldApply || monitor.value != value))
+                RemoveMonitoredEffect(id, monitor);
+
+            if (shouldApply && !monitor.applied)
+            {
+                monitor.value = value;
+                ApplyMonitoredEffect(id, true, value);
+                monitor.applied = true;
+            }
+
+            // 모든 대기는 이 한 곳에서 수행하므로 매 프레임 장착 여부도 확인합니다.
+            yield return null;
+        }
+
+        // 명시적인 해제 호출 없이 장착 목록에서 빠졌을 때도 정리합니다.
+        RemoveMonitoredEffect(id, monitor);
+        monitors.Remove(id);
+    }
+
+    private bool GetMonitorCondition(int id, ArtifactMonitor monitor, out float value)
+    {
+        var exploration = GameManager.Inst.Exploration;
+        value = 0f;
+
         switch (id)
         {
-            // Check Using Only One
             case 8:
-                StartCoroutine(CheckUseOnly(id));
-                break;
-            // Check Attribute
+                return exploration.artifacts.Count == 1;
             case 13:
-                StartCoroutine(CheckAttribute(id, 0));
-                break;
+                return exploration.CheckSkillAttribute(0);
             case 25:
-                StartCoroutine(CheckAttribute(id, 1));
-                break;
+                return exploration.CheckSkillAttribute(1);
             case 26:
-                StartCoroutine(CheckAttribute(id, 2));
-                break;
+                return exploration.CheckSkillAttribute(2);
             case 27:
-                StartCoroutine(CheckAttribute(id, 3));
-                break;
-            // Check Cast Weight
+                return exploration.CheckSkillAttribute(3);
             case 17:
-                StartCoroutine(CheckCastWeight(id));
-                break;
-            // Check AllSkillType
+                value = exploration.cast_speed;
+                return true;
             case 40:
-                StartCoroutine(CheckAllSkillType(id));
-                break;
-            // Check Per HP
+                return exploration.CheckSkillType(SkillType.Attack)
+                    && exploration.CheckSkillType(SkillType.Buff)
+                    && exploration.CheckSkillType(SkillType.Defense);
             case 49:
-                StartCoroutine(CheckPerHP(id));
-                break;
-            // Check MaxHP
+                // HP가 달라져도 해제할 때 이때 적용한 값을 그대로 사용합니다.
+                value = (exploration.player.MaxHP - exploration.player.HP) / 2f;
+                return true;
             case 57:
-                StartCoroutine(CheckMaxHP(id));
-                break;
-            // Check DEF
+                value = exploration.player.MaxHP;
+                return true;
             case 58:
-                StartCoroutine(CheckDEF(id));
+                // 기존 기획 유지: 장착 시점 이후의 방어력 변화량을 반영합니다.
+                value = exploration.player.DEF - monitor.initialDEF;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void RemoveMonitoredEffect(int id, ArtifactMonitor monitor)
+    {
+        if (!monitor.applied)
+            return;
+
+        // 중복 해제 시 같은 스탯을 두 번 차감하지 않습니다.
+        monitor.applied = false;
+        ApplyMonitoredEffect(id, false, monitor.value);
+    }
+
+    private void ApplyMonitoredEffect(int id, bool apply, float value)
+    {
+        var player = GameManager.Inst.Exploration.player;
+        switch (id)
+        {
+            case 8: Artifact8(apply); break;
+            case 13: Artifact13(apply); break;
+            case 25: Artifact25(apply); break;
+            case 26: Artifact26(apply); break;
+            case 27: Artifact27(apply); break;
+            case 17:
+                // Artifact17은 bool과 float 두 인수가 모두 필요합니다.
+                Artifact17(apply, value);
                 break;
-
+            case 40: Artifact40(apply); break;
+            case 49:
+                // 해제 시 현재 HP로 다시 계산하면 이전 증가분이 남을 수 있습니다.
+                // 감시 상태에 저장한 적용 당시의 값으로 정확히 되돌립니다.
+                if (apply)
+                {
+                    player.def += (int)value;
+                    player.taken_damage_weight -= 0.01f * value;
+                }
+                else
+                {
+                    player.def -= (int)value;
+                    player.taken_damage_weight += 0.01f * value;
+                }
+                break;
+            case 57:
+                player.max_taken_damage = apply ? value * 0.2f : player.MaxHP;
+                break;
+            case 58:
+                // 기존 Artifact58은 bool을 사용하지 않고 전달값을 더합니다.
+                Artifact58(apply, apply ? value : -value);
+                break;
         }
-        //StartCoroutine("UseArtifact" + id, artifact);
-    }
-
-    private IEnumerator CheckUseOnly(int id)
-    {
-        if (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            SetUseValues(id, true);
-            ArtifactID(id, true);
-            while (GameManager.Inst.Exploration.artifacts.Count == 1)
-            {
-                yield return null;
-            }
-            SetUseValues(id, false);
-            ArtifactID(id, false);
-            coroutines.Remove(id);
-            useValues.Remove(id);
-        }
-    }
-    private IEnumerator CheckAttribute(int id, int attribute)
-    {
-        while (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            SetUseValues(id, true);
-            ArtifactID(id, true);
-            while (GameManager.Inst.Exploration.CheckSkillAttribute(attribute))
-            {
-                yield return null;
-            }
-            SetUseValues(id, false);
-            ArtifactID(id, false);
-            while (!GameManager.Inst.Exploration.CheckSkillAttribute(attribute))
-            {
-                yield return null;
-            }
-        }
-    }
-
-    private IEnumerator CheckCastWeight(int id)
-    {
-        while (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            float castWeight = GameManager.Inst.Exploration.cast_speed;
-            SetUseValues(id, true);
-            ArtifactID(id, true, castWeight);
-            while (castWeight == GameManager.Inst.Exploration.cast_speed)
-            {
-                yield return null;
-            }
-            SetUseValues(id, false);
-            ArtifactID(id, false, castWeight);
-        }
-    }
-
-    private IEnumerator CheckAllSkillType(int id)
-    {
-        while (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            SetUseValues(id, true);
-            ArtifactID(id, true);
-            while (GameManager.Inst.Exploration.CheckSkillType(SkillType.Attack)
-                && GameManager.Inst.Exploration.CheckSkillType(SkillType.Buff)
-                && GameManager.Inst.Exploration.CheckSkillType(SkillType.Defense))
-            {
-                yield return null;
-            }
-            SetUseValues(id, false);
-            ArtifactID(id, false);
-            while (!GameManager.Inst.Exploration.CheckSkillType(SkillType.Attack)
-                || !GameManager.Inst.Exploration.CheckSkillType(SkillType.Buff)
-                || !GameManager.Inst.Exploration.CheckSkillType(SkillType.Defense))
-            {
-                yield return null;
-            }
-        }
-    }
-
-
-    private IEnumerator CheckPerHP(int id)
-    {
-        float preHP = GameManager.Inst.Exploration.player.HP;
-        if (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            SetUseValues(id, true);
-            ArtifactID(id, true);
-        }
-        while (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            while (preHP == GameManager.Inst.Exploration.player.HP)
-            {
-                yield return null;
-            }
-            ArtifactID(id, false);
-            preHP = GameManager.Inst.Exploration.player.HP;
-            ArtifactID(id, true);
-        }
-        SetUseValues(id, false);
-    }
-    private IEnumerator CheckMaxHP(int id)
-    {
-        float preHP = GameManager.Inst.Exploration.player.MaxHP;
-        if (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            SetUseValues(id, true);
-            ArtifactID(id, true);
-        }
-        while (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            while (preHP == GameManager.Inst.Exploration.player.MaxHP)
-            {
-                yield return null;
-            }
-            ArtifactID(id, false);
-            preHP = GameManager.Inst.Exploration.player.MaxHP;
-            ArtifactID(id, true);
-        }
-        SetUseValues(id, false);
-    }
-
-    private IEnumerator CheckDEF(int id)
-    {
-        float preDEF = GameManager.Inst.Exploration.player.DEF;
-        float delta = 0;
-        SetUseValues(id, true);
-        while (GameManager.Inst.Exploration.CheckArtifactID(id))
-        {
-            while (preDEF == GameManager.Inst.Exploration.player.DEF)
-            {
-                yield return null;
-            }
-            if(delta != 0)
-                ArtifactID(id, false, -delta);
-            delta += GameManager.Inst.Exploration.player.DEF - preDEF;
-            ArtifactID(id, true, delta);
-            preDEF = GameManager.Inst.Exploration.player.DEF;
-        }
-        SetUseValues(id, false);
     }
     #endregion
-    #endregion
+
     public void CheckEachSkill(bool critical)
     {
         if (GameManager.Inst.Exploration.CheckArtifactID(44))
@@ -339,8 +282,8 @@ public class ArtifactManager : MonoBehaviour, IListener
         }
         if (GameManager.Inst.Exploration.CheckArtifactID(53))
         {
-            bool bleeding = Random.Range(0,100) < 20 ? true : false;
-            if(bleeding)
+            bool bleeding = Random.Range(0, 100) < 20 ? true : false;
+            if (bleeding)
                 GameManager.Inst.buffManager.SetAbnormalState(AbnormalStateType.Bleeding, monster, GameManager.Inst.PlayerData.ATK);
         }
     }
@@ -356,7 +299,7 @@ public class ArtifactManager : MonoBehaviour, IListener
                     StartCoroutine(StartFight(14));
                 if (GameManager.Inst.Exploration.CheckArtifactID(15))
                     StartCoroutine(StartFight(15));
-                if(GameManager.Inst.Exploration.CheckArtifactID(43))
+                if (GameManager.Inst.Exploration.CheckArtifactID(43))
                     StartCoroutine(StartFight(43, 10));
                 if (GameManager.Inst.Exploration.CheckArtifactID(47))
                     StartCoroutine(StartFight(47, 3));
@@ -408,7 +351,7 @@ public class ArtifactManager : MonoBehaviour, IListener
             case 15:
                 while (GameManager.Inst.Fight)
                 {
-                    yield return YieldInstructionCache.WaitForSeconds(1f); 
+                    yield return YieldInstructionCache.WaitForSeconds(1f);
                     GameManager.Inst.Exploration.player.critical += 1;
                     delta++;
                 }
@@ -435,36 +378,37 @@ public class ArtifactManager : MonoBehaviour, IListener
                 EndFight(id);
                 break;
             case 47:
-                    manager = (FightSceneManager)GameManager.Inst.manager;
-                    manager.SetArtifactValue(id, 0);
-                    stack = 0;
-                    while (GameManager.Inst.Fight)
+                manager = (FightSceneManager)GameManager.Inst.manager;
+                manager.SetArtifactValue(id, 0);
+                stack = 0;
+                while (GameManager.Inst.Fight)
+                {
+                    if (GameManager.Inst.Exploration.TotalSkillUseCount % value == stack)
                     {
-                        if (GameManager.Inst.Exploration.TotalSkillUseCount % value == stack)
+                        yield return null;
+                    }
+                    else
+                    {
+                        stack = GameManager.Inst.Exploration.TotalSkillUseCount % value;
+                        manager.SetArtifactValue(id, stack);
+                        if (stack == value - 1)
+                            GameManager.Inst.Exploration.cast_length -= 1;
+                        else if (stack == 0)
                         {
-                            yield return null;
-                        }
-                        else
-                        {
-                            stack = GameManager.Inst.Exploration.TotalSkillUseCount % value;
-                            manager.SetArtifactValue(id, stack);
-                            if (stack == value - 1)
-                                GameManager.Inst.Exploration.cast_length -= 1;
-                            else if (stack == 0)
-                            {
-                                if (GameManager.Inst.Exploration.cast_length < 1)
-                                    GameManager.Inst.Exploration.cast_length += 1;
-                            }
+                            if (GameManager.Inst.Exploration.cast_length < 1)
+                                GameManager.Inst.Exploration.cast_length += 1;
                         }
                     }
-                    if (GameManager.Inst.Exploration.cast_length < 1)
-                        GameManager.Inst.Exploration.cast_length += 1;
+                }
+                if (GameManager.Inst.Exploration.cast_length < 1)
+                    GameManager.Inst.Exploration.cast_length += 1;
                 break;
             case 51:
                 while (GameManager.Inst.Fight)
                 {
                     GameManager.Inst.Exploration.player.HP -= GameManager.Inst.Exploration.player.MaxHP * 0.02f;
                     GameManager.Inst.Exploration.player.HP += GameManager.Inst.Exploration.player.MaxHP * 0.01f * GameManager.Inst.buffManager.GetAbnormalCount();
+                    yield return YieldInstructionCache.WaitForSeconds(0.1f);
                 }
                 break;
             case 54:
@@ -522,7 +466,7 @@ public class ArtifactManager : MonoBehaviour, IListener
                 break;
         }
     }
-    
+
     #endregion
 
     #region Equip or not
@@ -623,13 +567,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact8(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            if (GameManager.Inst.Exploration.artifacts.Count == 1)
-            {
-                StartCoroutine(8);
-            }
-        }
+            StartArtifactMonitor(8);
+        else
+            StopArtifactMonitor(8);
     }
 
     public void Artifact8(bool equip)
@@ -704,17 +646,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact13(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            if (GameManager.Inst.Exploration.CheckSkillAttribute(0)) // normal check
-            {
-                StartCoroutine(13);
-            }
-        }
+            StartArtifactMonitor(13);
         else
-        {
-            StopCoroutine(13);
-        }
+            StopArtifactMonitor(13);
     }
 
     public void Artifact13(bool equip)
@@ -742,14 +678,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact17(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            StartCoroutine(17);
-        }
+            StartArtifactMonitor(17);
         else
-        {
-            StopCoroutine(17);
-        }
+            StopArtifactMonitor(17);
     }
     public void Artifact17(bool equip, float value)
     {
@@ -771,17 +704,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact25(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            if (GameManager.Inst.Exploration.CheckSkillAttribute(1)) // fire check
-            {
-                StartCoroutine(25);
-            }
-        }
+            StartArtifactMonitor(25);
         else
-        {
-            StartCoroutine(25);
-        }
+            StopArtifactMonitor(25);
     }
 
     public void Artifact25(bool equip)
@@ -798,17 +725,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact26(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            if (GameManager.Inst.Exploration.CheckSkillAttribute(2)) // water check
-            {
-                StartCoroutine(26);
-            }
-        }
+            StartArtifactMonitor(26);
         else
-        {
-            StartCoroutine(26);
-        }
+            StopArtifactMonitor(26);
     }
     public void Artifact26(bool equip)
     {
@@ -824,17 +745,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact27(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            if (GameManager.Inst.Exploration.CheckSkillAttribute(3)) // thunder check
-            {
-                StartCoroutine(27);
-            }
-        }
+            StartArtifactMonitor(27);
         else
-        {
-            StartCoroutine(27);
-        }
+            StopArtifactMonitor(27);
     }
 
     public void Artifact27(bool equip)
@@ -862,14 +777,11 @@ public class ArtifactManager : MonoBehaviour, IListener
     }
     public void UseArtifact40(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            StartCoroutine(40);
-        }
+            StartArtifactMonitor(40);
         else
-        {
-            StopCoroutine(40);
-        }
+            StopArtifactMonitor(40);
     }
 
     public void Artifact40(bool equip)
@@ -900,14 +812,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact49(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            StartCoroutine(49);
-        }
+            StartArtifactMonitor(49);
         else
-        {
-            StopCoroutine(49);
-        }
+            StopArtifactMonitor(49);
     }
 
     public void Artifact49(bool equip)
@@ -962,14 +871,11 @@ public class ArtifactManager : MonoBehaviour, IListener
     }
     public void UseArtifact57(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            StartCoroutine(57);
-        }
+            StartArtifactMonitor(57);
         else
-        {
-            StopCoroutine(57);
-        }
+            StopArtifactMonitor(57);
     }
 
     public void Artifact57(bool equip)
@@ -986,14 +892,11 @@ public class ArtifactManager : MonoBehaviour, IListener
 
     public void UseArtifact58(bool equip)
     {
+        // 조건이 아직 맞지 않아도 감시하며, 이후 조건을 만족하면 적용합니다.
         if (equip)
-        {
-            StartCoroutine(58);
-        }
+            StartArtifactMonitor(58);
         else
-        {
-            StopCoroutine(58);
-        }
+            StopArtifactMonitor(58);
     }
 
     public void Artifact58(bool equip, float value)

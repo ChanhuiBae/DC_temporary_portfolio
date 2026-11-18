@@ -59,7 +59,7 @@ public class ExplorationManager : MainManager, UIManager
     private NotifyLogic getlootEvent = new NotifyLogic();
     private NotifyLogic merchant = new NotifyLogic();
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         levelupEvent.notifyEvent += LevelUp;
@@ -258,16 +258,6 @@ public class ExplorationManager : MainManager, UIManager
             click.callback.AddListener((data) => { OnClick((PointerEventData)data); });
             trigger.triggers.Add(click);
         }
-
-        ////////////// Artifact Test /////////////////
-        
-        /*
-        if (!GameManager.Inst.Exploration.CheckArtifactID(54))
-        {
-            Artifact artifact = new Artifact(54);
-            GameManager.Inst.Exploration.artifacts.Add(1, artifact);
-        }
-        */
     }
 
     private void Start()
@@ -326,11 +316,21 @@ public class ExplorationManager : MainManager, UIManager
 
         GameManager.Inst.Exploration.InitSkillUseCount();
 
-        ///////////////// Skill Test////////////////////
-        GameManager.Inst.Exploration.SetSkill(1, 13);
-        GameManager.Inst.Exploration.SetSkill(2, 11);
-        GameManager.Inst.Exploration.SetSkill(5, 10);
-        GameManager.Inst.Exploration.SetSkill(3, 8);
+
+        if (!GameManager.Inst.HasInitializedExploration)
+        {
+            ///////////////// Skill Test////////////////////
+            GameManager.Inst.Exploration.SetSkill(1, 13);
+            GameManager.Inst.Exploration.SetSkill(2, 11);
+            GameManager.Inst.Exploration.SetSkill(5, 10);
+            GameManager.Inst.Exploration.SetSkill(3, 8);
+
+            ////////////// Artifact Test /////////////////
+            AddArtifact(8);
+            AddArtifact(17);
+
+            GameManager.Inst.HasInitializedExploration = true;
+        }
     }
 
     private void OnClick(PointerEventData data)
@@ -807,21 +807,59 @@ public class ExplorationManager : MainManager, UIManager
         }
     }
 
+    // 현재 진행 중인 대화 정보
+    private int currentScriptID;
+    private int currentScriptIndex;
+    private bool isDialoguePlaying;
+    // 대화를 시작할 때 호출
     public void ShowTextWhile(int id, int index)
     {
+        currentScriptID = id;
+        currentScriptIndex = index;
+        isDialoguePlaying = true;
+
+        // 이전 대화나 다른 메시지 동작의 런타임 리스너를 제거하고,
+        // 이번 대화의 진행 리스너 하나만 등록합니다.
+        messagePopup.onClick.RemoveAllListeners();
+        messagePopup.onClick.AddListener(OnNextDialogue);
+
+        messagePopup.gameObject.SetActive(true);
+        messagePopup.enabled = true;
+        SetButtonsFalse();
+
+        ShowCurrentDialogue();
+    }
+
+    // 클릭할 때마다 인덱스를 한 번만 증가
+    private void OnNextDialogue()
+    {
+        if (!isDialoguePlaying)
+            return;
+
+        currentScriptIndex++;
+        ShowCurrentDialogue();
+    }
+
+    // 현재 인덱스의 대사를 표시
+    private void ShowCurrentDialogue()
+    {
         string text;
-        if(GameManager.Inst.GetScriptData(id, index, out text))
+
+        if (GameManager.Inst.GetScriptData(
+            currentScriptID, currentScriptIndex, out text))
         {
-            messagePopup.gameObject.SetActive(true);
-            messagePopup.enabled = true;
-            SetButtonsFalse();
             message.text = text;
-            messagePopup.onClick.AddListener(delegate { ShowTextWhile(id, ++index); });
+            return;
         }
-        else
-        {
-           callBack();
-        }
+
+        // 다음 대사가 없으면 대화 종료
+        isDialoguePlaying = false;
+
+        // 콜백에서 다른 메시지나 새 대화를 열 수 있으므로
+        // 기존 리스너를 먼저 해제합니다.
+        messagePopup.onClick.RemoveListener(OnNextDialogue);
+
+        callBack?.Invoke();
     }
 
     public void MeetMerchant()
@@ -1062,70 +1100,73 @@ public class ExplorationManager : MainManager, UIManager
             monsters.Add(monster);
         }
 
-        List<ItemArtifactData> loots = new List<ItemArtifactData>();
-        ItemArtifactData data;
-        foreach(Entity_Monster monster in monsters)
+        List<InventoryData> loots = new List<InventoryData>();
+        InventoryData data;
+        foreach (Entity_Monster monster in monsters)
         {
             if (monster.ID < 700) // normal monster
             {
                 bool percent = UnityEngine.Random.Range(0, 100) < 10 ? true : false;
                 if (percent) // rune
                 {
-                    data = new ItemArtifactData(9, true, GameManager.Inst.GetRuneCount());
+                    data = new ItemData(-1, 9, GameManager.Inst.GetRuneCount());
                     loots.Add(data);
                     continue;
                 }
                 percent = UnityEngine.Random.Range(0, 100) < 5 ? true : false;
                 if (percent) // essence
                 {
-                    data = new ItemArtifactData(GameManager.Inst.GetEssence(), true, 1);
+                    data = new ItemData(-1, GameManager.Inst.GetEssence(), 1);
                     loots.Add(data);
                     continue;
                 }
-                percent = UnityEngine.Random.Range(0,100) < monster.DropPercent ? true : false;
+                percent = UnityEngine.Random.Range(0, 100) < monster.DropPercent ? true : false;
                 if (percent) // exchange
                 {
-                    data = new ItemArtifactData(monster.DropItem, true, 1);
+                    data = new ItemData(-1, monster.DropItem, 1);
                     loots.Add(data);
                 }
             }
-            else if(monster.ID < 900) // middle boss
+            else if (monster.ID < 900) // middle boss
             {
                 bool artifact = UnityEngine.Random.Range(0, 100) < 50 ? true : false;
                 if (artifact)
                 {
-                    data = new ItemArtifactData(GameManager.Inst.GetRandomMaterialOrItemArtifact(), false, 1);
+                    data = new InventoryData(2, GameManager.Inst.GetRandomMaterialOrItemArtifact());
                     loots.Add(data);
                     continue;
                 }
-                data = new ItemArtifactData(monster.DropItem, true, 1);
+                data = new ItemData(-1, monster.DropItem, 1);
                 loots.Add(data);
             }
             else // boss
             {
-                data = new ItemArtifactData(GameManager.Inst.GetRandomProductArtifact(), false, 1);
+                data = new InventoryData(2, GameManager.Inst.GetRandomProductArtifact());
                 loots.Add(data);
             }
         }
-        
+
 
         lootpopup.gameObject.SetActive(true);
-        foreach(var loot in loots)
+        foreach (var loot in loots)
         {
-            if (loot.isItem)
+            if (loot.Type == 1)
             {
-                lootpopup.SetItem(loot.id, loot.amount);
+                ItemData item = (ItemData)loot;
+                lootpopup.SetItem(item.UniqueID, item.amount);
             }
-            else
+            else if (loot.Type == 2)
             {
-                lootpopup.SetArtifact(loot.id);
+                {
+                    lootpopup.SetArtifact(loot. UniqueID);
+                }
             }
-        }
-        
-        if (loots.Count == 0)
-        {
-            lootpopup.gameObject.SetActive(false);
-            victory.StartVictoryLogic();
+
+            if (loots.Count == 0)
+            {
+                lootpopup.gameObject.SetActive(false);
+                victory.StartVictoryLogic();
+            }
         }
     }
 

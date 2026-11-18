@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 
 public class PlayerData: CharacterData
 {
@@ -151,7 +150,7 @@ public class PlayerData: CharacterData
         water = data.water;
         thunder = data.thunder;
         earth = data.earth;
-        atk_weight = data.def_weight;
+        atk_weight = data.atk_weight;
         def_weight = data.def_weight;
         fire_weight = data.fire_weight;
         water_weight = data.water_weight;

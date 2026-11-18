@@ -671,6 +671,8 @@ public class Map : MonoBehaviour
         {
             if (CreateSecretTile())
                 secretCount++;
+            else
+                return false;
         }
         return true;
     }

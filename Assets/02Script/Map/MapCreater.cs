@@ -565,6 +565,8 @@ public class MapCreater : MonoBehaviour
         {
             if (CreateSecretTile())
                 secretCount++;
+            else
+                return false;
         }
         return true;
     }
