@@ -19,7 +19,7 @@ public class GameManager : Singleton<GameManager>
     private PlayerData playerData;
     private ExplorationData exploration;
     private SettingData setData;
-    
+
     private DC table;
     private Dictionary<int, Entity_Monster> monsterData = new Dictionary<int, Entity_Monster>();
     public bool GetMonsterData(int id, out Entity_Monster data)
@@ -78,7 +78,7 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    private Dictionary<int,Entity_Item> itemData = new Dictionary<int, Entity_Item>();
+    private Dictionary<int, Entity_Item> itemData = new Dictionary<int, Entity_Item>();
     public bool GetItemData(int id, out Entity_Item data)
     {
         return itemData.TryGetValue(id, out data);
@@ -113,9 +113,10 @@ public class GameManager : Singleton<GameManager>
     public bool GetScriptData(int id, int index, out string data)
     {
         string[] arr;
-        if(scriptData.TryGetValue(id, out arr))
+        if (scriptData.TryGetValue(id, out arr))
         {
-            if (arr.Length > index)
+            // #3 음수 인덱스를 거부한다.
+            if (arr != null && index >= 0 && arr.Length > index)
             {
                 data = arr[index];
                 return true;
@@ -139,7 +140,7 @@ public class GameManager : Singleton<GameManager>
     {
         set
         {
-            if(SceneManager.GetActiveScene().name == "FightScene")
+            if (SceneManager.GetActiveScene().name == "FightScene")
                 fight = value;
         }
         get => fight;
@@ -158,7 +159,7 @@ public class GameManager : Singleton<GameManager>
         get => monsterManager;
         set
         {
-            if(SceneManager.GetActiveScene().name == "FightScene")
+            if (SceneManager.GetActiveScene().name == "FightScene")
             {
                 monsterManager = value;
             }
@@ -168,7 +169,7 @@ public class GameManager : Singleton<GameManager>
     private new void Awake()
     {
         base.Awake();
-        if(!TryGetComponent<ItemManager>(out itemManager))
+        if (!TryGetComponent<ItemManager>(out itemManager))
         {
             Debug.Log("GameManager - Awake - ItemManager");
         }
@@ -198,7 +199,7 @@ public class GameManager : Singleton<GameManager>
         #region TableData
         table = Resources.Load<DC>("DC");
 
-        for(int i = 0; i < table.Monster.Count; i++)
+        for (int i = 0; i < table.Monster.Count; i++)
         {
             monsterData.Add(table.Monster[i].ID, table.Monster[i]);
         }
@@ -214,7 +215,7 @@ public class GameManager : Singleton<GameManager>
         {
             itemData.Add(table.Item[i].ID, table.Item[i]);
         }
-        for(int i = 0; i < table.Artifact.Count; i++)
+        for (int i = 0; i < table.Artifact.Count; i++)
         {
             artifactData.Add(table.Artifact[i].ID, table.Artifact[i]);
             switch (table.Artifact[i].Grade)
@@ -249,7 +250,7 @@ public class GameManager : Singleton<GameManager>
                     break;
             }
         }
-        for(int i = 0; i < table.ArtifactCombination.Count; i++)
+        for (int i = 0; i < table.ArtifactCombination.Count; i++)
         {
             artifctCombinationData.Add(table.ArtifactCombination[i].Result, table.ArtifactCombination[i]);
         }
@@ -257,11 +258,11 @@ public class GameManager : Singleton<GameManager>
         {
             skillData.Add(table.Skill[i].ID, table.Skill[i]);
         }
-        for(int i = 0; i < table.Script.Count; i++)
+        for (int i = 0; i < table.Script.Count; i++)
         {
             scriptData.Add(table.Script[i].ID, table.Script[i].Text.Split('\"').Where(t => t != "").ToArray());
         }
-        for(int i=0; i<table.Chest.Count; i++)
+        for (int i = 0; i < table.Chest.Count; i++)
         {
             chestData.Add(table.Chest[i].Floor, table.Chest[i]);
         }
@@ -287,6 +288,8 @@ public class GameManager : Singleton<GameManager>
     private string dataPath;
     public void SaveData()
     {
+        // #1 최초 저장 전에 디렉터리를 생성한다.
+        Directory.CreateDirectory(dataPath);
         string path = dataPath + "/player";
         string data = JsonUtility.ToJson(playerData);
         File.WriteAllText(path, data);
@@ -395,7 +398,8 @@ public class GameManager : Singleton<GameManager>
 
     public bool CheckData()
     {
-        if (File.Exists(dataPath))
+        // #1 디렉터리가 아니라 실제 플레이어 파일을 확인한다.
+        if (File.Exists(Path.Combine(dataPath, "player")))
         {
             return LoadData();
         }
@@ -450,7 +454,7 @@ public class GameManager : Singleton<GameManager>
 
     public bool CheckNewMap()
     {
-        if(exploration.map.Turn == 0)
+        if (exploration.map.Turn == 0)
             return true;
         exploration.map.Access = true;
         return false;
@@ -486,7 +490,7 @@ public class GameManager : Singleton<GameManager>
 
     public int GetArtifactCombinationResult(int first, int second)
     {
-        if(first >  second)
+        if (first > second)
         {
             int temp = first;
             first = second;
@@ -494,7 +498,7 @@ public class GameManager : Singleton<GameManager>
         }
         foreach (var data in artifctCombinationData)
         {
-            if(data.Value.First == first && data.Value.Second == second)
+            if (data.Value.First == first && data.Value.Second == second)
                 return data.Key;
         }
         return 0;
@@ -577,7 +581,7 @@ public class GameManager : Singleton<GameManager>
             case 1:
                 return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
             case 2:
-                if(percent < 75)
+                if (percent < 75)
                     return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 1), out data);
                 else
                     return itemData.TryGetValue(GetReinforcementJewelID((ReinforceType)type, 2), out data);
@@ -611,14 +615,14 @@ public class GameManager : Singleton<GameManager>
     public int GetRuneAmount()
     {
         int result = Random.Range(0, 100);
-        if(exploration.Floor == 1)
+        if (exploration.Floor == 1)
         {
             if (result < 80)
                 return 1;
             else
                 return 2;
         }
-        else if(exploration.Floor % 2 == 0)
+        else if (exploration.Floor % 2 == 0)
         {
             if (result < 50)
                 return exploration.Floor / 2;
@@ -645,11 +649,11 @@ public class GameManager : Singleton<GameManager>
         int result = Random.Range(0, 100);
         if (result < 20)
             result = 1;
-        else if(result < 40)
+        else if (result < 40)
             result = 2;
-        else if(result < 60)
+        else if (result < 60)
             result = 3;
-        else if(result < 75)
+        else if (result < 75)
             result = 4;
         else
             result = 5;
@@ -669,7 +673,7 @@ public class GameManager : Singleton<GameManager>
                 else if (result < 99)
                     return itemData.TryGetValue(46, out data);
                 else
-                    return itemData.TryGetValue(7, out data);   
+                    return itemData.TryGetValue(7, out data);
             case 2:
                 if (result < 50)
                     return itemData.TryGetValue(48, out data);
@@ -773,11 +777,11 @@ public class GameManager : Singleton<GameManager>
 
     public int GetRandomMaterialOrItemArtifact()
     {
-        int result = Random.Range(0,100);
+        int result = Random.Range(0, 100);
         switch (exploration.Floor)
         {
             case 1:
-                if(result < 50)
+                if (result < 50)
                     result = GetRandomArtifact(1, 1);
                 else
                     result = GetRandomArtifact(1, 2);
@@ -878,7 +882,8 @@ public class GameManager : Singleton<GameManager>
 
     public bool GetMonsterSearchByIndex(int id, out Entity_Monster data)
     {
-        if (id < monsterData.Count) 
+        // #3 음수 인덱스를 거부한다.
+        if (id >= 0 && id < monsterData.Count)
         {
             data = monsterData.ElementAt(id).Value;
             return true;
@@ -904,13 +909,32 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    // #2 정상 종료 이벤트에서 저장한다.
+    private void OnApplicationQuit()
+    {
+        if (playerData == null || setData == null || string.IsNullOrEmpty(dataPath))
+            return;
+
+        try
+        {
+            SaveData();
+            // 탐험 저장 비활성화
+            // Directory.CreateDirectory(Path.Combine(dataPath, "exploration"));
+            // SaveExploration();
+            // PlayerPrefs.Save();
+        }
+        catch (System.Exception exception)
+        {
+            Debug.LogException(exception, this);
+        }
+    }
     public IEnumerator WaitAndQuitGame(float time)
     {
         yield return YieldInstructionCache.WaitForSeconds(time);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
+#else
+        Application.Quit();
+#endif
     }
 }
