@@ -203,37 +203,39 @@ public class SkillBallManager : MonoBehaviour
 
     private void CheckConnectable(SkillBall startSkill)
     {
-        if (!typeDic.TryGetValue(startType, out List<SkillBall> currentTypeList))
-            return;
+        float maxDistanceSqr = maxDistance * maxDistance;
 
-        Queue<SkillBall> queue = new Queue<SkillBall>();
-        HashSet<SkillBall> visited = new HashSet<SkillBall>();
-
-        queue.Enqueue(startSkill);
-        visited.Add(startSkill);
-        startSkill.SetColorWhite();
-
-        while (queue.Count > 0)
+        foreach (SkillBall candidate in skillBalls)
         {
-            SkillBall current = queue.Dequeue();
+            if (!candidate.gameObject.activeInHierarchy)
+                continue;
 
-            foreach (SkillBall candidate in current.Neighbors) // 캐싱한 이웃 선회
+            // 이미 선택한 구슬은 밝게 유지
+            if (connectedBalls.Contains(candidate))
             {
-                // 같은 타입이 아니거나, 이미 연결된 목록에 있거나, 이미 방문했다면 스킵
-                if (candidate.Type != startType || connectedBalls.Contains(candidate) || visited.Contains(candidate))
-                    continue;
-
                 candidate.SetColorWhite();
-                visited.Add(candidate);
-                queue.Enqueue(candidate);
+                continue;
             }
-        }
 
-        foreach (SkillBall s in currentTypeList)
-        {
-            if (!connectedBalls.Contains(s) && !visited.Contains(s))
+            // 마지막 선택 구슬과의 현재 거리로 판정
+            float distanceSqr =
+                (candidate.transform.position - startSkill.transform.position)
+                .sqrMagnitude;
+
+            bool canSelect =
+                candidate.Type == startType &&
+                distanceSqr < maxDistanceSqr;
+
+            if (canSelect)
             {
-                s.Dimmed();
+                candidate.SetColorWhite();
+            }
+            else
+            {
+                // Dimmed()는 light가 켜져 있으면 색을 바꾸지 않으므로
+                // 선택하지 않은 구슬의 강조를 먼저 해제
+                candidate.TurnOffLight();
+                candidate.Dimmed();
             }
         }
     }
